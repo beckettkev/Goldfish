@@ -10,7 +10,7 @@ Goldfish is a React.JS inline People Search tool for SharePoint 2013 (SPO). This
 		        {
 		        	//the heading of the grouping
 		        	title: 'Groups',
-				type: 'Termset',
+					type: 'Termset',
 		        	//the managed property
 		        	property: 'owsPeopleGroup',
 		        	//the termset id to get the terms back to populate the group

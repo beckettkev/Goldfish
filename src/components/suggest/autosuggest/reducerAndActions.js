@@ -1,3 +1,4 @@
+//https://github.com/reactjs/react-autocomplete/blob/master/LICENSE
 const INPUT_FOCUSED = 'INPUT_FOCUSED';
 const INPUT_BLURRED = 'INPUT_BLURRED';
 const INPUT_CHANGED = 'INPUT_CHANGED';

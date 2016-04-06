@@ -1,23 +1,21 @@
 const path = require('path');
 const webpack = require('webpack');
-const autoprefixer = require('autoprefixer');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const development = process.env.NODE_ENV !== 'production' ? true : false;
 const styles = 'style-loader!css-loader?modules!sass';
 
 module.exports = {
-  //devtool: development ? 'eval' : 'source-map',
-  devtool: 'source-map',
+  devtool: development ? 'eval' : 'source-map',
   entry: {
 	    app: './src/index.js'
   },
   output: {
       path: path.join(__dirname, 'build'),
-      filename: 'goldfish.demo.min.js',
-      publicPath: '/static/'
+      filename: 'goldfish.min.js',
+      publicPath: 'http://localhost:3001/',
   },
   resolve: {
-      extensions: ['', '.jsx', '.scss', '.js', '.json'],
+      extensions: ['.jsx', '.scss', '.js', '.json'],
       modulesDirectories: [
         'node_modules',
         path.resolve(__dirname, './node_modules')
@@ -30,7 +28,7 @@ module.exports = {
         exclude: /(node_modules)/,
         loader: 'babel',
         query: {
-           presets:['es2015','react']
+           presets:['es2015','stage-0','react']
         }
       },
       {

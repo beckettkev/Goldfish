@@ -1,3 +1,4 @@
+//https://github.com/reactjs/react-autocomplete/blob/master/LICENSE
 import React, { Component, PropTypes } from 'react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';

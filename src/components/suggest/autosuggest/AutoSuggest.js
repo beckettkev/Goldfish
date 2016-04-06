@@ -1,3 +1,4 @@
+//https://github.com/reactjs/react-autocomplete/blob/master/LICENSE
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { inputFocused, inputBlurred, inputChanged, updateFocusedSuggestion,

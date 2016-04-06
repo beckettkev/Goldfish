@@ -1,12 +1,26 @@
 {
   "name": "Goldfish",
   "version": "0.9.5",
-  "description": "A SharePoint 2013 People Search Component",
-  "author": "Kevin Beckett (http://sharepointcookies.com)",
+  "description": "A SharePoint 2013 inline People Search component",
+  "author": "Kevin Beckett (http://sharepointcookies.com), beckettkev",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/beckettkev/Goldfish.git"
+  },
+  "keywords": [
+    "react",
+    "SPO",
+    "sharepoint",
+    "2013",
+    "search",
+    "people",
+    "office365",
+    "app"
+  ],
   "devDependencies": {
     "autoprefixer": "^6.0.3",
-    "babel-core": "^6.1.4",
+    "babel-core": "^6.3.1",
     "babel-eslint": "^4.1.5",
     "babel-loader": "^6.0.1",
     "babel-plugin-react-transform": "^1.1.1",
@@ -42,7 +56,10 @@
     "webpack": "^1.12.0",
     "webpack-dev-server": "^1.8.2",
     "webpack-dev-middleware": "^1.2.0",
-    "webpack-hot-middleware": "^2.4.1"
+    "webpack-hot-middleware": "^2.4.1",
+    "react-redux": "^4.4.1",
+    "react-autowhatever": "^3.1.0",
+    "core-js": "^2.2.2"
   },
   "dependencies": {
     "axios": "^0.6.0",
@@ -61,12 +78,17 @@
     "react-dom": "^0.14.3",
     "react-sortable-component": "^0.3.0",
     "react-toolbox": "^0.14.0",
-    "autosuggest-highlight": "^2.1.1"
+    "autosuggest-highlight": "^2.1.1",
+    "babel-preset-stage-0": "^6.5.0"
   },
   "scripts": {
     "start": "node server.js",
     "build": "cross-env NODE_ENV=production UV_THREADPOOL_SIZE=100 webpack --config ./webpack.config",
     "lint": "eslint -c .eslintrc src/",
-    "test": "karma start"
-  }
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/BeckettKev/Goldfish/issues"
+  },
+  "homepage": "https://github.com/BeckettKev/Goldfish"
 }

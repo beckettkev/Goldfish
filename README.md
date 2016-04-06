@@ -43,25 +43,23 @@ A short description of the motivation behind the creation and maintenance of the
 
 Provide code examples and explanations of how to get the project.
 
-## API Reference
-
-Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
-
 ## Tests
 
-Describe and show how to run the tests with code examples.
+No tests added yet. It's early days.
 
 ## Contributors
 
-Let people know how they can dive into the project, include important links to things like issue trackers, irc, twitter accounts if applicable.
+Current contributors include: beckettkev
 
 ## License
 
-A short snippet describing the license (MIT, Apache, etc.)
+The MIT License (MIT)
+
+Copyright (c) 2016 beckettkev
 
 
 
-TODO - 24.03.2016 @ 18:19
+# TODO - 24.03.2016 @ 18:19
 
 The final 2 points to finish off Goldfish for release (in priority order):
 
@@ -69,7 +67,7 @@ The final 2 points to finish off Goldfish for release (in priority order):
 
 	2) Jasmine / Jest specs integration
 
-Bugs
+## Bugs
 
 	- Z-index of auto suggest in IE once a search has been done (paging is higher)
 	- Drag and drop does not work on landing page of team sites
@@ -77,11 +75,11 @@ Bugs
 	- Commence search on tag removal
 	- CSS for Goldfish removal
 
-Ideas
+## Ideas
 
 	- Option in settings for finding all names on a page (highlighting) alowing users to select them so they search in Goldfish
 
-Steps
+## Steps
 
 	If loading into IE, make sure you follow the polly fill steps below.
 

@@ -3,7 +3,7 @@
 Goldfish is a React.JS inline People Search tool for SharePoint 2013 (SPO). This tool provides people search results in a format configurable by the individual, inline within a SharePoint site (without taking you away from what you are doing). 
 
 ## Code Example
-
+```javascript
 	var options = {
 		title: 'People',
 	    termsets: [
@@ -34,7 +34,7 @@ Goldfish is a React.JS inline People Search tool for SharePoint 2013 (SPO). This
 	};
 
 	Goldfish.Load(options);
-
+```
 ## Motivation
 
 The aim of this project is to allow you to search and save people anywhere within a SharePoint site without stopping what you are doing (the results are displayed where you are). The results show only the information that **you** the individual choose to see. 
@@ -42,13 +42,17 @@ The aim of this project is to allow you to search and save people anywhere withi
 ## Installation
 
 You probably want to start by installing **Goldfish** by npm:
-
+```node
 npm install Goldfish --save
 
+npm install --save-dev babel-preset-stage-0
+
+webpack
+```
 
 ## API Reference
 
-So the first thing to do is decide if you need to supply some options. Options allow you to override the default settings for Goldfish and you can do this by taking a look at the Code Example above. Once you have sorted that out, you have a few options for using Goldfish...
+So the first thing to do is decide if you need to supply some **options**. Options allow you to override the default settings for **Goldfish** and you can do this by taking a look at the Code Example above. Once you have sorted that out, you have a few options for using Goldfish...
 
 ### Custom Action
 
@@ -64,9 +68,11 @@ Describe and show how to run the tests with code examples.
 
 ## Contributors
 
-Let people know how they can dive into the project, include important links to things like issue trackers, irc, twitter accounts if applicable.
+> @beckettkev
 
 ## License
 
-A short snippet describing the license (MIT, Apache, etc.)
+The MIT License (MIT)
+
+Copyright (c) 2016 beckettkev
 

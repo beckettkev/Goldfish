@@ -16,7 +16,7 @@ The next two pieces of work will be forthcoming in a future release (in priority
 		        {
 		        	//the heading of the grouping
 		        	title: 'Groups',
-							type: 'Termset',
+				type: 'Termset',
 		        	//the managed property
 		        	property: 'owsPeopleGroup',
 		        	//the termset id to get the terms back to populate the group

@@ -1,0 +1,86 @@
+.item {
+	font-size: 14px;
+	background-color: #ffffff;
+	min-height: 105px;
+	z-index:2000;
+}
+
+.item span {
+	display: block;
+}
+
+.item .phone {
+	font-size: 14px;
+	float:left;
+	padding:2px 3px;
+}
+
+.item a:link {
+	text-decoration: underline;
+	/* font-weight: bold; */
+}
+
+.item .img-container {
+	float:left;
+	position: relative;
+	diplay: inline;
+	margin:5px 5px 0 0;
+}
+
+.item .img {
+    width: 70px;
+    height: 70px;
+    border: 1px solid #ccc;
+}
+
+.remove button,
+.remove input[type=button] {
+	background-color: #666666 !important;
+}
+
+.add button,
+.add input[type=button] {
+	background-color: #e51d2e !important;
+}
+
+.add button,
+.add input[type=button],
+.remove button,
+.remove input[type=button] {
+	padding: 0 0 10px 0 !important;
+	margin: 5px 5px 14px 5px !important;
+	width: 2rem !important;
+	height: 2rem !important;
+	font-size: 1rem;
+}
+
+.add button span,
+.add input[type=button] span,
+.remove button span,
+.remove input[type=button] span {
+	line-height: 2rem !important;
+}
+
+.add input[type=button][disabled],
+.add button[disabled] {
+	opacity: 0.4;
+}
+
+.command {
+	float: left;
+	padding: 8px 1px 0 0;
+}
+.command button,
+.command input[type=button] {
+	min-width: auto !important;
+	margin: -3px 2px 5px 0;
+	padding: 0px !important;
+	height: 2.5rem !important;
+	width: 2.5rem !important;
+	line-height: 0.8;
+	border-radius: 0 0 10% 10%;
+}
+.command button span {
+	line-height: 1 !important;
+	margin-right: 0px !important;
+}

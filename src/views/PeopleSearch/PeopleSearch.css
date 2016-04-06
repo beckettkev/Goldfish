@@ -1,0 +1,24 @@
+/* Now we can start using the component */
+.component {
+  width: 400px !important;
+  background-color: #f9f9f9;
+  border-color: #c8c8c8;
+  box-shadow: 0 0 18px #d9d9d9;
+  position: absolute;
+  right: 0px;
+  overflow-x: visible;
+  height: 1900px;
+  padding: 0 0 200px 0;
+  z-index:2000;
+  direction: ltr;
+}
+.component .everything-worth-while {
+  margin-bottom: 30px;
+}
+.container {
+  width: 320px !important;
+}
+
+div[data-react-toolbox=snackbar] span {
+  font-size: 14px;
+}

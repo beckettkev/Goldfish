@@ -1,0 +1,32 @@
+.component {
+  width: 400px !important;
+  background-color: #f9f9f9;
+  border-color: #c8c8c8;
+	box-shadow: 0 0 18px #d9d9d9;
+  position: absolute;
+  right: 0px;
+	overflow-x: visible;
+  height: 1900px;
+  padding: 0 0 200px 0;
+  direction: ltr;
+}
+.container {
+  width: 320px !important;
+}
+.layout-heading {
+	margin: 0 20px 20px 20px;
+}
+.info, .checkbox-holder {
+  margin: 0 20px 0 20px;
+  border-bottom: 1px solid #eeeeee;
+  padding-bottom: 20px;
+  font-size: 14px;
+  width: 350px;
+}
+
+.checkbox-holder label span {
+  font-size: 14px;
+}
+.warning {
+  color: red;
+}

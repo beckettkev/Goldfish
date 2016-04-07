@@ -15,7 +15,7 @@ module.exports = {
       publicPath: 'http://localhost:3001/',
   },
   resolve: {
-      extensions: ['.jsx', '.scss', '.js', '.json'],
+      extensions: ['','.jsx', '.scss', '.js', '.json'],
       modulesDirectories: [
         'node_modules',
         path.resolve(__dirname, './node_modules')

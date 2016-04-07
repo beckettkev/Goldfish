@@ -58,6 +58,10 @@ So the first thing to do is decide if you need to supply some **options**. Optio
 
 Then you can grab the SharePoint **Custom Action** project from Github and deploy the sandbox solution to the site collection you want to use Goldfish on.
 
+> https://github.com/beckettkev/Goldfish.CustomAction
+
+**Please note**: The Goldfish JavaScript will need to be added to the style library in order for this custom action to function properly.
+
 ### Direct Reference
 
 Or as an alternative to the above, simply add the script link to the Goldfish bundle app and then invoke Goldfish from a click event.

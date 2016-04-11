@@ -37,7 +37,11 @@ The aim of this project is to allow you to search and save people anywhere withi
 
 ## Installation
 
-You probably want to start by installing **Goldfish** by npm:
+You probably want to start by installing webpack via npm (globally):
+```node
+npm install webpack -g
+```
+When you have done that, install **Goldfish** by npm:
 ```node
 npm install goldfish-search --save
 ```

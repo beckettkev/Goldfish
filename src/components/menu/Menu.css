@@ -5,7 +5,7 @@
   width: 45px;
   padding: 20px 0 20px 5px;
   top: -20px;
-  left: 3px;
+  right: 400px;
 }
 
 :global(.tab) {

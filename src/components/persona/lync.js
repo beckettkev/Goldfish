@@ -10,7 +10,7 @@
     return false;
   }
 
-  function CustomEvent(event, params) {
+  function CustomEvent (event, params) {
     const eventParams = params || { bubbles: false, cancelable: false, detail: undefined };
     const evt = document.createEvent('CustomEvent');
     evt.initCustomEvent(event, eventParams.bubbles, eventParams.cancelable, eventParams.detail);
@@ -19,14 +19,16 @@
 
   CustomEvent.prototype = window.Event.prototype;
   window.CustomEvent = CustomEvent;
+
+  return true;
 })();
 
 // avoiding network requests
-const blankImage = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA` +
-                   `1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAAApJREFUCNdjYAAAAAIAAeIhvDMAAAAASUVO` +
-                   `RK5CYII%3D`;
+const blankImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA' +
+                   '1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAAApJREFUCNdjYAAAAAIAAeIhvDMAAAAASUVO' +
+                   'RK5CYII%3D';
 
-function normaliseStatusName(status) {
+function normaliseStatusName (status) {
   let normalisedStatus;
   switch (status) {
     case 'online':
@@ -48,14 +50,14 @@ function normaliseStatusName(status) {
   return normalisedStatus;
 }
 
-function notifyStatusUpdate(sip, status) {
+function notifyStatusUpdate (sip, status) {
   const event = new CustomEvent('LyncStatusUpdate',
     { detail: { sip, status: normaliseStatusName(status) } }
   );
   window.dispatchEvent(event);
 }
 
-function bindLync(sip, id) {
+function bindLync (sip, id) {
   const node = document.getElementById(id);
   node.addEventListener('DOMSubtreeModified', () => {
     const classList = node.className;
@@ -71,7 +73,7 @@ function bindLync(sip, id) {
   window.IMNRC(sip, node);
 }
 
-function getContactMarkup(sip) {
+function getContactMarkup (sip) {
   const id = 'lync' + Math.floor(Math.random() * 10000);
   const contact = document.createElement('img');
   contact.setAttribute('id', id);
@@ -82,7 +84,7 @@ function getContactMarkup(sip) {
   return contact;
 }
 
-function createContactsContainer() {
+function createContactsContainer () {
   const contactsContainer = document.createElement('div');
   contactsContainer.setAttribute('id', 'contactsContainer');
   contactsContainer.setAttribute('style', 'display:none;');
@@ -90,10 +92,10 @@ function createContactsContainer() {
 }
 
 window.addEventListener('createLyncContact', event => {
-  if( !document.getElementById('contactsContainer') ){
+  if(!document.getElementById('contactsContainer')){
     createContactsContainer();
   }
-  
+
   const contact = getContactMarkup(event.detail.sip);
   document.getElementById('contactsContainer').appendChild(contact);
 });

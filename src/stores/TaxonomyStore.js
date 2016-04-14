@@ -1,50 +1,49 @@
-const AppDispatcher = require('../dispatcher/AppDispatcher');
-const EventEmitter = require('events').EventEmitter;
-const PeopleSearchConstants = require('../constants/data');
-const DefaultConstants = require('../constants/default');
-const assign = require('object-assign');
-const Utils = require('../utils/utilities');
+import AppDispatcher from 'dispatcher/AppDispatcher';
+import { EventEmitter } from 'events';
+import PeopleSearchConstants from 'constants/data';
+import DefaultConstants from 'constants/default';
+import assign from 'object-assign';
 
 let _terms = [];
 let _userInfo = [];
 
-function setPeopleSearchTaxonomy(terms) {
+function setPeopleSearchTaxonomy (terms) {
   _terms = terms;
 }
 
-function setPeopleUserInfo(userInfo) {
+function setPeopleUserInfo (userInfo) {
   _userInfo = userInfo;
 }
 
 const TaxonomyStore = assign({}, EventEmitter.prototype, {
 
-  getCurrentTaxonomy() {
+  getCurrentTaxonomy () {
     return _terms;
   },
 
-  getCurrentSuggestions() {
+  getCurrentSuggestions () {
     return _terms.concat(_userInfo);
   },
 
-  getCurrentUserInfo() {
+  getCurrentUserInfo () {
     return _userInfo;
   },
 
-  emitChange() {
+  emitChange () {
     this.emit(DefaultConstants.CHANGE_EVENT);
   },
 
-  addChangeListener(callback) {
+  addChangeListener (callback) {
     this.on(DefaultConstants.CHANGE_EVENT, callback);
   },
 
-  removeChangeListener(callback) {
+  removeChangeListener (callback) {
     this.removeListener(DefaultConstants.CHANGE_EVENT, callback);
   }
 
 });
 
-AppDispatcher.register( action => {
+AppDispatcher.register(action => {
   switch (action.actionType) {
     case PeopleSearchConstants.GOT_TAXONOMY:
       setPeopleSearchTaxonomy(

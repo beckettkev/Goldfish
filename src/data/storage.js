@@ -1,8 +1,7 @@
-import PeopleSearchConstants from '../constants/data';
-import Cache from '../utils/cache';
-import Utils from '../utils/utilities';
-import Profile from '../data/profile';
-const DefaultConstants = require('../constants/default');
+import Cache from 'utils/cache';
+import Utils from 'utils/utilities';
+import Profile from 'data/profile';
+import DefaultConstants from 'constants/default';
 
 //TODO: App keys for localstorage cache - need to move these somewhere central
 const LAYOUT_STORAGE_KEY = 'PeopleSearch-Layout';
@@ -17,10 +16,9 @@ const PROFILE_LAYOUT_KEY = 'GF-Layout';
 //Older browsers
 require('es6-promise').polyfill();
 
-
 let fetchProfileProperties;
 
-function getProfileProperties() {
+function getProfileProperties () {
 	//fetch the user profile properties once and serve to all subscribers
 	if (typeof fetchProfileProperties === 'undefined') {
 		fetchProfileProperties = Profile.getProfileProperties();
@@ -29,15 +27,15 @@ function getProfileProperties() {
 	return fetchProfileProperties;
 }
 
-function cacheBuild(data, key) {
-	let cached = Utils.buildStoragePayload(data);
+function cacheBuild (data, key) {
+	const cached = Utils.buildStoragePayload(data);
 
 	Cache.store(key, cached);
 
 	return cached;
 }
 
-function getPropertyData(key) {
+function getPropertyData (key) {
 	let property = Profile.getProfileProperty(key);
 
 	property = property === '' ? [] : property;
@@ -46,15 +44,15 @@ function getPropertyData(key) {
 	return Utils.buildStoragePayload(property).payload;
 }
 
-function getDefaultSettings() {
+function getDefaultSettings () {
 	return DefaultConstants.DEFAULT_SETTINGS;
 }
 
-function getDefaultFavourites() {
+function getDefaultFavourites () {
 	return DefaultConstants.DEFAULT_FAVOURITES;
 }
 
-function getDefaultLayout() {
+function getDefaultLayout () {
 	return {
 		current: DefaultConstants.DEFAULT_CURRENT_LAYOUT,
 		available: DefaultConstants.DEFAULT_AVAILABLE_LAYOUT
@@ -63,34 +61,32 @@ function getDefaultLayout() {
 
 const getCurrentLayout = () => {
 	return new Promise((resolve, reject) => {
-	    const cachedResults = Cache.fetch(LAYOUT_STORAGE_KEY);
-	    
-	    if (typeof cachedResults !== 'undefined') {
-	    	resolve(cachedResults.payload);
-	    } 
+		const cachedResults = Cache.fetch(LAYOUT_STORAGE_KEY);
 
-	   	//the profile properties may not exist
-	    getProfileProperties().then(function(properties) {
-			    	//we have a layout in the user profile, return this...
-			    	let layoutFromProperties = getPropertyData('layout');
+		if (typeof cachedResults !== 'undefined') {
+			resolve(cachedResults.payload);
+		}
 
-			    	if (layoutFromProperties.length === 0) {
-			    		//no profile properties setup, use the defaults...
+		//the profile properties may not exist
+		getProfileProperties().then(function (properties) {
+					//we have a layout in the user profile, return this...
+					const layoutFromProperties = getPropertyData('layout');
+
+					if (layoutFromProperties.length === 0) {
+						//no profile properties setup, use the defaults...
 						resolve(getDefaultLayout());
-			    	} else {
-				    	if (typeof cachedResults === 'undefined') {
-							resolve(layoutFromProperties);
-						} else {
-							//we have a value, update the cache silently
-							Cache.store(LAYOUT_STORAGE_KEY, Utils.buildStoragePayload(layoutFromProperties));
-						}			    		
-			    	}	
-		    }).catch(function (reason) {
-		    	if (typeof cachedResults === 'undefined') {
+					} else if (typeof cachedResults === 'undefined') {
+						resolve(layoutFromProperties);
+					} else {
+						//we have a value, update the cache silently
+						Cache.store(LAYOUT_STORAGE_KEY, Utils.buildStoragePayload(layoutFromProperties));
+					}
+			}).catch(function (reason) {
+				if (typeof cachedResults === 'undefined') {
 					//first go with standard layout
 					resolve(Utils.buildStoragePayload(getDefaultLayout()).payload);
-				}		
-		});    
+				}
+		});
 	});
 };
 
@@ -99,38 +95,34 @@ const updateCurrentLayout = (layout) => {
 	return new Promise((resolve, reject) => {
 		resolve(layout);
 
-		let cached = cacheBuild(layout, LAYOUT_STORAGE_KEY);
+		const cached = cacheBuild(layout, LAYOUT_STORAGE_KEY);
 
-	    Profile.updateProfileProperty(PROFILE_LAYOUT_KEY, cached, _spPageContextInfo.userLoginName);
+		Profile.updateProfileProperty(PROFILE_LAYOUT_KEY, cached, _spPageContextInfo.userLoginName);
 	});
 };
 
 const getSettings = () => {
 	return new Promise((resolve, reject) => {
-		let settings = Cache.fetch(SETTINGS_STORAGE_KEY);
+		const settings = Cache.fetch(SETTINGS_STORAGE_KEY);
 
 		if (typeof settings !== 'undefined') {
 			resolve(settings.payload);
-		} 
+		}
 
-		getProfileProperties().then(function(properties) {
-
-				let settingsFromProperties = getPropertyData('settings');
+		getProfileProperties().then(function (properties) {
+				const settingsFromProperties = getPropertyData('settings');
 
 				if (settingsFromProperties.length === 0) {
 					//no profile properties setup, use the defaults...
 					resolve(Utils.buildStoragePayload(getDefaultSettings()).payload);
-			    } else {
-					if (typeof settings === 'undefined') {			    		
-						//we have their settings in the user profile, return this...
-						resolve(settingsFromProperties);
-					} else {
-						//we have a value, update the cache silently
-						Cache.store(SETTINGS_STORAGE_KEY, Utils.buildStoragePayload(settingsFromProperties));
-					}
-			    }	
-
-	    	}).catch(function (reason) {				
+				} else if (typeof settings === 'undefined') {
+					//we have their settings in the user profile, return this...
+					resolve(settingsFromProperties);
+				} else {
+					//we have a value, update the cache silently
+					Cache.store(SETTINGS_STORAGE_KEY, Utils.buildStoragePayload(settingsFromProperties));
+				}
+			}).catch(function (reason) {
 				if (typeof settings === 'undefined') {
 					//first go with the standard settings
 					resolve(Utils.buildStoragePayload(getDefaultSettings()).payload);
@@ -143,43 +135,39 @@ const updateSettings = (settings) => {
 	return new Promise((resolve, reject) => {
 		resolve(settings);
 
-		let cached = cacheBuild(settings, SETTINGS_STORAGE_KEY);
+		const cached = cacheBuild(settings, SETTINGS_STORAGE_KEY);
 
-	    Profile.updateProfileProperty(PROFILE_SETTINGS_KEY, cached, _spPageContextInfo.userLoginName);
+		Profile.updateProfileProperty(PROFILE_SETTINGS_KEY, cached, _spPageContextInfo.userLoginName);
 	});
 };
 
 const getFavourites = () => {
 	return new Promise((resolve, reject) => {
-		let favourites = Cache.fetch(FAVOURITES_STORAGE_KEY);
+		const favourites = Cache.fetch(FAVOURITES_STORAGE_KEY);
 
 		if (typeof favourites !== 'undefined') {
 			resolve(favourites.payload);
 		}
 
-		getProfileProperties().then(function(properties) {
-
-				let favouritesFromProperties = getPropertyData('favourites');
+		getProfileProperties().then(function (properties) {
+				const favouritesFromProperties = getPropertyData('favourites');
 
 				if (favouritesFromProperties.length === 0) {
 					//no profile properties setup, use the defaults...
 					resolve(Utils.buildStoragePayload(getDefaultFavourites()).payload);
-			    } else {
-					if (typeof favourites === 'undefined') {
-						//we have their favourites in the user profile, return this...
-						resolve(favouritesFromProperties);
-					} else {
-						//we have a value, update the cache silently
-						Cache.store(FAVOURITES_STORAGE_KEY, Utils.buildStoragePayload(favouritesFromProperties));					
-					}	  
-			    }  	
-	    	}).catch(function (reason) {			
-	    		if (typeof favourites === 'undefined') {
-    				//first go with no favourites
+				} else if (typeof favourites === 'undefined') {
+					//we have their favourites in the user profile, return this...
+					resolve(favouritesFromProperties);
+				} else {
+					//we have a value, update the cache silently
+					Cache.store(FAVOURITES_STORAGE_KEY, Utils.buildStoragePayload(favouritesFromProperties));
+				}
+			}).catch(function (reason) {
+				if (typeof favourites === 'undefined') {
+					//first go with no favourites
 					resolve(Utils.buildStoragePayload(getDefaultFavourites()).payload);
-	    		}
+				}
 		});
-		
 	});
 };
 
@@ -187,9 +175,9 @@ const updateFavourites = (favourites) => {
 	return new Promise((resolve, reject) => {
 		resolve(favourites);
 
-		let cached = cacheBuild(favourites, FAVOURITES_STORAGE_KEY);
+		const cached = cacheBuild(favourites, FAVOURITES_STORAGE_KEY);
 
-	    Profile.updateProfileProperty(PROFILE_FAVOURITES_KEY, cached, _spPageContextInfo.userLoginName);
+		Profile.updateProfileProperty(PROFILE_FAVOURITES_KEY, cached, _spPageContextInfo.userLoginName);
 	});
 };
 

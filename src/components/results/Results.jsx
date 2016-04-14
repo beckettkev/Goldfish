@@ -1,8 +1,7 @@
 import React from 'react';
 import styles from './Results.css';
 import cssModules from 'react-css-modules';
-import Utils from '../../utils/utilities';
-import Person from '../person/Person.jsx';
+import Person from 'components/person/Person.jsx';
 import ProgressBar from 'react-toolbox/lib/progress_bar';
 
 const Results = React.createClass({
@@ -17,91 +16,76 @@ const Results = React.createClass({
 			onFavouritesChange: React.PropTypes.func
 	},
 
-  onFavourite(items) {
+	onFavourite (items) {
+			//This function is called a favourite action is made from the favourite component to push it through to the person results (add or remove), user profile and local cache
+			this.props.onFavouritesChange(items);
+	},
 
-      //This function is called a favourite action is made from the favourite component to push it through to the person results (add or remove), user profile and local cache
-      this.props.onFavouritesChange(items);
-      
-  },
+	onItemUpdate (index, favourites, isFavourite) {
+			//This function is called when a favourite action is made from within the person result item to push it through to the favourites, user profile and local cache (add or remove)
+			this.props.onItemUpdate(index, isFavourite, 'person');
+	},
 
-  onItemUpdate(index, favourites, isFavourite) {
+	createEmptyResultsMessage () {
+			if (this.props.items.length === 0 && !this.props.searching && this.props.term !== '') {
+				return (
+					<p key={'no-results-message'}>Incorrect item in the bagging area. Try searching with the name of someone who exists in your organisation.</p>
+				);
+			}
+	},
 
-      //This function is called when a favourite action is made from within the person result item to push it through to the favourites, user profile and local cache (add or remove)
-      this.props.onItemUpdate(index, isFavourite, 'person');
+	createItem (item, i) {
+			//This function gets called for every search result and renders a person component
+			return (
+					<div styleName={'item-container'} key={'result-item-' + i}>
+							<div className={'item ms-bgc-w ms-bcl-nl o365cs-notifications-message'} style={this.itemStyles} styleName='results-items'>
+									<Person
+										data={item}
+										layout={this.props.layout}
+										favourites={this.props.favourites}
+										refresh={this.props.refresh}
+										onFavouritesChange={this.onFavourite.bind(this)}
+										onItemUpdate={this.onItemUpdate.bind(this)}
+										id={i} />
+							</div>
+					</div>
+			);
+	},
 
-  },
+	progressSpinner () {
+			//fetching results - please wait.... please wait....
+			if (this.props.searching) {
+					return(
+							<div styleName='progress-spinner' key={'progress-spinner'}>
+									<ProgressBar
+										type='circular'
+										mode='indeterminate'
+										multicolor />
+							</div>
+					);
+			}
+	},
 
-  createEmptyResultsMessage() {
+	getCommandButtonsAvailable (current) {
+			//This function is used to see if the result layout being used to render the data contains any command buttons
+			return current.some(function (el) {
+				return el.label === 'Documents' || el.label === 'Everything' || el.label === 'Export to Outlook' || el.label === 'Yammer';
+			});
+	},
 
-      if (this.props.items.length === 0 && !this.props.searching && this.props.term !== '') {
-        return (
-            <p key={'no-results-message'}>Incorrect item in the bagging area. Try searching with the name of someone who exists in your organisation.</p>
-        );
-      }
+	render () {
+			this.itemStyles = this.getCommandButtonsAvailable(this.props.layout.current) ? { paddingBottom: '50px' } : { paddingBottom: '0' };
 
-  },
-
-  createItem(item, i) {
-
-      //This function gets called for every search result and renders a person component
-      return (
-          <div styleName={'item-container'} key={'result-item-' + i}>
-              <div className={'item ms-bgc-w ms-bcl-nl o365cs-notifications-message'} style={this.itemStyles} styleName='results-items'>
-                  
-                  <Person data={item} 
-                          layout={this.props.layout} 
-                          favourites={this.props.favourites} 
-                          refresh={this.props.refresh} 
-                          onFavouritesChange={this.onFavourite.bind(this)} 
-                          onItemUpdate={this.onItemUpdate.bind(this)} 
-                          id={i} />
-
-              </div>
-          </div>
-      );
-
-  },
-
-  progressSpinner() {
-      
-      //fetching results - please wait.... please wait....
-      if (this.props.searching) {
-          return(
-              <div styleName='progress-spinner' key={'progress-spinner'}>
-
-                  <ProgressBar type='circular' 
-                              mode='indeterminate' 
-                              multicolor />
-
-              </div>
-          );
-      }
-
-  },
-
-  getCommandButtonsAvailable(current) {
-
-      //This function is used to see if the result layout being used to render the data contains any command buttons 
-      return current.some(function(el) {
-          return el.label === 'Documents' || el.label === 'Everything' || el.label === 'Export to Outlook' || el.label === 'Yammer';
-      });
-  },
-
-  render() {
-
-      this.itemStyles = this.getCommandButtonsAvailable(this.props.layout.current) ? { paddingBottom: '50px' } : { paddingBottom: '0' };
-
-      return (
-        <div id={'component-results'} className={'o365-NFP-section'} styleName='results-container'>
-            <div className={'o365cs-notifications-notificationsContent'} styleName='results'>
-                 {this.props.items.map(this.createItem.bind(this))}
-            </div>
-            {this.progressSpinner()}
-            {this.createEmptyResultsMessage()}
-        </div>
-      );
-  }
-  
+			return (
+				<div id={'component-results'} className={'o365-NFP-section'} styleName='results-container'>
+						<div className={'o365cs-notifications-notificationsContent'} styleName='results'>
+								{this.props.items.map(this.createItem.bind(this))}
+						</div>
+						{this.progressSpinner()}
+						{this.createEmptyResultsMessage()}
+				</div>
+			);
+	}
 });
 
-module.exports = cssModules(Results, styles, { allowMultiple: true });
+export default cssModules(Results, styles, { allowMultiple: true });

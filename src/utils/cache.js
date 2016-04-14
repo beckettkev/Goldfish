@@ -7,15 +7,15 @@ if (typeof localStorage === 'object') {
     localStorage.removeItem('localStorage');
   } catch (error) {
     Storage.prototype._setItem = Storage.prototype.setItem;
-    Storage.prototype.setItem = function setItem() {};
+    Storage.prototype.setItem = function setItem () {};
 
     console.log('Your web browser does not support storing settings locally. In Safari, the most common cause of this is using "Private Browsing Mode". Some settings may not save or some features may not work properly for you.');
   }
 }
 
-function insertIntoArrayAtPosition(src, target, position) {
-  let beginning = src.splice(0, position);
-  let end = src.splice(position);
+function insertIntoArrayAtPosition (src, target, position) {
+  const beginning = src.splice(0, position);
+  const end = src.splice(position);
 
   return beginning.concat(target).concat(end);
 }
@@ -29,6 +29,8 @@ const fetch = (key) => {
     if (data && data.payload) {
       return data.payload;
     }
+
+    return undefined;
 };
 
 //good citizen removal service function for deleting local storage entries

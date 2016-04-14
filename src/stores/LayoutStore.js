@@ -1,50 +1,47 @@
-const AppDispatcher = require('../dispatcher/AppDispatcher');
-const EventEmitter = require('events').EventEmitter;
-const PeopleSearchConstants = require('../constants/data');
-const DefaultConstants = require('../constants/default');
-const assign = require('object-assign');
-const Utils = require('../utils/utilities');
+import AppDispatcher from 'dispatcher/AppDispatcher';
+import { EventEmitter } from 'events';
+import PeopleSearchConstants from 'constants/data';
+import DefaultConstants from 'constants/default';
+import assign from 'object-assign';
 
 let _current = DefaultConstants.DEFAULT_CURRENT_LAYOUT;
 let _available = DefaultConstants.DEFAULT_AVAILABLE_LAYOUT;
 
-function setPeopleSearchLayout(layout) {
+function setPeopleSearchLayout (layout) {
   _current = layout.current;
   _available = layout.available;
 }
 
 const LayoutStore = assign({}, EventEmitter.prototype, {
-
-  getLayout() {
+  getLayout () {
     return {
         available: _available,
         current: _current
-    }
+    };
   },
 
-  getAvailableFields() {
+  getAvailableFields () {
     return _available;
   },
 
-  getCurrentFields() {
+  getCurrentFields () {
     return _current;
   },
 
-  emitChange() {
+  emitChange () {
     this.emit(DefaultConstants.CHANGE_EVENT);
   },
 
-  addChangeListener(callback) {
+  addChangeListener (callback) {
     this.on(DefaultConstants.CHANGE_EVENT, callback);
   },
 
-  removeChangeListener(callback) {
+  removeChangeListener (callback) {
     this.removeListener(DefaultConstants.CHANGE_EVENT, callback);
   }
-
 });
 
-AppDispatcher.register( action => {
+AppDispatcher.register(action => {
   switch (action.actionType) {
     case PeopleSearchConstants.GOT_LAYOUT:
     case PeopleSearchConstants.LAYOUT_CHANGED:

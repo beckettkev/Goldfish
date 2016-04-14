@@ -1,14 +1,14 @@
 import React from 'react';
 import styles from './Person.css';
 import cssModules from 'react-css-modules';
-import Utils from '../../utils/utilities';
-import Persona from '../persona/Persona.jsx';
-import FavouriteStore from '../../stores/FavouriteStore';
-import PeopleSearchActions from '../../actions/PeopleSearchActions';
+import Utils from 'utils/utilities';
+import Persona from 'components/persona/Persona.jsx';
+import FavouriteStore from 'stores/FavouriteStore';
+import PeopleSearchActions from 'actions/PeopleSearchActions';
 import Button from 'react-toolbox/lib/button';
 import Tooltip from 'react-toolbox/lib/tooltip';
-import FileSaver from '../../data/filesaver';
-import Exporter from '../../utils/exporter';
+import FileSaver from 'data/filesaver';
+import Exporter from 'utils/exporter';
 
 const TooltipButton = Tooltip(Button);
 
@@ -20,159 +20,115 @@ const Person = React.createClass({
 	propTypes: {
 		id: React.PropTypes.string,
 		data: React.PropTypes.object,
-      	favourites: React.PropTypes.array,
+		favourites: React.PropTypes.array,
 		layout: React.PropTypes.object,
 		refresh: React.PropTypes.bool,
 		onItemUpdate: React.PropTypes.func,
 		onFavouritesChange: React.PropTypes.func
 	},
 
-	onFavouriteClick(person, action, index) {
-	    let favourites = this.props.favourites;
+	onFavouriteClick (person, action, index) {
+		let favourites = this.props.favourites;
 
 		if (action === 'add') {
-	    	person.Cells.Favourite = true;
+			person.Cells.Favourite = true;
 
-		    favourites.push({
-		       	name: person.Cells.PreferredName,
-		       	data: person
-		    });
-	    } else if (action === 'remove') {
-	        //remove the favourite
-		    favourites = favourites.filter(function(n) {
-	        			   	return n.name !== person.Cells.PreferredName
-	        			 });
-	    }
+			favourites.push({
+				name: person.Cells.PreferredName,
+				data: person
+			});
+		} else if (action === 'remove') {
+			//remove the favourite
+			favourites = favourites.filter(function (n) {
+							return n.name !== person.Cells.PreferredName;
+						});
+		}
 
-	    //this updates the UI with the changes made to favourites either from search or the favourites screen.
-	    //if the index value is set to -1, this forces a fresh load from the cache.
-	    PeopleSearchActions.updateFavourites(favourites);
+		//this updates the UI with the changes made to favourites either from search or the favourites screen.
+		//if the index value is set to -1, this forces a fresh load from the cache.
+		PeopleSearchActions.updateFavourites(favourites);
 
-	    this.props.onItemUpdate(index, favourites, action !== 'remove');
+		this.props.onItemUpdate(index, favourites, action !== 'remove');
 	},
 
-	onOutlookExportCard(person) {
-		let card = Exporter.getContactForExport(person);
-
-		let blob = new Blob([card.data], {type: "text/x-vcard;charset=iso-8859-1"});
+	onOutlookExportCard (person) {
+		const card = Exporter.getContactForExport(person);
+		const blob = new Blob([card.data], {type: 'text/x-vcard;charset=iso-8859-1'});
 
 		FileSaver.saveAs(blob, card.name + '.vcf');
 	},
 
-	onFavouritesChange() {
+	onFavouritesChange () {
 		this.props.onFavouritesChange({
 			favourites: FavouriteStore.getCurrentFavourites()
 		});
 	},
 
 	//TODO: Centralise this
-	onSearchByManagedProperty(name, mp) {
+	onSearchByManagedProperty (name, mp) {
 		window.location.href = window.location.protocol + '//' + window.location.host + '/search/Pages/results.aspx?k=' + mp + name;
 	},
 
 	//TODO: Centralise this
-	onYammerSearch(name) {
+	onYammerSearch (name) {
 		window.location.href = 'https://www.yammer.com/#/Threads/Search?search=' + name;
 	},
 
-	/*onLyncPrescence(event) {
-		IMNImageOnClick(event);
-		return false;
-	}, */
+	isFavouriteButtonActive (person) {
+		let pinned = false;
 
-	isFavouriteButtonActive(person) {
-	    let pinned = false;
+		if (this.props.refresh) {
+			//favourites have been changed on the favourite page - update the relevant button states
+			const favourites = this.props.favourites;
 
-	    if (this.props.refresh) {
-	      //favourites have been changed on the favourite page - update the relevant button states
-	      let favourites = this.props.favourites;
+			//checked to see if they have been pinned this as a favourite already
+			pinned = favourites.length > 0 ? favourites.some(function (item) {
+												return item.name === person.items.Cells.PreferredName;
+											}) : false;
+		} else {
+			pinned = person.items.Cells.Favourite;
+		}
 
-	      //checked to see if they have been pinned this as a favourite already
-	      pinned = favourites.length > 0 ? favourites.some(function(item, i, array) {
-	                                            return item.name === person.items.Cells.PreferredName;
-	                                       }) : false;
-	    } else {
-	      pinned = person.items.Cells.Favourite;
-	    }
-
-	    //active - check to see if button is for adding a favourite and the threshold has breached
-	    return {
-	    	pinned: pinned,
-	    	disabled: !pinned && (this.props.favourites.length > 10) ? true : false
-	    };
+		//active - check to see if button is for adding a favourite and the threshold has breached
+		return {
+			pinned: pinned,
+			disabled: !pinned && (this.props.favourites.length > 10) ? true : false
+		};
 	},
 
-	getFavouriteButton(person, index) {
-		let current = this.isFavouriteButtonActive(person);
-		let icon =  current.pinned ? 'remove' : 'add';
-		let bindClick = this.onFavouriteClick.bind(this, person.items, icon, index);
+	getFavouriteButton (person, index) {
+		const current = this.isFavouriteButtonActive(person);
+		const icon = current.pinned ? 'remove' : 'add';
+		const bindClick = this.onFavouriteClick.bind(this, person.items, icon, index);
 
 		//otherwise show the favourite pin button
 		return (
 			<div key={'item-favourite-button'} styleName={icon} className={icon}>
-				<TooltipButton icon={icon} onClick={bindClick} floating accent mini tooltip={icon.charAt(0).toUpperCase() + icon.slice(1) + ' favourite'} disabled={current.disabled} />
+				<TooltipButton 
+					icon={icon} 
+					onClick={bindClick} 
+					floating accent mini 
+					tooltip={icon.charAt(0).toUpperCase() + icon.slice(1) + ' favourite'} 
+					disabled={current.disabled} />
 			</div>
 		);
 	},
 
-	/*
-		TODO: Replace with the excellent Alopes lync prescene functionality
-	
-	getImage(person, key) {
-		let src = person.items.Cells.PictureURL !== null ? person.baseImageUrl + person.items.Cells.WorkEmail :  person.baseImageUrl + 'null';
-		let sip = 'imn_' + key + ',type=sip';
-		let bindClick = this.onLyncPrescence;
+	getPersonaImage (person, key) {
+		const member = {
+			name: person.items.Cells.PreferredName,
+			loginName: 'i:0#.f|membership|' + person.items.Cells.WorkEmail,
+			email: person.items.Cells.WorkEmail
+		};
 
 		return (
-			<div key={'item-image-' + key} styleName='img-container'>
-
-					<div className={'ms-tableCell'}>
-						<span className={'ms-imnSpan'}>
-							<a href='#' onClick={bindClick} className={'ms-imnlink ms-spimn-presenceLink'}>
-								<span className={'ms-spimn-presenceWrapper ms-spimn-imgSize-8x72'}>
-									<img name='imnmark' title='' ShowOfflinePawn=  '1' className={'ms-spimn-img ms-spimn-presence-disconnected-8x72x32'} src='/_layouts/15/images/spimn.png?rev=23' alt='User Presence' sip={person.items.Cells.WorkEmail} id={sip} />
-								</span>
-							</a>
-						</span>
-					</div>
-
-					<div className={'ms-tableCell ms-verticalAlignTop'}>
-						<div className={'ms-peopleux-userImgDiv'}>
-							<span className={'ms-imnSpan'}>
-								<a href='#' onClick={bindClick} className={'ms-imnlink'} tabIndex='-1'>
-									<img name='imnmark' title='' ShowOfflinePawn='1' className={' ms-hide'} src='/_layouts/15/images/spimn.png?rev=23' alt='User Presence' sip={person.items.Cells.WorkEmail} id={sip} />
-								</a>
-								<span className={'ms-peopleux-imgUserLink'}>
-										<span className={'ms-peopleux-userImgWrapper'}>
-											<img styleName='img' src={Utils.removeEncodedAmpersand(src)} alt={person.items.Cells.PreferredName} />
-										</span>
-								</span>
-							</span>
-						</div>
-					</div>
-
-			</div>
-		);
-	},*/
-
-	getPersonaImage(person, key) {
-
-		let member = {
-          name: person.items.Cells.PreferredName,
-          loginName: 'i:0#.f|membership|' + person.items.Cells.WorkEmail,
-          email: person.items.Cells.WorkEmail,
-        };
-
-		return (
-	        <div key={key}>
+			<div key={key}>
 				<Persona member={member} />
-	        </div>
+			</div>
 		);
-
 	},
 
-	getProfile(person, key) {
-
+	getProfile (person, key) {
 		//Renders a hyperlink to the user's profile page (using preferred name as the text)
 		return (
 			<span key={'item-profile-' + key}>
@@ -184,19 +140,19 @@ const Person = React.createClass({
 	},
 
 	//TODO refactor these common templates into a single method
-	getJob(person, key) {
-    	let job = person.items.Cells.JobTitle !== null ?  person.items.Cells.JobTitle : 'Sales Executive';
+	getJob (person, key) {
+		const job = person.items.Cells.JobTitle !== null ? person.items.Cells.JobTitle : 'Sales Executive';
 
-	    return(
-	    	<span key={'item-job-' + key}>
-			    {Utils.getTrimmedString(job, 30)}
-	    	</span>
-	    );
+		return(
+			<span key={'item-job-' + key}>
+				{Utils.getTrimmedString(job, 30)}
+			</span>
+		);
 	},
 
 	//TODO refactor these common templates into a single method
-	getDepartment(person, key) {
-    	let department = person.items.Cells.Department !== null ? person.items.Cells.Department : 'Sales';
+	getDepartment (person, key) {
+		const department = person.items.Cells.Department !== null ? person.items.Cells.Department : 'Sales';
 
 		return (
 			<span key={'item-department-' + key}>
@@ -206,8 +162,8 @@ const Person = React.createClass({
 	},
 
 	//TODO refactor these common templates into a single method
-	getWorkEmail(person, key) {
-		let email = person.items.Cells.WorkEmail !== null ? person.items.Cells.WorkEmail : 'noemai@contentandcode.com';
+	getWorkEmail (person, key) {
+		const email = person.items.Cells.WorkEmail !== null ? person.items.Cells.WorkEmail : 'noemai@contentandcode.com';
 
 		return (
 			<span key={'item-email-' + key}>
@@ -219,52 +175,66 @@ const Person = React.createClass({
 	},
 
 	//TODO refactor these common templates into a single method
-	getDocuments(person, key) {
-		let name = person.items.Cells.PreferredName;
-		let bindClick = this.onSearchByManagedProperty.bind(this, person.items.Cells.PreferredName, 'IsDocument:1 Author:');
-		
+	getDocuments (person, key) {
+		const bindClick = this.onSearchByManagedProperty.bind(this, person.items.Cells.PreferredName, 'IsDocument:1 Author:');
+
 		return (
 			<span key={'command-documents-' + key} styleName='command' className='commandor'>
-				<TooltipButton icon={'insert_drive_file'} floating accent mini tooltip={'Documents by ' + person.items.Cells.PreferredName} onClick={bindClick} />
+				<TooltipButton
+					icon={'insert_drive_file'}
+					floating accent mini
+					tooltip={'Documents by ' + person.items.Cells.PreferredName}
+					onClick={bindClick} />
 			</span>
 		);
 	},
 
 	//TODO refactor these common templates into a single method
-	getEverything(person, key) {
-		let name = person.items.Cells.PreferredName;
-		let bindClick = this.onSearchByManagedProperty.bind(this, person.items.Cells.PreferredName, 'Author:');
+	getEverything (person, key) {
+		const bindClick = this.onSearchByManagedProperty.bind(this, person.items.Cells.PreferredName, 'Author:');
 
 		return (
 			<span key={'command-everything-' + key} styleName='command' className='commandor'>
-				<TooltipButton icon={'share'} floating accent mini tooltip={'Everything by ' + person.items.Cells.PreferredName} onClick={bindClick} />
+				<TooltipButton
+					icon={'share'}
+					floating accent mini
+					tooltip={'Everything by ' + person.items.Cells.PreferredName}
+					onClick={bindClick} />
 			</span>
 		);
 	},
 
-	getYammer(person, key) {
-		let bindClick = this.onYammerSearch.bind(this, person.items.Cells.PreferredName);
+	getYammer (person, key) {
+		const bindClick = this.onYammerSearch.bind(this, person.items.Cells.PreferredName);
 
 		return (
 			<span key={'command-yammer-' + key} styleName='command' className='commandor'>
-				<TooltipButton icon={'comment'} floating accent mini tooltip={'Conversations by ' + person.items.Cells.PreferredName} onClick={bindClick} />
+				<TooltipButton
+					icon={'comment'}
+					floating accent mini
+					tooltip={'Conversations by ' + person.items.Cells.PreferredName}
+					onClick={bindClick} />
 			</span>
 		);
 	},
 
-	getExportOutlookCard(person, key) {
-		let bindClick = this.onOutlookExportCard.bind(this, person.items.Cells);
+	getExportOutlookCard (person, key) {
+		const bindClick = this.onOutlookExportCard.bind(this, person.items.Cells);
 
 		return (
 			<span key={'command-outlook-' + key} styleName='command' className='commandor'>
-				<TooltipButton icon={'contact_mail'} floating accent mini tooltip={'Export for Outlook'} onClick={bindClick} />
+				<TooltipButton
+					icon={'contact_mail'}
+					floating accent mini
+					tooltip={'Export for Outlook'}
+					onClick={bindClick} />
 			</span>
 		);
 	},
 
-	getTelelphoneNumber(num, type, key) {
+	getTelelphoneNumber (num, type, key) {
 		if (typeof num !== 'undefined' && num !== '' && num !== null) {
-			let icon = type === 'work' ? 'call' : 'smartphone';
+			const icon = type === 'work' ? 'call' : 'smartphone';
 
 			return (
 				<span key={'item-tel-' + type + '-' + key}>
@@ -275,7 +245,7 @@ const Person = React.createClass({
 		}
 	},
 
-	getTextField(value, key) {
+	getTextField (value, key) {
 		return (
 			<span key={'item-text-' + key}>
 				{value}
@@ -284,12 +254,13 @@ const Person = React.createClass({
 	},
 
 	//TODO: Change layout items to invoke the associate function in the JSON object key instead of using this dated switch
-	getPersonCard(person, layout, index) {
+	getPersonCard (person, layout, index) {
 		let combined = [];
-		let that = this;
+
+		const that = this;
 
 		//only output the fields chosen in the layout
-		layout.forEach(function(item, i) {
+		layout.forEach(function (item) {
 			switch(item.label) {
 				case 'Name (with profile link)':
 					combined.push(that.getProfile(person, index));
@@ -298,7 +269,7 @@ const Person = React.createClass({
 					combined.push(that.getTextField(Utils.getTrimmedString(person.items.Cells.PreferredName, 30), 'name-' + index));
 					break;
 				case 'Job Title':
-				 	combined.push(that.getJob(person, index));
+					combined.push(that.getJob(person, index));
 					break;
 				case 'Department':
 					combined.push(that.getDepartment(person, index));
@@ -336,8 +307,9 @@ const Person = React.createClass({
 		return combined;
 	},
 
-	getPerson(person, i) {
-		let layout = this.props.layout.current;
+	getPerson (person, i) {
+		const layout = this.props.layout.current;
+
 		let card = [];
 
 		if (layout.length > 0) {
@@ -357,21 +329,21 @@ const Person = React.createClass({
 		);
 	},
 
-	render() {
-				let person = {
-		    		items : typeof this.props.data.data !== 'undefined' ? this.props.data.data : this.props.data,
-		    		baseImageUrl: '/_layouts/15/userphoto.aspx?size=S&amp;accountname='
-		    	};
+	render () {
+				const person = {
+					items: typeof this.props.data.data !== 'undefined' ? this.props.data.data : this.props.data,
+					baseImageUrl: '/_layouts/15/userphoto.aspx?size=S&amp;accountname='
+				};
 
-		        return (
-		        	<span key={'person-' + this.props.id}>
-		        		{this.getFavouriteButton(person, this.props.id)}
-		            	<div styleName='item'>
-			        	   {this.getPerson(person, this.props.id)}
-			        	</div>
-		        	</span>
-		        );
+				return (
+					<span key={'person-' + this.props.id}>
+						{this.getFavouriteButton(person, this.props.id)}
+						<div styleName='item'>
+							{this.getPerson(person, this.props.id)}
+						</div>
+					</span>
+				);
 	}
 });
 
-module.exports = cssModules(Person, styles, { allowMultiple: true });
+export default cssModules(Person, styles, { allowMultiple: true });

@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './Results.css';
 import cssModules from 'react-css-modules';
-import Person from 'components/person/Person.jsx';
+import Person from '../person/Person.jsx';
 import ProgressBar from 'react-toolbox/lib/progress_bar';
 
 const Results = React.createClass({

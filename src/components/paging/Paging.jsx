@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from './Paging.css';
 import cssModules from 'react-css-modules';
-import Utils from 'utils/utilities';
-import SearchStore from 'stores/SearchStore';
-import PeopleSearchActions from 'actions/PeopleSearchActions';
+import Utils from '../../utils/utilities';
+import SearchStore from '../../stores/SearchStore';
+import PeopleSearchActions from '../../actions/PeopleSearchActions';
 import IconButton from 'react-toolbox/lib/button';
 
 function getStoreSearchResultPagingState() {

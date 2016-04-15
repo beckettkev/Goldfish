@@ -1,5 +1,5 @@
-import Cache from 'utils/cache';
-import Utils from 'utils/utilities';
+import Cache from '../utils/cache';
+import Utils from '../utils/utilities';
 require('es6-promise').polyfill();
 
 const TERMS_STORAGE_KEY = 'PeopleSearch-Terms';

@@ -1,19 +1,19 @@
 import React from 'react';
 import styles from './Person.css';
 import cssModules from 'react-css-modules';
-import Utils from 'utils/utilities';
-import Persona from 'components/persona/Persona.jsx';
-import FavouriteStore from 'stores/FavouriteStore';
-import PeopleSearchActions from 'actions/PeopleSearchActions';
+import Utils from '../../utils/utilities';
+import Persona from '../persona/Persona.jsx';
+import FavouriteStore from '../../stores/FavouriteStore';
+import PeopleSearchActions from '../../actions/PeopleSearchActions';
 import Button from 'react-toolbox/lib/button';
 import Tooltip from 'react-toolbox/lib/tooltip';
-import FileSaver from 'data/filesaver';
-import Exporter from 'utils/exporter';
+import FileSaver from '../../data/filesaver';
+import Exporter from '../../utils/exporter';
 
 const TooltipButton = Tooltip(Button);
 
 /*
-	TODO: Refactor this class it is horrible.
+	TODO: Refactor this class it is horrible and it makes me want to cry.
 */
 const Person = React.createClass({
 
@@ -330,19 +330,19 @@ const Person = React.createClass({
 	},
 
 	render () {
-				const person = {
-					items: typeof this.props.data.data !== 'undefined' ? this.props.data.data : this.props.data,
-					baseImageUrl: '/_layouts/15/userphoto.aspx?size=S&amp;accountname='
-				};
+		const person = {
+			items: typeof this.props.data.data !== 'undefined' ? this.props.data.data : this.props.data,
+			baseImageUrl: '/_layouts/15/userphoto.aspx?size=S&amp;accountname='
+		};
 
-				return (
-					<span key={'person-' + this.props.id}>
-						{this.getFavouriteButton(person, this.props.id)}
-						<div styleName='item'>
-							{this.getPerson(person, this.props.id)}
-						</div>
-					</span>
-				);
+		return (
+			<span key={'person-' + this.props.id}>
+				{this.getFavouriteButton(person, this.props.id)}
+				<div styleName='item'>
+					{this.getPerson(person, this.props.id)}
+				</div>
+			</span>
+		);
 	}
 });
 

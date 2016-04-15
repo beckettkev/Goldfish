@@ -1,9 +1,9 @@
-import AppDispatcher from 'dispatcher/AppDispatcher';
+import AppDispatcher from '../dispatcher/AppDispatcher';
 import { EventEmitter } from 'events';
-import PeopleSearchConstants from 'constants/data';
-import DefaultConstants from 'constants/default';
+import PeopleSearchConstants from '../constants/data';
+import DefaultConstants from '../constants/default';
 import assign from 'object-assign';
-import Utils from 'utils/utilities';
+import Utils from '../utils/utilities';
 
 let _favourites = DefaultConstants.DEFAULT_FAVOURITES;
 

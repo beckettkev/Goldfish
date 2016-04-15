@@ -1,11 +1,11 @@
 import React from 'react';
 import styles from './Favourites.css';
 import cssModules from 'react-css-modules';
-import Favourite from 'components/person/Person.jsx';
-import Title from 'components/title/Title.jsx';
+import Favourite from '../person/Person.jsx';
+import Title from '../title/Title.jsx';
 import {SortableItems, SortableItem} from 'react-sortable-component';
-import FavouriteStore from 'stores/FavouriteStore';
-import PeopleSearchActions from 'actions/PeopleSearchActions';
+import FavouriteStore from '../../stores/FavouriteStore';
+import PeopleSearchActions from '../../actions/PeopleSearchActions';
 
 function getStoreFavouriteState () {
     return {
@@ -16,10 +16,10 @@ function getStoreFavouriteState () {
 const Favourites = React.createClass({
 
     propTypes: {
-      onFavouritesChange: React.PropTypes.func,
-      onItemUpdate: React.PropTypes.func,
-      layout: React.PropTypes.object,
-      favourites: React.PropTypes.array
+        onFavouritesChange: React.PropTypes.func,
+        onItemUpdate: React.PropTypes.func,
+        layout: React.PropTypes.object,
+        favourites: React.PropTypes.array
     },
 
     getInitialState () {

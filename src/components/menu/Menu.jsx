@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './Menu.css';
 import cssModules from 'react-css-modules';
-import MenuManager from 'utils/menu';
+import MenuManager from '../../utils/menu';
 
 const Menu = React.createClass({
 

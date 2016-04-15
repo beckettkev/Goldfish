@@ -1,5 +1,5 @@
 //file saver (HTML 5)
-import ContactFileSaver from 'data/filesaver';
+import ContactFileSaver from '../data/filesaver';
 
 module.exports = {
   convertArrayObjectsToCsv: function (items) {

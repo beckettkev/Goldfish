@@ -1,10 +1,10 @@
 import React from 'react';
-import styles from 'components/search/search.css';
+import styles from './search.css';
 import cssModules from 'react-css-modules';
-import Suggest from 'components/suggest/Suggest.jsx';
-import SearchStore from 'stores/SearchStore';
-import PeopleSearchActions from 'actions/PeopleSearchActions';
-import Utils from 'utils/utilities';
+import Suggest from '../suggest/Suggest.jsx';
+import SearchStore from '../../stores/SearchStore';
+import PeopleSearchActions from '../../actions/PeopleSearchActions';
+import Utils from '../../utils/utilities';
 
 function getStoreSearchResultState () {
 	return {

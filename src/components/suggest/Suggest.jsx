@@ -4,9 +4,9 @@ import AutosuggestHighlight from 'autosuggest-highlight';
 import {Button} from 'react-toolbox/lib/button';
 import styles from './Suggest.css';
 import cssModules from 'react-css-modules';
-import TaxonomyStore from 'stores/TaxonomyStore';
-import PeopleSearchActions from 'actions/PeopleSearchActions';
-import DefaultConstants from 'constants/default.js';
+import TaxonomyStore from '../../stores/TaxonomyStore';
+import PeopleSearchActions from '../../actions/PeopleSearchActions';
+import DefaultConstants from '../../constants/default.js';
 
 function renderTag (props) {
 	let {tag, key, onRemove, className, classNameRemove} = props;

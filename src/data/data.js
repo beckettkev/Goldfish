@@ -1,9 +1,9 @@
-import AppDispatcher from 'dispatcher/AppDispatcher';
-import PeopleSearchConstants from 'constants/data';
-import PeopleSearchDefaults from 'constants/default';
-import Cache from 'utils/cache';
-import Utils from 'utils/utilities';
-import FavouriteStore from 'stores/FavouriteStore';
+import AppDispatcher from '../dispatcher/AppDispatcher';
+import PeopleSearchConstants from '../constants/data';
+import PeopleSearchDefaults from '../constants/default';
+import Cache from '../utils/cache';
+import Utils from '../utils/utilities';
+import FavouriteStore from '../stores/FavouriteStore';
 require('es6-promise').polyfill();
 
 const PEOPLE_STORAGE_KEY_PREFIX = 'PeopleSearch-Results-';

@@ -5,6 +5,10 @@ import styles from './Available.css';
 
 class Available extends React.Component {
 
+	componentDidMount() {
+		
+	}
+
 	change (option) {
 	  if (option.label !== 'Add a field...') {
 	  	this.props.onChange(option);

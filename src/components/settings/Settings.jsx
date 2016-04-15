@@ -1,11 +1,11 @@
 import React from 'react';
 import styles from './Settings.css';
 import cssModules from 'react-css-modules';
-import Title from 'components/title/Title.jsx';
+import Title from '../title/Title.jsx';
 import { Switch } from 'react-toolbox';
-import SettingStore from 'stores/SettingStore';
-import PeopleSearchActions from 'actions/PeopleSearchActions';
-import SettingsManager from 'utils/settings';
+import SettingStore from '../../stores/SettingStore';
+import PeopleSearchActions from '../../actions/PeopleSearchActions';
+import SettingsManager from '../../utils/settings';
 
 function getStoreSettingState () {
 			const settings = SettingStore.getSettings();

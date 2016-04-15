@@ -1,7 +1,7 @@
-import Cache from 'utils/cache';
-import Utils from 'utils/utilities';
-import Profile from 'data/profile';
-import DefaultConstants from 'constants/default';
+import Cache from '../utils/cache';
+import Utils from '../utils/utilities';
+import Profile from '../data/profile';
+import DefaultConstants from '../constants/default';
 
 //TODO: App keys for localstorage cache - need to move these somewhere central
 const LAYOUT_STORAGE_KEY = 'PeopleSearch-Layout';

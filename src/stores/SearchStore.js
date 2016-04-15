@@ -1,7 +1,7 @@
-import AppDispatcher from 'dispatcher/AppDispatcher';
+import AppDispatcher from '../dispatcher/AppDispatcher';
 import { EventEmitter } from 'events';
-import PeopleSearchConstants from 'constants/data';
-import DefaultConstants from 'constants/default';
+import PeopleSearchConstants from '../constants/data';
+import DefaultConstants from '../constants/default';
 import assign from 'object-assign';
 
 let _people = [];

@@ -25,7 +25,7 @@ module.exports = {
 				// allows us to import modules as if /src was the root.
 				// so I can do: import Comment from 'components/Foo'
 				// instead of:  import Comment from '../components/Foo' or whatever relative path would be
-				path.resolve(__dirname, 'src')
+				path.resolve(__dirname)
 			],
 			extensions: ['','.jsx', '.scss', '.js', '.json'],
 			modulesDirectories: [

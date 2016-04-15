@@ -1,24 +1,29 @@
-var path = require('path');
+//https://github.com/export-mike/react-redux-boilerplate
+const path = require('path');
+const webpack = require('webpack');
+// See issues for details on parts of this config.
+// https://github.com/airbnb/enzyme/issues/47
+// had issues loading sinon as its a dep of enzyme
+const argv = require('minimist')(process.argv.slice(2));
 
-module.exports = function(config) {
+module.exports = (config) => {
 	config.set({
-		basePath: '',
-		frameworks: ['jasmine'],
+		browsers: [ 'Chrome' ],
+		singleRun: argv.watch ? false : true,
+		frameworks: [ 'mocha' ],
 		files: [
-			'test/**/*.js'
+			'tests.webpack.js'
 		],
-
 		preprocessors: {
-			// add webpack as preprocessor
-			'test/**/*.js': ['webpack', 'sourcemap']
+			'tests.webpack.js': ['webpack', 'sourcemap']
 		},
-
+		reporters: [ 'dots' ],
 		webpack: { //kind of a copy of your webpack config
 			devtool: 'inline-source-map', //just do inline source maps instead of the default
-			resolve: {
+			/*resolve: {
 				extensions: ['','.jsx', '.scss', '.js', '.json'],
 				root: path.resolve(__dirname, './src')
-			},
+			},*/
 			module: {
 				loaders: [
 					{
@@ -31,25 +36,44 @@ module.exports = function(config) {
 					},
 					{
 						test: /\.json$/,
-						loader: 'json',
+						loader: 'json'
 					},
-					{
-						test: /(\.scss|\.css)$/,
+					/*{
+						test: /\.css$/,
 						loader: 'style-loader!css-loader?modules!sass',
 						exclude: /\material.css/
+					},
+					{
+						test: /\.scss$/,
+						exclude: /(src|react-toolbox)/,
+						loader: 'style-loader!css-loader?modules!sass'
+					},*/
+					{
+						test: /(\.css|\.scss)$/,
+						loader: 'style!css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!sass?sourceMap'
+					},
+					{
+						test: /sinon\.js$/,
+						loader: 'imports?define=>false,require=>false'
 					}
 				]
 			},
 			externals: {
+				jsdom: 'window',
+				cheerio: 'window',
 				'react/lib/ExecutionEnvironment': true,
-				'react/lib/ReactContext': true
+				'react/lib/ReactContext': 'window',
+				'text-encoding': 'window'
+			},
+			resolve: {
+				alias: {
+					sinon: 'sinon/pkg/sinon'
+				}
 			}
 		},
-
 		webpackServer: {
 			noInfo: true //please don't spam the console when running in karma!
-		},
-
+		}/*,
 		plugins: [
 			'karma-webpack',
 			'karma-jasmine',
@@ -69,6 +93,6 @@ module.exports = function(config) {
 		logLevel: config.LOG_INFO,
 		autoWatch: true,
 		browsers: ['Chrome'],
-		singleRun: false,
+		singleRun: false,*/
 	})
 };

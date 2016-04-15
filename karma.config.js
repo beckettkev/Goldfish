@@ -38,16 +38,6 @@ module.exports = (config) => {
 						test: /\.json$/,
 						loader: 'json'
 					},
-					/*{
-						test: /\.css$/,
-						loader: 'style-loader!css-loader?modules!sass',
-						exclude: /\material.css/
-					},
-					{
-						test: /\.scss$/,
-						exclude: /(src|react-toolbox)/,
-						loader: 'style-loader!css-loader?modules!sass'
-					},*/
 					{
 						test: /(\.css|\.scss)$/,
 						loader: 'style!css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!sass?sourceMap'
@@ -66,6 +56,7 @@ module.exports = (config) => {
 				'text-encoding': 'window'
 			},
 			resolve: {
+				extensions: ['','.jsx', '.scss', '.js', '.json'],
 				alias: {
 					sinon: 'sinon/pkg/sinon'
 				}

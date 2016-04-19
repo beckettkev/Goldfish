@@ -45,6 +45,10 @@ When you have done that, install **Goldfish** by npm:
 ```node
 npm install goldfish-search --save
 ```
+Install the dependencies:
+```node
+npm install
+```
 Then you can build for development:
 ```node
 webpack

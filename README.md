@@ -37,7 +37,11 @@ The aim of this project is to allow you to search and save people anywhere withi
 
 ## Installation
 
-You probably want to start by installing webpack via npm (globally):
+You will need to install NPM (as a dependency) if you haven't already done so:
+```node
+npm install
+```
+Install webpack via npm (globally):
 ```node
 npm install webpack -g
 ```

@@ -27,7 +27,7 @@ module.exports = (config) => {
 						loader: 'babel',
 						exclude: path.resolve(__dirname, 'node_modules'),
 						query: {
-							presets: ['airbnb']
+							 presets:['airbnb','es2015','stage-0','react']
 						}
 					},
 					{

@@ -106,6 +106,7 @@
     "react-dom": "^0.14.3",
     "react-sortable-component": "^0.3.0",
     "react-toolbox": "^0.14.0",
+    "react-select": "^0.9.1",
     "autosuggest-highlight": "^2.1.1",
     "babel-preset-stage-0": "^6.5.0"
   },

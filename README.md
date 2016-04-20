@@ -45,7 +45,7 @@ When you have done that, install **Goldfish** by npm:
 ```node
 npm install goldfish-search --save
 ```
-You will then need to satify the dependencies:
+You will then need to install the dependencies:
 ```node
 npm install
 ```

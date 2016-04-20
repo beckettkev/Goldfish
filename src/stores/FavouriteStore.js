@@ -1,13 +1,13 @@
-const AppDispatcher = require('../dispatcher/AppDispatcher');
-const EventEmitter = require('events').EventEmitter;
-const PeopleSearchConstants = require('../constants/data');
-const DefaultConstants = require('../constants/default');
-const assign = require('object-assign');
-const Utils = require('../utils/utilities');
+import AppDispatcher from '../dispatcher/AppDispatcher';
+import { EventEmitter } from 'events';
+import PeopleSearchConstants from '../constants/data';
+import DefaultConstants from '../constants/default';
+import assign from 'object-assign';
+import Utils from '../utils/utilities';
 
 let _favourites = DefaultConstants.DEFAULT_FAVOURITES;
 
-function setPeopleSearchFavourites(favourites) {
+function setPeopleSearchFavourites (favourites) {
   _favourites = favourites;
 }
 

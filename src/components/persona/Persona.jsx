@@ -4,96 +4,96 @@ import styles from './persona.css';
 require('./lync');
 
 /*
-  Antonio Lopes | ISC License
-  antonio.lopes@arup.com
+	Antonio Lopes | ISC License
+	antonio.lopes@arup.com
 */
 class Persona extends React.Component {
-  
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      presence: 'offline',
-    };
-    
-    this.updatePresence = this.updatePresence.bind(this);
-  }
+	constructor (props) {
+		super(props);
 
-  componentDidMount() {
+		this.state = {
+			presence: 'offline'
+		};
 
-    window.addEventListener('LyncStatusUpdate', this.updatePresence.bind(this));
+		this.updatePresence = this.updatePresence.bind(this);
+	}
 
-    const contactRequest = new CustomEvent('createLyncContact',
-      { detail: { sip: this.props.member.email } }
-    );
+	componentDidMount () {
 
-    window.dispatchEvent(contactRequest);
+		window.addEventListener('LyncStatusUpdate', this.updatePresence.bind(this));
 
-  }
+		const contactRequest = new CustomEvent('createLyncContact',
+			{ detail: { sip: this.props.member.email } }
+		);
 
-  componentDidUpdate() {
+		window.dispatchEvent(contactRequest);
 
-    if (this.state === null) {
-      this.state = {
-        presence: 'offline'
-      };
-    }
+	}
 
-    const syncPersonaCard = new CustomEvent('syncPersonaCard',
-      { detail: { presence: this.state.presence } }
-    );
+	componentDidUpdate () {
 
-    window.dispatchEvent(syncPersonaCard);
+		if (this.state === null) {
+			this.state = {
+				presence: 'offline'
+			};
+		}
 
-  }
+		const syncPersonaCard = new CustomEvent('syncPersonaCard',
+			{ detail: { presence: this.state.presence } }
+		);
 
-  componentWillUnmount() {
+		window.dispatchEvent(syncPersonaCard);
 
-    window.removeEventListener('LyncStatusUpdate', this.updatePresence);
+	}
 
-  }
+	componentWillUnmount () {
 
-  updatePresence(e) {
+		window.removeEventListener('LyncStatusUpdate', this.updatePresence);
 
-    if (this.props.member.email === e.detail.sip) {
-      this.setState({ presence: e.detail.status });
-    }
+	}
 
-  }
+	updatePresence (e) {
 
-  render() {
-    
-    if (this.state !== null) {
-    
-      const presence = `ms-Persona--${this.state.presence}`;
-      const img = `/_layouts/15/userphoto.aspx?size=S&username=${this.props.member.email}`;
+		if (this.props.member.email === e.detail.sip) {
+			this.setState({ presence: e.detail.status });
+		}
 
-      return (
-        <div className="contact" title={this.state.name}>
-          <div className={`ms-Persona ms-Persona--square ${presence} ms-Persona--xs`}>
-            <div className="ms-Persona-imageArea">
-              <i className="ms-Persona-placeholder ms-Icon ms-Icon--person"></i>
-                <img className="ms-Persona-image" src={img} />
-            </div>
-            <div className="ms-Persona-presence"></div>
-            { this.props.names === false ? <div className="ms-Persona-details">
-              <div className="ms-Persona-primaryText">
-                {this.props.member.name}
-              </div>
-            </div> : null }
-          </div>
-        </div>
-      );
+	}
 
-    }
+	render () {
 
-  }
+		if (this.state !== null) {
+
+			const presence = `ms-Persona--${this.state.presence}`;
+			const img = `/_layouts/15/userphoto.aspx?size=S&username=${this.props.member.email}`;
+
+			return (
+				<div className="contact" title={this.state.name}>
+					<div className={`ms-Persona ms-Persona--square ${presence} ms-Persona--xs`}>
+						<div className="ms-Persona-imageArea">
+							<i className="ms-Persona-placeholder ms-Icon ms-Icon--person"></i>
+								<img className="ms-Persona-image" src={img} />
+						</div>
+						<div className="ms-Persona-presence"></div>
+						{ this.props.names === false ? <div className="ms-Persona-details">
+							<div className="ms-Persona-primaryText">
+								{this.props.member.name}
+							</div>
+						</div> : null }
+					</div>
+				</div>
+			);
+
+		}
+
+	}
 
 }
 
 Persona.propTypes = {
-  names: React.PropTypes.bool,
-  member: React.PropTypes.object.isRequired,
+	names: React.PropTypes.bool,
+	member: React.PropTypes.object.isRequired
 };
 
-module.exports = cssModules(Persona, styles, { allowMultiple: true });
+export default cssModules(Persona, styles, { allowMultiple: true });

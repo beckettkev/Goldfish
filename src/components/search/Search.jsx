@@ -1,177 +1,165 @@
 import React from 'react';
 import styles from './search.css';
 import cssModules from 'react-css-modules';
-import Suggest from '../suggest/Suggest';
+import Suggest from '../suggest/Suggest.jsx';
 import SearchStore from '../../stores/SearchStore';
 import PeopleSearchActions from '../../actions/PeopleSearchActions';
 import Utils from '../../utils/utilities';
 
-function getStoreSearchResultState() {
-    return {
-      items: SearchStore.getResults(),
-      searching: false,
-      count: SearchStore.getResultCount(),
-      pageNum: SearchStore.getCurrentPage(),
-      term: SearchStore.getCurrentSearchTerm(),
-      text: ''
-    }
+function getStoreSearchResultState () {
+	return {
+		items: SearchStore.getResults(),
+		searching: false,
+		count: SearchStore.getResultCount(),
+		pageNum: SearchStore.getCurrentPage(),
+		term: SearchStore.getCurrentSearchTerm(),
+		text: ''
+	};
 }
 
-const Search = React.createClass({
+class Search extends React.Component {
 
-	propTypes: {
-      settings: React.PropTypes.array,
-      suggestions: React.PropTypes.array,
-			onSearchChanged: React.PropTypes.func,
-      onSearching: React.PropTypes.func,
-	},
+	static propTypes: {
+		settings: React.PropTypes.array,
+		suggestions: React.PropTypes.array,
+		onSearchChanged: React.PropTypes.func,
+		onSearching: React.PropTypes.func
+	};
 
-  getInitialState() {
-    
-    return {tags: []};
+	constructor (props) {
+		super(props);
 
-  },
+		this.state = { tags: [] };
+	}
 
-  componentDidUpdate() {
+	componentDidUpdate () {
+		if (this.state === null) {
+			this.state = { tags: [] };
+		}
+	}
 
-    if (this.state === null) {
-        this.setState(this.getInitialState());
-    }
+	componentDidMount () {
+		SearchStore.addChangeListener(this.onComponentChange.bind(this));
+	}
 
-  },
+	componentWillMount () {
+		SearchStore.removeChangeListener(this.onComponentChange);
+	}
 
-  componentDidMount() {
+	onComponentChange () {
+		this.props.onSearchChanged(getStoreSearchResultState());
+	}
 
-    SearchStore.addChangeListener(this.onComponentChange.bind(this));
+	onInputChange (name, value) {
+		this.setState({ text: value });
+	}
 
-  },
+	handleChange (tags) {
+		this.setState({tags});
 
-  componentWillMount() {
+		//a search has been commited so update with the new tag(s)
+		//TODO: move this common function to somewhere central
+		if (this.state.text.indexOf(':') > -1 && tags.length > 0) {
+			const searchTerm = tags.map(function (tag) { return tag.search; }).join(' ');
+			
+			this.onInputChange(this, searchTerm);
 
-    SearchStore.removeChangeListener(this.onComponentChange);
+			this.props.onSearching();
 
-  },
+			PeopleSearchActions.fetchData(Utils.getFullSearchQueryUrl(searchTerm), searchTerm, 0);
+		} else if (tags.length === 0) {
+			PeopleSearchActions.showNoResults();
+		}
+	}
 
-  onComponentChange() {
+	handleSubmit (e) {
+		e.preventDefault();
 
-    this.props.onSearchChanged(getStoreSearchResultState());
+		//invoke the search request
+		this.searchForPeople();
+	}
 
-  },
+	onkeyDown (e) {
+		const keyEvent = e || window.event;
 
-  onInputChange(name, value) {
+		if (keyEvent.keyCode === 13) {
+			keyEvent.preventDefault();
 
-    this.setState({ text: value });
+			this.searchForPeople();
+		} else {
+			this.setState({ text: keyEvent.target.value });
 
-  },
+			return true;
+		}
+	}
 
-  handleChange(tags) {
+	searchForPeople () {
+		const url = Utils.getFullSearchQueryUrl(this.state.text);
 
-    this.setState({tags});
+		this.props.onSearching();
 
-  },
+		PeopleSearchActions.fetchData(url, this.state.text, 0);
+	}
 
-  handleSubmit(e) {
+	getSimpleSearchInput () {
+		return (
+			<input
+				key='search-input-basic'
+				className={'animated flipInX'}
+				type='text'
+				placeholder='Search for a colleague...'
+				onKeyDown={this.onkeyDown.bind(this)} />
+		);
+	}
 
-    e.preventDefault();
+	getSuggestSearchInput () {
+		return (
+			<Suggest
+				key='search-input-super'
+				value={this.state.text}
+				floating={false}
+				tags={this.state.tags}
+				maxTags={10}
+				termsets={this.props.termsets}
+				userInformationFields={this.props.userInformationFields}
+				onTagsChange={this.handleChange.bind(this)}
+				onChange={this.onInputChange.bind(this, 'search')} />
+		);
+	}
 
-    //invoke the search request
-    this.searchForPeople();
+	searchInputSelector () {
+		if (this.props.settings.length === 0) {
+			//in the unlikely event of no settings being applied
+			return(
+				this.getSimpleSearchInput()
+			);
+		} else {
+			//check to see if the super search is enabled
+			const suggestEnabled = this.props.settings.some(function (el) {
+						return Object.keys(el)[0] === 'enableSuperSearch' && el[Object.keys(el)[0]];
+					});
 
-  },
+			if (suggestEnabled) {
+				return(this.getSuggestSearchInput());
+			} else {
+				return(this.getSimpleSearchInput());
+			}
+		}
+	}
 
-  onkeyDown(e) {
+	render () {
+		if (this.state !== null) {
+			return (
+				<form onSubmit={this.handleSubmit.bind(this)} key='form-soon-to-be-deleted'>
+					<div className={'ui fluid category search'}>
+						<div className={'ui icon input'} styleName='search-container'>
+							{this.searchInputSelector()}
+						</div>
+					</div>
+				</form>
+			);
+		}
+	}
+}
 
-      e = e || window.event;
-
-      if (e.keyCode === 13) {
-        e.preventDefault();
-
-        this.searchForPeople();
-      } else {
-        this.setState({ text: e.target.value });
-
-        return true;
-      }
-
-  },
-
-  searchForPeople() {
-
-    let url = Utils.getFullSearchQueryUrl(this.state.text);
-
-    this.props.onSearching();
-
-    PeopleSearchActions.fetchData(url, this.state.text, 0);
-
-  },
-
-  getSimpleSearchInput() {
-
-        return (
-            <input key='search-input-basic' 
-                  className={'animated flipInX'}
-                  type='text' 
-                  placeholder='Search for a colleague...' 
-                  onKeyDown={this.onkeyDown.bind(this)} />
-        );
-
-  },
-
-  getSuggestSearchInput() {
-
-        return (
-            <Suggest key='search-input-super'
-                value={this.state.text}
-                floating={false}
-                tags={this.state.tags}
-                maxTags={10}
-                termsets={this.props.termsets}
-                userInformationFields={this.props.userInformationFields}
-                onTagsChange={this.handleChange.bind(this)}
-                onChange={this.onInputChange.bind(this, 'search')} />
-        );
-
-  },
-
-  searchInputSelector() {
-
-        if (this.props.settings.length === 0) {
-            //in the unlikely event of no settings being applied
-            return(
-                this.getSimpleSearchInput()
-            );
-        } else {
-            //check to see if the super search is enabled
-            let suggestEnabled = this.props.settings.some(function(el, i) {
-                return Object.keys(el)[0] === 'enableSuperSearch' && el[Object.keys(el)[0]];
-            });
-
-            if (suggestEnabled) {
-                return(this.getSuggestSearchInput());
-            } else {
-                return(this.getSimpleSearchInput());
-            }
-        }
-
-  },
-
-  render() {
-
-        if (this.state !== null) {
-
-            return (
-              <form onSubmit={this.handleSubmit.bind(this)} key='form-soon-to-be-deleted'>
-                  <div className={'ui fluid category search'}>
-                      <div className={'ui icon input'} styleName='search-container'>
-                          {this.searchInputSelector()}
-                      </div>
-                  </div>                  
-              </form>
-            );
-
-        }
-
-  }
-});
-
-module.exports = cssModules(Search, styles, { allowMultiple: true });
+export default cssModules(Search, styles, { allowMultiple: true });

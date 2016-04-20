@@ -1,5 +1,6 @@
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import PeopleSearchConstants from '../constants/data';
+import PeopleSearchDefaults from '../constants/default';
 import Cache from '../utils/cache';
 import Utils from '../utils/utilities';
 import FavouriteStore from '../stores/FavouriteStore';
@@ -8,9 +9,9 @@ require('es6-promise').polyfill();
 const PEOPLE_STORAGE_KEY_PREFIX = 'PeopleSearch-Results-';
 const MAX_CACHE_KEY_SIZE = 10;
 
-function buildCachePayload(payload, count, term, sets) {
+function buildCachePayload (payload, count, term, sets) {
     return {
-        birthday : Utils.getDateAsIsoStandard(0),
+        birthday: Utils.getDateAsIsoStandard(0),
         payload: payload,
         sets: sets.length > 0 ? sets : [1],
         count: count,
@@ -19,29 +20,30 @@ function buildCachePayload(payload, count, term, sets) {
 }
 
 //key value pairs make the world go round and simplify the returned data from SP Search REST query (avoiding array lookups)
-function washDataClean(data) {
-    var people = [];
-    var pairs = { };
-    var favourites = FavouriteStore.getCurrentFavourites();
-    var banned = ['Rank','DocId','piSearchResultId','RenderTemplateId','ProfileQueriesFoundYou','ProfileViewsLastWeek','ProfileViewsLastMonth','EditProfileUrl','ResultTypeId','Culture','UrlZone','PartitionId','OriginalPath']
+function washDataClean (data) {
+    let people = [];
+    let pairs = { };
 
-    data.forEach(function(row, index) {
+    const favourites = FavouriteStore.getCurrentFavourites();
+    const banned = PeopleSearchDefaults.IGNORED_VALUES;
+
+    data.forEach(function (row) {
         pairs = { };
 
-        row.Cells.forEach(function(item, i) {
+        row.Cells.forEach(function (item) {
            //build a new object and store the key and value as an associated pair
-           if (banned.indexOf(item['Key']) === -1) {
-               pairs[item['Key']] = item['Value'];
+           if (banned.indexOf(item.Key) === -1) {
+               pairs[item.Key] = item.Value;
            }
         });
 
         //check to see if this person is a favourite
-        pairs.Favourite = favourites.some(function(item) {
-            return item.name === pairs.PreferredName
+        pairs.Favourite = favourites.some(function (item) {
+            return item.name === pairs.PreferredName;
         });
 
-        people.push({ 
-            "Cells": pairs 
+        people.push({
+            'Cells': pairs
         });
     });
 
@@ -49,25 +51,25 @@ function washDataClean(data) {
     return people;
 }
 
-function isPayloadStillValid(payloadDate) {
-    var now = Utils.getDateAsIsoStandard(0);
+function isPayloadStillValid (payloadDate) {
+    const now = Utils.getDateAsIsoStandard(0);
 
     //check if the payload was saved today
     return Utils.getDaysBetweenDates(now, payloadDate) > -1;
 }
 
-function initAppDispatcher(items) {
+function initAppDispatcher (items) {
     AppDispatcher.dispatch({
         actionType: PeopleSearchConstants.PEOPLE_LOADED,
         data: items
     });
 }
 
-function getResultSetIndexEnd(count, start) {
+function getResultSetIndexEnd (count, start) {
     return ((count - start) < 10) ? count - start : 10;
 }
 
-function getResultSetIndexStart(pageNum, sets) {
+function getResultSetIndexStart (pageNum, sets) {
     /*
         We know that the page being viewed is in the cache, but we need to make sure they have
         not skipped a page using the paging
@@ -75,25 +77,25 @@ function getResultSetIndexStart(pageNum, sets) {
     return pageNum === 1 ? 0 : sets.indexOf(pageNum) * 10;
 }
 
-function getPagedQueryUrl(queryUrl, pageNum) {
-    let startRow = 10 * ((pageNum - 1) > 0 ? (pageNum - 1) : 1);
+function getPagedQueryUrl (queryUrl, pageNum) {
+    const startRow = 10 * ((pageNum - 1) > 0 ? (pageNum - 1) : 1);
+
     //starting row for the results to come back
     return queryUrl + '&startrow=' + startRow;
 }
 
-function getResultPage(results, pageNum, sets, count) {
-    var start = getResultSetIndexStart(pageNum, sets);
-    var end = getResultSetIndexEnd(count, start);
-    var favourites = FavouriteStore.getCurrentFavourites();
-    var favs = [];
-    var cachedResults = results.slice(start, start + end);
+function getResultPage (results, pageNum, sets, count) {
+    const start = getResultSetIndexStart(pageNum, sets);
+    const end = getResultSetIndexEnd(count, start);
+    const favourites = FavouriteStore.getCurrentFavourites();
 
-    /*  
-        Find any favourites in the cached payload and then
-        update the result set with the cached property
-        once this is done, return the payload
-    */
-    favourites.forEach(function(favourite) {
+    let favs = [];
+    let cachedResults = results.slice(start, start + end);
+
+    /* Find any favourites in the cached payload and then
+    update the result set with the cached property
+    once this is done, return the payload */
+    favourites.forEach(function (favourite) {
         favs.push(favourite.name);
     });
 
@@ -103,13 +105,13 @@ function getResultPage(results, pageNum, sets, count) {
         }
     });
 
-    return cachedResults; 
+    return cachedResults;
 }
 
-function cacheKeySizeExceedsLimit() {
-    let keys = Object.keys(localStorage).filter(
-                    function(item, i) { 
-                        return item.indexOf(PEOPLE_STORAGE_KEY_PREFIX) > -1; 
+function cacheKeySizeExceedsLimit () {
+    const keys = Object.keys(localStorage).filter(
+                    function (item) {
+                        return item.indexOf(PEOPLE_STORAGE_KEY_PREFIX) > -1;
                     }
                 );
 
@@ -117,10 +119,11 @@ function cacheKeySizeExceedsLimit() {
 }
 
 module.exports = {
-    getPeopleResults: function(queryUrl, term, pageNum) {
+    getPeopleResults: function (queryUrl, term, pageNum) {
         return new Promise((resolve, reject) => {
 
-            let key =  PEOPLE_STORAGE_KEY_PREFIX + Utils.createStorageKey(term).toLowerCase();
+            const key = PEOPLE_STORAGE_KEY_PREFIX + Utils.createStorageKey(term).toLowerCase();
+
             let operations = {
                 fetch: true,
                 insert: false
@@ -128,8 +131,9 @@ module.exports = {
             let sets = [];
 
             const cachedResults = Cache.fetch(key);
+            const resolvedQueryUrl = pageNum > 0 ? getPagedQueryUrl(queryUrl, pageNum) : queryUrl;
 
-            queryUrl = pageNum > 0 ? getPagedQueryUrl(queryUrl, pageNum) : queryUrl;
+            let resolvedPageNum = pageNum;
 
             if (typeof cachedResults !== 'undefined') {
                 /*
@@ -138,17 +142,17 @@ module.exports = {
                 */
                 if (isPayloadStillValid(cachedResults.birthday)) {
 
-                    pageNum = pageNum === 0 ? 1 : pageNum;
+                    resolvedPageNum = pageNum === 0 ? 1 : pageNum;
 
-                    if (cachedResults.sets.indexOf(pageNum) > -1) {
+                    if (cachedResults.sets.indexOf(resolvedPageNum) > -1) {
                         //everything looks good - load from cache with the paged results and resist calling the API
                         cachedResults.payload = getResultPage(
                                                     cachedResults.payload,
-                                                    pageNum,
+                                                    resolvedPageNum,
                                                     cachedResults.sets,
                                                     cachedResults.count
                                                 );
-                        cachedResults.pageNum = pageNum;
+                        cachedResults.pageNum = resolvedPageNum;
 
                         resolve(cachedResults);
 
@@ -160,7 +164,7 @@ module.exports = {
                         operations.insert = true;
 
                         sets = cachedResults.sets;
-                        sets.push(pageNum);
+                        sets.push(resolvedPageNum);
                     }
                 } else {
                     //delete the cache object as it is stale
@@ -173,18 +177,13 @@ module.exports = {
                 let items = [];
 
                 jQuery.ajax({
-                    url: queryUrl,
+                    url: resolvedQueryUrl,
                     dataType: 'json',
                     type: 'GET',
                     headers: Utils.getHeaders(),
-                    success: function(data) {
+                    success: function (data) {
                         if (data.PrimaryQueryResult.RelevantResults.RowCount > 0) {
-                            /*
-                                TO DO:
 
-                                    Only store X amount of queries in the local storage,
-                                    clear out any older keys if none are available.
-                            */
                             //clean the data coming back into a manageble object and store in the cache
                             items = buildCachePayload(washDataClean(data.PrimaryQueryResult.RelevantResults.Table.Rows), data.PrimaryQueryResult.RelevantResults.TotalRows, term, sets);
 
@@ -196,13 +195,13 @@ module.exports = {
                             } else {
                                 /*
                                     Already a valid cache for this search but we don't have this page. We need to update with the page results
-                                        - first of all get the start row (pageNum - 1 * 10) and then make it work with array indexes ( -1 )
+                                        - first of all get the start row (resolvedPageNum - 1 * 10) and then make it work with array indexes ( -1 )
                                 */
-                                let position = ((pageNum - 1) * 10) - 1;
+                                const position = ((resolvedPageNum - 1) * 10) - 1;
 
                                 Cache.insert(key, items, position);
 
-                                items.pageNum = pageNum;
+                                items.pageNum = resolvedPageNum;
                             }
 
                             resolve(items);
@@ -221,7 +220,7 @@ module.exports = {
 
                         initAppDispatcher(items);
                     },
-                    fail: function(xhr, status, err) {
+                    fail: function (xhr, status, err) {
                         reject(this.props.url + ', ' + status + ', ' + err.toString());
                     }
                 });

@@ -7,9 +7,9 @@ const TERMS_STORAGE_KEY = 'PeopleSearch-Terms';
 /*
 	This function checks to see if there is a valid and up to date terms cache from the local storage (otherwise fetch fresh data).
 */
-function checkCacheForTermSets(termSets, cache) {
+function checkCacheForTermSets (termSets, cache) {
 	if (typeof cache !== 'undefined') {
-		return cache.payload.some(function(termSet, i) {
+		return cache.payload.some(function (termSet) {
 					return termSets.indexOf(termSet.id) === -1;
 				});
 	} else {
@@ -17,20 +17,20 @@ function checkCacheForTermSets(termSets, cache) {
 	}
 }
 
-function getTermStructure(items, context, terms) {
+function getTermStructure (items, context, terms) {
 	return new Promise((resolve, reject) => {
-		var current, term, data, item, termsEnumerator;
-		var collection = [];
+		let term, data, item, termsEnumerator;
+		let collection = [];
 
 		context.executeQueryAsync(
 			function () {
-				Object.keys(terms).forEach(function(key, i) {
+				Object.keys(terms).forEach(function (key) {
 					termsEnumerator = terms[key].getEnumerator();
 
 					//How do we get the correct item detail
 					//find the correct index of the array
-					item = items.filter(function(i) {
-    					return i.id === key; // Filter out the appropriate one
+					item = items.filter(function (element) {
+						return element.id === key; // Filter out the appropriate one
 					})[0];
 
 					data = {};
@@ -58,7 +58,7 @@ function getTermStructure(items, context, terms) {
 				//we now have the collection of Terms grouped by Termset in the structure the auto sugggest tool needs
 				resolve(collection);
 			},
-			function(sender,args){			
+			function (sender, args) {
 				console.log(args.get_message());
 
 				reject('Unable to access Managed Metadata Service.');
@@ -86,16 +86,14 @@ const getTermsByTermSets = (termSets) => {
 					resolve(cache.payload);
 			} else {
 					jQuery.getScript(Utils.getBaseUrl() + '/_layouts/15/sp.taxonomy.js', function () {
-						
-							let context = new SP.ClientContext.get_current();
-							let session = SP.Taxonomy.TaxonomySession.getTaxonomySession(context);
-							let termStore = session.getDefaultSiteCollectionTermStore();
-							let data, termsEnumerator, current, term;
-							
+							const context = new SP.ClientContext.get_current();
+							const session = SP.Taxonomy.TaxonomySession.getTaxonomySession(context);
+							const termStore = session.getDefaultSiteCollectionTermStore();
+
 							let termSet = {};
 							let terms = {};
-							
-							termSets.forEach(function(item, i) {
+
+							termSets.forEach(function (item) {
 								if (typeof item.id !== 'undefined' && typeof item.property !== 'undefined') {
 									if (item.id !== '' && item.property !== '') {
 
@@ -103,17 +101,16 @@ const getTermsByTermSets = (termSets) => {
 										terms[item.id] = termSet[item.id].getAllTerms();
 
 										context.load(terms[item.id]);
-									}	
+									}
 								}
 							});
 
 							//now we have loaded all of the termsets we need to process, execute the Async Query (getTermStructure)
-							getTermStructure(termSets, context, terms).then(function(collection) {
+							getTermStructure(termSets, context, terms).then(function (collection) {
 								resolve(collection);
 
-								Cache.store(TERMS_STORAGE_KEY, Utils.buildStoragePayload(collection));				
+								Cache.store(TERMS_STORAGE_KEY, Utils.buildStoragePayload(collection));
 							});
-
 					});
 			}
 
@@ -121,5 +118,5 @@ const getTermsByTermSets = (termSets) => {
 };
 
 module.exports = {
-  getTermsByTermSets: getTermsByTermSets
+	getTermsByTermSets: getTermsByTermSets
 };

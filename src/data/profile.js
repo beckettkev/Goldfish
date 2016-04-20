@@ -1,4 +1,3 @@
-import Cache from '../utils/cache';
 import Compression from '../utils/lz-string';
 require('es6-promise').polyfill();
 
@@ -10,10 +9,10 @@ let properties = null;
 
 //This function saves to one of the three user profile properties, first compressing the payload
 function update (property, value, account) {
-	var ctx = SP.ClientContext.get_current();
+	const ctx = SP.ClientContext.get_current();
 
 	SP.SOD.executeFunc('userprofile', 'SP.UserProfiles.PeopleManager', function () {
-		var peopleManager = new SP.UserProfiles.PeopleManager(ctx);
+		const peopleManager = new SP.UserProfiles.PeopleManager(ctx);
 		//save the value to the profile property as a compressed UTF16 string to keep within the 3600 character limit for user profile properties
 		peopleManager.setSingleValueProfileProperty('i:0#.f|membership|' + account, property, Compression.compressToUTF16(JSON.stringify(value)));
 
@@ -27,14 +26,14 @@ function update (property, value, account) {
 }
 
 //From the massive user profile payload returned by the REST API, select the property we want
-function findPropertyInResults(key, results) {
+function findPropertyInResults (key, results) {
 	//sanitise the response to get just the property we want
-	return results.filter(function(item, i) {
+	return results.filter(function (item) {
 				return item.Key === key;
 			})[0];
 }
 
-function decompressProfilePropertyValue(property) {
+function decompressProfilePropertyValue (property) {
 	//profile properties are stored as compress data due to the 3600 character limit...
 	if (typeof property !== 'undefined') {
 		//if property is undefined (the profile property does not exist) this will throw an error which will be caught by the invoking code
@@ -45,7 +44,7 @@ function decompressProfilePropertyValue(property) {
 }
 
 //This function constructs an object containing any favourites, settings and layouts found in the given person's user profile
-function populateProperties(data, properties) {
+function populateProperties (data) {
 	properties = {
 		favourites: findPropertyInResults(PROFILE_FAVOURITES_KEY, data.d.UserProfileProperties.results),
 		settings: findPropertyInResults(PROFILE_SETTINGS_KEY, data.d.UserProfileProperties.results),
@@ -74,8 +73,8 @@ const getProfileProperties = () => {
 				url: '/_api/SP.UserProfiles.PeopleManager/GetMyProperties',
 				type: 'GET',
 				success: function (response) {
-					properties = populateProperties(response, properties);
-					
+					properties = populateProperties(response);
+
 					if (properties.favourites !== '' || properties.settings !== '' || properties.layout !== '')	{
 						resolve(properties);
 					} else {
@@ -83,7 +82,7 @@ const getProfileProperties = () => {
 					}
 				},
 				fail: function (error) {
-					reject({ 'error': + error });
+					reject({ 'error': error });
 				}
 			});
 		}
@@ -92,13 +91,13 @@ const getProfileProperties = () => {
 };
 
 const getProfileProperty = (key) => {
-	let property = typeof properties[key] !== 'undefined' ? properties[key] : '';
-	
+	const property = typeof properties[key] !== 'undefined' ? properties[key] : '';
+
 	return property !== '' && property !== null ? property.payload : '';
 };
 
 const updateProfileProperty = (property, value, account) => {
-	if (typeof properties.favourites !== 'undefined' || typeof properties.settings !== 'undefined' ||  typeof properties.layout !== 'undefined') {
+	if (typeof properties.favourites !== 'undefined' || typeof properties.settings !== 'undefined' || typeof properties.layout !== 'undefined') {
 		update(property, value, account);
 	} else {
 		console.log('Goldfish - please ensure you create the Goldfish profile properties to maintain state.');

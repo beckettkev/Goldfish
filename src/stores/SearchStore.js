@@ -1,16 +1,15 @@
-const AppDispatcher = require('../dispatcher/AppDispatcher');
-const EventEmitter = require('events').EventEmitter;
-const PeopleSearchConstants = require('../constants/data');
-const DefaultConstants = require('../constants/default');
-const assign = require('object-assign');
-const Utils = require('../utils/utilities');
+import AppDispatcher from '../dispatcher/AppDispatcher';
+import { EventEmitter } from 'events';
+import PeopleSearchConstants from '../constants/data';
+import DefaultConstants from '../constants/default';
+import assign from 'object-assign';
 
 let _people = [];
 let _count = 0;
 let _pageNum = 0;
 let _term = '';
 
-function setPeopleSearchData(people, count, pageNum, term) {
+function setPeopleSearchData (people, count, pageNum, term) {
   _people = people;
   _count = count;
   _pageNum = pageNum;
@@ -19,49 +18,49 @@ function setPeopleSearchData(people, count, pageNum, term) {
 
 const SearchStore = assign({}, EventEmitter.prototype, {
 
-  getResult(id) {
+  getResult (id) {
     return _people[id];
   },
 
-  getResults() {
+  getResults () {
     return _people;
   },
 
-  getResultCount() {
+  getResultCount () {
     return _count;
   },
 
-  getCurrentPage() {
+  getCurrentPage () {
     return _pageNum;
   },
 
-  setNextPage() {
+  setNextPage () {
     _pageNum += 1;
   },
 
-  setPrevPage() {
+  setPrevPage () {
     _pageNum -= 1;
   },
 
-  getCurrentSearchTerm() {
+  getCurrentSearchTerm () {
     return _term;
   },
 
-  emitChange() {
+  emitChange () {
     this.emit(DefaultConstants.CHANGE_EVENT);
   },
 
-  addChangeListener(callback) {
+  addChangeListener (callback) {
     this.on(DefaultConstants.CHANGE_EVENT, callback);
   },
 
-  removeChangeListener(callback) {
+  removeChangeListener (callback) {
     this.removeListener(DefaultConstants.CHANGE_EVENT, callback);
   }
 
 });
 
-AppDispatcher.register( action => {
+AppDispatcher.register(action => {
   switch (action.actionType) {
     case PeopleSearchConstants.PEOPLE_LOADED:
       setPeopleSearchData(
@@ -77,7 +76,7 @@ AppDispatcher.register( action => {
           action.results,
           0,
           0,
-          action.data.term
+          typeof action.data !== 'undefined' ? action.data.term : ''
       );
       SearchStore.emitChange();
       break;

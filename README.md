@@ -78,12 +78,7 @@ To run lint against the JavaScript code in **Goldfish**
 npm run lint
 ```
 
-To run unit tests against **Goldfish** [TODO]
-```
-npm run unit
-```
-
-To run spec tests against **Goldfish** [TODO]
+To run spec tests against **Goldfish**
 ```
 npm run test
 ```

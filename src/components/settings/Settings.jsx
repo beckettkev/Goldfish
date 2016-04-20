@@ -3,129 +3,136 @@ import styles from './Settings.css';
 import cssModules from 'react-css-modules';
 import Title from '../title/Title.jsx';
 import { Switch } from 'react-toolbox';
-import Utils from '../../utils/utilities';
 import SettingStore from '../../stores/SettingStore';
 import PeopleSearchActions from '../../actions/PeopleSearchActions';
 import SettingsManager from '../../utils/settings';
 
-function getStoreSettingState() {
-      let settings = SettingStore.getSettings();
-      let current = {};
+function getStoreSettingState () {
+	const settings = SettingStore.getSettings();
 
-      settings.forEach(function(item, i) {
-          current[item.internal] = item.value;
-      });
+	let current = {};
 
-      return current;
+	settings.forEach(function (item) {
+		current[item.internal] = item.value;
+	});
+
+	return current;
 }
 
-const Settings = React.createClass({
+function getSettingsAndApply () {	
+	PeopleSearchActions.fetchSettings();
 
-  propTypes: {
-      onSettingChange: React.PropTypes.func
-  },
+	const settings = getStoreSettingState();
 
-  getInitialState() {
-      PeopleSearchActions.fetchSettings();
+	SettingsManager.applySettings(getStoreSettingState());
 
-      let settings = getStoreSettingState();
+	return settings;
+}
 
-      SettingsManager.applySettings(getStoreSettingState());
+class Settings extends React.Component {
 
-      return settings;
-  },
-  
-  componentDidUpdate() {
-      if (this.state === null) {
-          this.setState(this.getInitialState());
-      }
-  },
+	static propTypes: {
+		onSettingChange: React.PropTypes.func
+	};
 
-  componentDidMount() {
-      SettingStore.addChangeListener(this.onSettingChange.bind(this));
-  },
+	constructor (props) {
+		super(props);
 
-  componentWillMount() {
-      SettingStore.removeChangeListener(this.onSettingChange);
-  },
+		this.state = getSettingsAndApply();
+	}
 
-  onSettingChange() {
-      let settings = getStoreSettingState();
+	componentDidUpdate () {
+		if (this.state === null) {
+			this.state = getSettingsAndApply();
+		}
+	}
 
-      let collection = SettingsManager.applySettings(getStoreSettingState());
+	componentDidMount () {
+		SettingStore.addChangeListener(this.onSettingChange.bind(this));
+	}
 
-      this.props.onSettingChange(collection);
-      this.setState(settings);
-  },
+	componentWillMount () {
+		SettingStore.removeChangeListener(this.onSettingChange);
+	}
 
-  applySettings() {
-      return SettingsManager.applySettings(getStoreSettingState());
-  },
+	onSettingChange () {
+		const settings = getStoreSettingState();
+		const collection = SettingsManager.applySettings(getStoreSettingState());
 
-  handleChange(field, value) {
-      let current = {};
-      let settings = SettingStore.getSettings();
+		this.props.onSettingChange(collection);
+		
+		this.setState(settings);
+	}
 
-      settings.some(function(item, i) {
-         let matched = field === item.internal;
+	applySettings () {
+		return SettingsManager.applySettings(getStoreSettingState());
+	}
 
-         if (matched) { settings[i].value = value; }
+	handleChange (field, value) {
+		const settings = SettingStore.getSettings();
 
-         return matched;
-      });
+		settings.some(function (item, i) {
+			const matched = field === item.internal;
 
-      PeopleSearchActions.updateSettings(settings);
-  },
+			if (matched) { settings[i].value = value; }
 
-  getSettings(state) {
-      let options = [];
-      let settings = SettingStore.getSettings();
-      let that = this;
+			return matched;
+		});
 
-      settings.forEach(function(item, i) {
-          options.push(
-              <Switch key={item.internal} checked={state[item.internal]} label={item.label} onChange={that.handleChange.bind(that, item.internal)} />
-          );
-      });
+		PeopleSearchActions.updateSettings(settings);
+	}
 
-      return options;
-  },
+	getSettings (state) {
+		let options = [];
 
-  render() {
+		const settings = SettingStore.getSettings();
+		const self = this;
 
-      let settingComponentStyles = {
-          display:'none !important'
-      };
+		settings.forEach(function (item) {
+			options.push(
+				<Switch
+					key={item.internal}
+					checked={state[item.internal]}
+					label={item.label}
+					onChange={self.handleChange.bind(self, item.internal)} />
+			);
+		});
 
-      if (this.state !== null) {
-            return (
-                <div id={'component-settings'} styleName={'component'} style={settingComponentStyles}>
-                    <div styleName='container'>
-                      
-                      <Title text={this.props.title} suffix='Settings' />
+		return options;
+	}
 
-                      <p styleName='info'>
-                        <br /><br />
-                        Settings can be controlled from this page - they will be <strong>applied automatically</strong>.
-                      </p>
+	render () {
+		const settingComponentStyles = {
+			display: 'none !important'
+		};
 
-                      <div className={'content'} styleName={'checkbox-holder'}>
-                        
-                        <br /><br />
-                        
-                        <div className={'switches-with-broomsticks'}>
-                          {this.getSettings(this.state)}
-                        </div>
+		if (this.state !== null) {
+			return (
+				<div id={'component-settings'} styleName={'component'} style={settingComponentStyles}>
+					<div styleName='container'>
+							<Title 
+								text={this.props.title} 
+								suffix='Settings' />
 
-                      </div>
-                    </div>
+							<p styleName='info'>
+								<br /><br />
+								Settings can be controlled from this page - they will be <strong>applied automatically</strong>.
+							</p>
 
-                    <br /><br />
-                </div>
-            );
-      }      
+							<div className={'content'} styleName={'checkbox-holder'}>
 
-  }
-});
+							<br /><br />
 
-module.exports = cssModules(Settings, styles, { allowMultiple: true });
+							<div className={'switches-with-broomsticks'}>
+								{this.getSettings(this.state)}
+							</div>
+						</div>
+					</div>
+					<br /><br />
+				</div>
+			);
+		}
+	}
+}
+
+export default cssModules(Settings, styles, { allowMultiple: true });

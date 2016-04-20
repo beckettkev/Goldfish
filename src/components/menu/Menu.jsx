@@ -3,15 +3,19 @@ import styles from './Menu.css';
 import cssModules from 'react-css-modules';
 import MenuManager from '../../utils/menu';
 
-const Menu = React.createClass({
+class Menu extends React.Component {
 
-	propTypes: {
-			view: React.PropTypes.string,
-			onExport: React.PropTypes.func
-	},
+	static propTypes: {
+		view: React.PropTypes.string,
+		onExport: React.PropTypes.func
+	};
+
+	constructor (props) {
+		super(props);
+	}
 
 	//All menu actions are routed through here.
-	itemAction(value, field) {
+	itemAction (value, field) {
 		switch(typeof field === 'string' ? field : value) {
 			case 'Layout':
 				MenuManager.loadLayoutComponent(false);
@@ -35,31 +39,31 @@ const Menu = React.createClass({
 				//no default action
 				break;
 		}
-	},
-
-  	render() {
-  			return (
-  				<div key='menu-items' id='menu-items'>
-		            <div key='component-tabs' id='component-tabs' styleName='component-tabs'>
-		                <div id='component-tab-favourites' className='tab'>
-		                    <i className={'material-icons'} onClick={this.itemAction.bind(this,'Favourites')} title='Goldfish Favourites'>star</i>
-		                </div>
-		                <div id='component-tab-search' className='tab active'>
-		                    <i className={'material-icons'} onClick={this.itemAction.bind(this,'Search')} title='Goldfish Search'>search</i>
-		                </div>
-		                <div id='component-tab-layouts' className='tab'>
-		                    <i className={'material-icons'} onClick={this.itemAction.bind(this,'Layout')} title='Goldfish Layout'>view_list</i>
-		                </div>
-		                <div id='component-tab-settings' className='tab last'>
-		                    <i className={'material-icons'} onClick={this.itemAction.bind(this,'Settings')} title='Goldfish Settings'>settings</i>
-		                </div>
-		            </div>
-		            <div key='close-control' id='close-control' className='tab'>
-		            	<i className={'material-icons'} onClick={this.itemAction.bind(this,'Close')} title='Close'>cancel</i>
-		            </div>
-  				</div>
-	        );
 	}
-});
 
-module.exports = cssModules(Menu, styles, { allowMultiple: true });
+	render () {
+		return (
+			<div key='menu-items' id='menu-items'>
+				<div key='component-tabs' id='component-tabs' styleName='component-tabs'>
+					<div id='component-tab-favourites' className='tab'>
+						<i className={'material-icons'} onClick={this.itemAction.bind(this, 'Favourites')} title='Goldfish Favourites'>star</i>
+					</div>
+					<div id='component-tab-search' className='tab active'>
+						<i className={'material-icons'} onClick={this.itemAction.bind(this, 'Search')} title='Goldfish Search'>search</i>
+					</div>
+					<div id='component-tab-layouts' className='tab'>
+						<i className={'material-icons'} onClick={this.itemAction.bind(this, 'Layout')} title='Goldfish Layout'>view_list</i>
+					</div>
+					<div id='component-tab-settings' className='tab last'>
+						<i className={'material-icons'} onClick={this.itemAction.bind(this, 'Settings')} title='Goldfish Settings'>settings</i>
+					</div>
+				</div>
+				<div key='close-control' id='close-control' className='tab'>
+					<i className={'material-icons'} onClick={this.itemAction.bind(this, 'Close')} title='Close'>cancel</i>
+				</div>
+			</div>
+		);
+	}
+}
+
+export default cssModules(Menu, styles, { allowMultiple: true });

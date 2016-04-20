@@ -20,10 +20,6 @@ module.exports = (config) => {
 		reporters: [ 'dots' ],
 		webpack: { //kind of a copy of your webpack config
 			devtool: 'inline-source-map', //just do inline source maps instead of the default
-			/*resolve: {
-				extensions: ['','.jsx', '.scss', '.js', '.json'],
-				root: path.resolve(__dirname, './src')
-			},*/
 			module: {
 				loaders: [
 					{

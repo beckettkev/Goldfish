@@ -1,0 +1,343 @@
+/**
+ * React Select
+ * ============
+ * Created by Jed Watson and Joss Mackison for KeystoneJS, http://www.keystonejs.com/
+ * https://twitter.com/jedwatson https://twitter.com/jossmackison https://twitter.com/keystonejs
+ * MIT License: https://github.com/keystonejs/react-select
+*/
+:global(.selector) {
+  width: 360px;
+  margin: 20px;
+  z-index: 2004;
+}
+:global(.Select) {
+  position: relative;
+  z-index: 2004;
+}
+:global(.Select),
+:global(.Select) div,
+:global(.Select) input,
+:global(.Select) span {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+:global(.Select.is-disabled) > :global(.Select-control) {
+  background-color: #f9f9f9;
+}
+:global(.Select.is-disabled) > :global(.Select-control:hover) {
+  box-shadow: none;
+}
+:global(.Select.is-disabled) :global(.Select-arrow-zone) {
+  cursor: default;
+  pointer-events: none;
+}
+:global(.Select-control) {
+  background-color: #fff;
+  border-color: #d9d9d9 #ccc #b3b3b3;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  color: #333;
+  cursor: default;
+  display: table;
+  height: 36px;
+  outline: none;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+:global(.Select-control:hover) {
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+}
+:global(.is-searchable.is-open) > :global(.Select-control) {
+  cursor: text;
+}
+:global(.is-open) > :global(.Select-control) {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  background: #fff;
+  border-color: #b3b3b3 #ccc #d9d9d9;
+}
+:global(.is-open) > :global(.Select-control) > :global(.Select-arrow) {
+  border-color: transparent transparent #999;
+  border-width: 0 5px 5px;
+}
+:global(.is-searchable.is-focused):not(:global(.is-open)) > :global(.Select-control) {
+  cursor: text;
+}
+:global(.is-focused):not(:global(.is-open)) > :global(.Select-control) {
+  border-color: #007eff;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 3px rgba(0, 126, 255, 0.1);
+}
+:global(.Select-placeholder),
+:not(:global(.Select--multi)) > :global(.Select-control) :global(.Select-value) {
+  bottom: 0;
+  color: #aaa;
+  left: 0;
+  line-height: 34px;
+  padding-left: 10px;
+  padding-right: 10px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+:global(.has-value):not(:global(.Select--multi)) > :global(.Select-control) > :global(.Select-value) :global(.Select-value-label),
+:global(.has-value.is-pseudo-focused):not(:global(.Select--multi)) > :global(.Select-control) > :global(.Select-value) :global(.Select-value-label) {
+  color: #333;
+}
+:global(.has-value):not(:global(.Select--multi)) > :global(.Select-control) > :global(.Select-value) :global(a.Select-value-label),
+:global(.has-value.is-pseudo-focused):not(:global(.Select--multi)) > :global(.Select-control) > :global(.Select-value) :global(a.Select-value-label) {
+  cursor: pointer;
+  text-decoration: none;
+}
+:global(.has-value):not(:global(.Select--multi)) > :global(.Select-control) > :global(.Select-value) :global(a.Select-value-label):hover,
+:global(.has-value.is-pseudo-focused):not(:global(.Select--multi)) > :global(.Select-control) > :global(.Select-value) :global(a.Select-value-label):hover,
+:global(.has-value):not(.Select--multi) > :global(.Select-control) > :global(.Select-value) :global(a.Select-value-label):focus,
+:global(.has-value.is-pseudo-focused):not(:global(.Select--multi)) > :global(.Select-control) > :global(.Select-value) :global(a.Select-value-label):focus {
+  color: #007eff;
+  outline: none;
+  text-decoration: underline;
+}
+:global(.Select-input) {
+  height: 34px;
+  padding-left: 10px;
+  padding-right: 10px;
+  vertical-align: middle;
+}
+:global(.Select-input) > input {
+  background: none transparent;
+  border: 0 none;
+  box-shadow: none;
+  cursor: default;
+  display: inline-block;
+  font-family: inherit;
+  font-size: inherit;
+  height: 34px;
+  margin: 0;
+  outline: none;
+  padding: 0;
+  -webkit-appearance: none;
+}
+:global(.is-focused) :global(.Select-input) > input {
+  cursor: text;
+}
+:global(.has-value.is-pseudo-focused) :global(.Select-input) {
+  opacity: 0;
+}
+:global(.Select-control):not(:global(.is-searchable)) > :global(.Select-input) {
+  outline: none;
+}
+:global(.Select-loading-zone) {
+  cursor: pointer;
+  display: table-cell;
+  position: relative;
+  text-align: center;
+  vertical-align: middle;
+  width: 16px;
+}
+:global(.Select-loading) {
+  -webkit-animation: Select-animation-spin 400ms infinite linear;
+  -o-animation: Select-animation-spin 400ms infinite linear;
+  animation: Select-animation-spin 400ms infinite linear;
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  border-right-color: #333;
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+}
+:global(.Select-clear-zone) {
+  -webkit-animation: Select-animation-fadeIn 200ms;
+  -o-animation: Select-animation-fadeIn 200ms;
+  animation: Select-animation-fadeIn 200ms;
+  color: #999;
+  cursor: pointer;
+  display: table-cell;
+  position: relative;
+  text-align: center;
+  vertical-align: middle;
+  width: 17px;
+}
+:global(.Select-clear-zone):hover {
+  color: #D0021B;
+}
+:global(.Select-clear) {
+  display: inline-block;
+  font-size: 18px;
+  line-height: 1;
+}
+:global(.Select--multi) :global(.Select-clear-zone) {
+  width: 17px;
+}
+:global(.Select-arrow-zone) {
+  cursor: pointer;
+  display: table-cell;
+  position: relative;
+  text-align: center;
+  vertical-align: middle;
+  width: 25px;
+  padding-right: 5px;
+}
+:global(.Select-arrow) {
+  border-color: #999 transparent transparent;
+  border-style: solid;
+  border-width: 5px 5px 2.5px;
+  display: inline-block;
+  height: 0;
+  width: 0;
+}
+:global(.is-open) :global(.Select-arrow),
+:global(.Select-arrow-zone):hover > :global(.Select-arrow) {
+  border-top-color: #666;
+}
+@-webkit-keyframes Select-animation-fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes Select-animation-fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+:global(.Select-menu-outer) {
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-top-color: #e6e6e6;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
+  margin-top: -1px;
+  max-height: 200px;
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  z-index: 2004;
+  -webkit-overflow-scrolling: touch;
+}
+:global(.Select-menu) {
+  max-height: 198px;
+  overflow-y: auto;
+  text-align: left;
+  z-index: 2004;
+}
+:global(.Select-option) {
+  box-sizing: border-box;
+  background-color: #fff;
+  color: #666666;
+  cursor: pointer;
+  display: block;
+  padding: 8px 10px;
+  z-index: 2004;
+}
+:global(.Select-option):last-child {
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+:global(.Select-option.is-focused) {
+  background-color: rgba(0, 126, 255, 0.08);
+  color: #333;
+}
+:global(.Select-option.is-disabled) {
+  color: #cccccc;
+  cursor: default;
+}
+:global(.Select-noresults) {
+  box-sizing: border-box;
+  color: #999999;
+  cursor: default;
+  display: block;
+  padding: 8px 10px;
+}
+:global(.Select--multi) :global(.Select-input) {
+  vertical-align: middle;
+  margin-left: 10px;
+  padding: 0;
+}
+:global(.Select--multi.has-value) :global(.Select-input) {
+  margin-left: 5px;
+}
+:global(.Select--multi) :global(.Select-value) {
+  background-color: rgba(0, 126, 255, 0.08);
+  border-radius: 2px;
+  border: 1px solid rgba(0, 126, 255, 0.24);
+  color: #007eff;
+  display: inline-block;
+  font-size: 0.9em;
+  line-height: 1.4;
+  margin-left: 5px;
+  margin-top: 5px;
+  vertical-align: top;
+}
+:global(.Select--multi) :global(.Select-value-icon),
+:global(.Select--multi) :global(.Select-value-label) {
+  display: inline-block;
+  vertical-align: middle;
+}
+:global(.Select--multi) :global(.Select-value-label) {
+  border-bottom-right-radius: 2px;
+  border-top-right-radius: 2px;
+  cursor: default;
+  padding: 2px 5px;
+}
+:global(.Select--multi) :global(a.Select-value-label) {
+  color: #007eff;
+  cursor: pointer;
+  text-decoration: none;
+}
+:global(.Select--multi) :global(a.Select-value-label):hover {
+  text-decoration: underline;
+}
+:global(.Select--multi) :global(.Select-value-icon) {
+  cursor: pointer;
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+  border-right: 1px solid rgba(0, 126, 255, 0.24);
+  padding: 1px 5px 3px;
+}
+:global(.Select--multi) :global(.Select-value-icon):hover,
+:global(.Select--multi) :global(.Select-value-icon):focus {
+  background-color: rgba(0, 113, 230, 0.08);
+  color: #0071e6;
+}
+:global(.Select--multi) :global(.Select-value-icon):active {
+  background-color: rgba(0, 126, 255, 0.24);
+}
+:global(.Select--multi.is-disabled) :global(.Select-value) {
+  background-color: #fcfcfc;
+  border: 1px solid #e3e3e3;
+  color: #333;
+}
+:global(.Select--multi.is-disabled) :global(.Select-value-icon) {
+  cursor: not-allowed;
+  border-right: 1px solid #e3e3e3;
+}
+:global(.Select--multi.is-disabled) :global(.Select-value-icon):hover,
+:global(.Select--multi.is-disabled) :global(.Select-value-icon):focus,
+:global(.Select--multi.is-disabled) :global(.Select-value-icon):active {
+  background-color: #fcfcfc;
+}
+@keyframes Select-animation-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+@-webkit-keyframes Select-animation-spin {
+  to {
+    -webkit-transform: rotate(1turn);
+  }
+}

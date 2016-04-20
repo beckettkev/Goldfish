@@ -1,4 +1,4 @@
-const keyMirror = require('keymirror');
+import keyMirror from 'keymirror';
 
 module.exports = keyMirror({
   PEOPLE_LOADED: null,

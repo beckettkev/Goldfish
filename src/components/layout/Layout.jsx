@@ -57,9 +57,11 @@ class Layout extends React.Component {
 		}
 
 		onFieldAddClick (option) {
-			this.state.layout.current.push(this.state.layout.available.filter(function(item) { return item.label === option})[0]);
+			const item = this.state.layout.available.filter(function(item) { return item.label === option})[0];
+			
+			this.state.layout.current.push(item);
 
-			this.state.layout.available = this.state.layout.available.filter(function (n){ return n !== option; });
+			this.state.layout.available = this.state.layout.available.filter(function (n){ return n !== item; });
 
 			PeopleSearchActions.updateLayout(this.state.layout);
 		}

@@ -28,12 +28,14 @@ class Layout extends React.Component {
 
 			PeopleSearchActions.fetchLayout();
 
-			this.state = getLayoutState();
+			this.setState(getLayoutState());
 		}
 
 		componentDidUpdate () {
 			if (this.state === null) {
-				this.state = getLayoutState();
+				PeopleSearchActions.fetchLayout();
+
+				this.setState(getLayoutState());
 			}
 		}
 
@@ -55,7 +57,7 @@ class Layout extends React.Component {
 		}
 
 		onFieldAddClick (option) {
-			this.state.layout.current.push(option);
+			this.state.layout.current.push(this.state.layout.available.filter(function(item) { return item.label === option})[0]);
 
 			this.state.layout.available = this.state.layout.available.filter(function (n){ return n !== option; });
 
@@ -96,21 +98,21 @@ class Layout extends React.Component {
 			);
 		}
 
-		getAvailableLayoutFieldsHolder () {
-			if (this.state.layout.available.length > 0) {
+		getAvailableLayoutFieldsHolder (available) {
+			if (available.length > 0) {
 				return (
 					<div key="available">
 						<p styleName='info'><strong>Add</strong> additional items to the layout.</p>
 							<Available 
-								options={this.state.layout.available}
+								options={available}
 								onChange={this.onFieldAddClick.bind(this)} />
 					</div>
 				);
 			}
 		}
 
-		getCurrentLayoutFieldsHolder () {
-			if (this.state.layout.current.length > 0) {
+		getCurrentLayoutFieldsHolder (current) {
+			if (current.length > 0) {
 				return(
 					<div className={'content'}>
 						<p styleName='info'><strong>Re-order</strong> and <strong>remove</strong> items from the layout.</p>
@@ -118,9 +120,9 @@ class Layout extends React.Component {
 						<div key='current-layout-fields' styleName={'sortable-container'}>
 							<SortableItems 
 								name='sort-current' 
-								items={this.state.layout.current} 
+								items={current} 
 								onSort={this.handleLayoutSort.bind(this)}>
-								{this.state.layout.current.map(this.createLayoutItems.bind(this, 'current'))}
+								{current.map(this.createLayoutItems.bind(this, 'current'))}
 							</SortableItems>
 						</div>
 					</div>
@@ -142,9 +144,9 @@ class Layout extends React.Component {
 								suffix='Layout' />
 						</div>
 					
-						{this.getAvailableLayoutFieldsHolder()}
+						{this.getAvailableLayoutFieldsHolder(this.state.layout.available)}
 							
-						{this.getCurrentLayoutFieldsHolder()}
+						{this.getCurrentLayoutFieldsHolder(this.state.layout.current)}
 					</div>
 				);
 			}

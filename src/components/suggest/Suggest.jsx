@@ -60,7 +60,9 @@ function renderSuggestion (suggestion, { value, valueBeforeUpDown }) {
 					const className = part.highlight ? 'highlight' : null;
 
 					return (
-						<span className={className} key={index}>{part.text}</span>
+						<span className={className} key={index}>
+							{part.text}
+						</span>
 					);
 				})
 			}

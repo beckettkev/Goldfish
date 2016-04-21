@@ -8,9 +8,9 @@ import FavouriteStore from '../../stores/FavouriteStore';
 import PeopleSearchActions from '../../actions/PeopleSearchActions';
 
 function getStoreFavouriteState () {
-		return {
-				favourites: FavouriteStore.getCurrentFavourites()
-		};
+	return {
+		favourites: FavouriteStore.getCurrentFavourites()
+	};
 }
 
 class Favourites extends React.Component {

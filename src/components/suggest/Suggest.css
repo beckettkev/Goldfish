@@ -99,38 +99,6 @@
   line-height: 1 !important;
 }
 
-:global(.react-tagsinput) {
-  overflow: hidden;
-  width: 360px;
-}
-
-:global(.react-tagsinput-tag) {
-  background-color: #666666;
-  color: #ffffff;
-  display: inline-block;
-  font-size: 15px;
-  font-weight: 400;
-  margin-bottom: 5px;
-  margin-right: 5px;
-  padding: 10px !important; 
-}
-
-:global(.react-tagsinput-remove) {
-  cursor: pointer;
-  font-weight: bold;
-}
-:global(.react-tagsinput-tag) a,
-:global(.react-tagsinput-tag) a:link {
-  text-decoration: none;
-  color: #ffffff;
-}
-:global(.react-tagsinput-tag) a:hover {
-  cursor:pointer;
-}
-:global(.react-tagsinput-tag) a::before {
-  content: " ×";
-}
-
 :global(.react-tagsinput-input) {
   background: transparent;
   border: 0;

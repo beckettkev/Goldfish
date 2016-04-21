@@ -1,35 +1,13 @@
 import React from 'react';
 import Autosuggest from './autosuggest/AutosuggestContainer';
 import AutosuggestHighlight from 'autosuggest-highlight';
+import Tag from '../tag/Tag';
 import {Button} from 'react-toolbox/lib/button';
 import styles from './Suggest.css';
 import cssModules from 'react-css-modules';
 import TaxonomyStore from '../../stores/TaxonomyStore';
 import PeopleSearchActions from '../../actions/PeopleSearchActions';
 import DefaultConstants from '../../constants/default.js';
-
-function renderTag (props) {
-	let {tag, key, onRemove, className, classNameRemove} = props;
-	
-	const searchTermStyles = {
-		display: 'none !important'
-	};
-
-	return (
-		<span key={key} className={className}>
-			<span style={searchTermStyles} className='search-term'>{tag.search}</span>
-			{tag.name}
-			<a className={classNameRemove} onClick={(e) => onRemove(key)} />
-		</span>
-	);
-}
-
-renderTag.propTypes = {
-	key: React.PropTypes.number,
-	tag: React.PropTypes.string,
-	onRemove: React.PropTypes.function,
-	classNameRemove: React.PropTypes.string
-};
 
 function renderLayout (tagComponents) {
 	return (
@@ -104,8 +82,6 @@ function setTaxonomySearchResults () {
 	this.setState({ suggestions: TaxonomyStore.getCurrentSuggestions() });
 }
 
-
-
 class Suggest extends React.Component {
 
 	constructor (props) {
@@ -143,7 +119,7 @@ class Suggest extends React.Component {
 		validationRegex: /.*/
 	};
 
-	_removeTag (index) {
+	removeTag (index) {
 		const tags = this.props.tags.concat([]);
 
 		if (index > -1 && index < tags.length) {
@@ -196,16 +172,6 @@ class Suggest extends React.Component {
 		return suggestion.name;
 	}
 
-	handleClick (e) {
-		if (e.target === this.refs.div) {
-			this.focus();
-		}
-	}
-
-	handleRemove (tag) {
-		this._removeTag(tag);
-	}
-
 	componentDidUpdate () {
 		if (this.state === null) {
 			this.setState({
@@ -215,17 +181,7 @@ class Suggest extends React.Component {
 			});
 		}
 	}
-	/*
-	componentDidUpdate () {
-		if (this.state === null) {
-			this.state = {
-				tag: '',
-				value: '',
-				suggestions: []
-			};
-		}
-	}
-	*/
+
 	componentDidMount () {
 		TaxonomyStore.addChangeListener(this.onComponentChange.bind(this));
 	}
@@ -331,28 +287,34 @@ class Suggest extends React.Component {
 
 			let tagComponents = tags.length > 0 ?
 				renderLayout(tags.map((tag, index) => {
-					return renderTag({key: index, tag, onRemove: this.handleRemove.bind(this), className: 'react-tagsinput-tag', removeClassName: 'react-tagsinput-remove'});
+					return (
+						<Tag 
+							key={index}
+							item={index}
+							tag={tag}
+							onRemove={this.removeTag.bind(this)}
+							className={'react-tagsinput-tag'} 
+							removeClassName={'react-tagsinput-remove'} />
+					);
 				})) : '';
 
 			return (
-					<div key='autosuggest-region'className={'animated flipInX'}>
-
-									<Autosuggest
-										key='goldfish-autosuggest'
-										multiSection={true}
-										suggestions={suggestions}
-										onSuggestionsUpdateRequested={this.onSuggestionsUpdateRequested.bind(this)}
-										getSuggestionValue={this.getSuggestionValue.bind(this)}
-										renderSuggestion={renderSuggestion.bind(this)}
-										renderSectionTitle={renderSectionTitle.bind(this)}
-										getSectionSuggestions={getSectionSuggestions.bind(this)}
-										inputProps={inputProps} />
-									<div ref='div' onClick={this.handleClick.bind(this)} {...other}>
-											{tagComponents}
-									</div>
-									{this.renderSearchButton()}
-
-					</div>
+				<div key='autosuggest-region'className={'animated flipInX'}>
+					<Autosuggest
+						key='goldfish-autosuggest'
+						multiSection={true}
+						suggestions={suggestions}
+						onSuggestionsUpdateRequested={this.onSuggestionsUpdateRequested.bind(this)}
+						getSuggestionValue={this.getSuggestionValue.bind(this)}
+						renderSuggestion={renderSuggestion.bind(this)}
+						renderSectionTitle={renderSectionTitle.bind(this)}
+						getSectionSuggestions={getSectionSuggestions.bind(this)}
+						inputProps={inputProps} />
+						<div ref='div' {...other}>
+							{tagComponents}
+						</div>
+						{this.renderSearchButton()}
+				</div>
 			);
 		} else {
 			this.componentDidUpdate();

@@ -10,9 +10,9 @@ class Available extends React.Component {
 	}
 
 	change (option) {
-	  if (option.label !== 'Add a field...') {
-	  	this.props.onChange(option);
-	  }
+		if (option.label !== 'Add a field...') {
+			this.props.onChange(option);
+		}
 	}
 
 	render () {

@@ -165,6 +165,13 @@ const Goldfish = {
 			);
 		}, 'goldfish.min.js');
 	},
+	GetPrimaryColour: function () {
+		if (typeof Goldfish.options.css !== 'undefined' && "primary" in Goldfish.options.css) {
+			return Goldfish.options.css.primary;
+		} else {
+			return typeof jQuery('#O365_NavHeader').css('backgroundColor') !== 'undefined' ? jQuery('#O365_NavHeader').css('backgroundColor') : typeof jQuery('#suiteBarLeft').css('backgroundColor') !== 'undefined' ? jQuery('#suiteBarLeft').css('backgroundColor') : '#3E5875';
+		}	
+	},
 	OverrideThemeColours: function () {
 		if (typeof jQuery !== 'undefined') {
 			if (document.getElementById('component') !== null) {
@@ -173,14 +180,7 @@ const Goldfish = {
 				}
 				
 				const head = document.head || document.getElementsByTagName('head')[0];
-				
-				var colour; 
-				if (Goldfish && "options" in Goldfish && "css" in Goldfish.options && "primary" in Goldfish.options.css) {
-					colour = Goldfish.options.css.primary;
-				}
-				else{
-					colour  = typeof jQuery('#O365_NavHeader').css('backgroundColor') !== 'undefined' ? jQuery('#O365_NavHeader').css('backgroundColor') : typeof jQuery('#suiteBarLeft').css('backgroundColor') !== 'undefined' ? jQuery('#suiteBarLeft').css('backgroundColor') : '#3E5875';
-				}
+				const colour = Goldfish.GetPrimaryColour();
 				
 				const overrides = document.createElement('style');
 

@@ -171,9 +171,17 @@ const Goldfish = {
 				if (Goldfish.interval !== null) {
 					window.clearInterval(Goldfish.interval);
 				}
-
+				
 				const head = document.head || document.getElementsByTagName('head')[0];
-				const colour = typeof jQuery('#O365_NavHeader').css('backgroundColor') !== 'undefined' ? jQuery('#O365_NavHeader').css('backgroundColor') : typeof jQuery('#suiteBarLeft').css('backgroundColor') !== 'undefined' ? jQuery('#suiteBarLeft').css('backgroundColor') : '#3E5875';
+				
+				var colour; 
+				if (Goldfish && "options" in Goldfish && "css" in Goldfish.options && "primary" in Goldfish.options.css) {
+					colour = Goldfish.options.css.primary;
+				}
+				else{
+					colour  = typeof jQuery('#O365_NavHeader').css('backgroundColor') !== 'undefined' ? jQuery('#O365_NavHeader').css('backgroundColor') : typeof jQuery('#suiteBarLeft').css('backgroundColor') !== 'undefined' ? jQuery('#suiteBarLeft').css('backgroundColor') : '#3E5875';
+				}
+				
 				const overrides = document.createElement('style');
 
 				overrides.type = 'text/css';
@@ -219,7 +227,11 @@ window.Goldfish = window.Goldfish || Goldfish;
 
 /*
 	You can load Goldfish with or without options (options are shown in the readme.md file)
-
+	var options = {
+		css: {
+			primary: "#00FF00"
+		}
+	}
 	Goldfish.Create();
 	Goldfish.Create(options);
 */

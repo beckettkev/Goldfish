@@ -26,7 +26,11 @@ Goldfish is a React.JS inline People Search tool for SharePoint 2013 (SPO). This
 		    userInformationFields: [
 		        'JobTitle',
 		        'Department'
-		    ]
+		    ],
+			css: {
+				// Background primary color to overrides
+				primary: "#00FF00"
+			}
 	};
 
 	Goldfish.Create(options);

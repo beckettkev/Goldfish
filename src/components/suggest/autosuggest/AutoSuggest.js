@@ -1,4 +1,4 @@
-//https://github.com/reactjs/react-autocomplete/blob/master/LICENSE
+//https://github.com/moroshko/react-autosuggest/blob/master/LICENSE
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { inputFocused, inputBlurred, inputChanged, updateFocusedSuggestion,
@@ -313,18 +313,19 @@ class Autosuggest extends Component {
 				const renderItem = item => renderSuggestion(item, { value, valueBeforeUpDown });
 
 				return (
-					<Autowhatever multiSection={multiSection}
-												items={items}
-												renderItem={renderItem}
-												renderSectionTitle={renderSectionTitle}
-												getSectionItems={getSectionSuggestions}
-												focusedSectionIndex={focusedSectionIndex}
-												focusedItemIndex={focusedSuggestionIndex}
-												inputProps={autowhateverInputProps}
-												itemProps={itemProps}
-												theme={theme}
-												id={id}
-												ref={this.saveInput} />
+					<Autowhatever 
+						multiSection={multiSection}
+						items={items}
+						renderItem={renderItem}
+						renderSectionTitle={renderSectionTitle}
+						getSectionItems={getSectionSuggestions}
+						focusedSectionIndex={focusedSectionIndex}
+						focusedItemIndex={focusedSuggestionIndex}
+						inputProps={autowhateverInputProps}
+						itemProps={itemProps}
+						theme={theme}
+						id={id}
+						ref={this.saveInput} />
 				);
 	}
 }

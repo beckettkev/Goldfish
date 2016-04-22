@@ -54,7 +54,7 @@ function renderSuggestion (suggestion, { value, valueBeforeUpDown }) {
 	const parts = AutosuggestHighlight.parse(suggestion.name, matches);
 
 	return (
-		<span>
+		<span className='animated'>
 			{
 				parts.map((part, index) => {
 					const className = part.highlight ? 'highlight' : null;
@@ -301,9 +301,10 @@ class Suggest extends React.Component {
 				})) : '';
 
 			return (
-				<div key='autosuggest-region'className={'animated flipInX'}>
+				<div key='autosuggest-region'>
 					<Autosuggest
 						key='goldfish-autosuggest'
+						className={'animated flipInX'}
 						multiSection={true}
 						suggestions={suggestions}
 						onSuggestionsUpdateRequested={this.onSuggestionsUpdateRequested.bind(this)}

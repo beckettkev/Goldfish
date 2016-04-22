@@ -39,9 +39,9 @@
     "cross-env": "^1.0.1",
     "css-loader": "^0.23.1",
     "enzyme": "^1.2.0",
-    "eslint": "^1.6.0",
-    "eslint-config-airbnb": "^0.1.0",
-    "eslint-plugin-react": "^2.3.0",
+    "eslint": "^1.10.3",
+    "eslint-config-airbnb": "^0.1.1",
+    "eslint-plugin-react": "^2.7.1",
     "express": "^4.13.3",
     "extract-text-webpack-plugin": "^1.0.1",
     "imports-loader": "^0.6.5",
@@ -115,7 +115,7 @@
   "scripts": {
     "start": "node server.js --colors",
     "build": "cross-env NODE_ENV=production UV_THREADPOOL_SIZE=100 webpack --config ./webpack.config",
-    "lint": "eslint --ext .js --ext .jsx ./test ./src; exit 0",
+    "lint": "eslint . --ext .jsx --ext .js; exit 0",
     "test": "karma start karma.config.js",
     "test:watch": "karma start"
   },

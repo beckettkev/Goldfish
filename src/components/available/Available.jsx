@@ -21,10 +21,11 @@ class Available extends React.Component {
 				const transition = this.props.options.length > 0 ? 'flipInY' : 'flipOutY';
 
 				return (
-					<div className={'selector animated ' + transition}>
+					<div key='available-selector'>
 						<ReactSelect
-							name="available-fields "
-							placeholder="Add a field..."
+							name='available-fields'
+						    className={'selector animated ' + transition}
+							placeholder='Add a field...'
 							options={this.props.options}
 							onChange={this.change.bind(this)} />
 					</div>

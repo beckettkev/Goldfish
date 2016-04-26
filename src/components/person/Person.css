@@ -75,10 +75,10 @@
 	min-width: auto !important;
 	margin: -3px 2px 5px 0;
 	padding: 0px !important;
-	height: 2.5rem !important;
-	width: 2.5rem !important;
+	height: 2.2rem !important;
+	width: 2.2rem !important;
 	line-height: 0.8;
-	border-radius: 0 0 10% 10%;
+	border-radius: 10%;
 }
 .command button span {
 	line-height: 1 !important;

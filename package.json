@@ -115,7 +115,7 @@
   "scripts": {
     "start": "node server.js --colors",
     "build": "cross-env NODE_ENV=production UV_THREADPOOL_SIZE=100 webpack --config ./webpack.config",
-    "lint": "eslint . --ext .jsx --ext .js; exit 0",
+    "lint": "eslint src/index.js --ext .jsx --ext .js; exit 0",
     "test": "karma start karma.config.js",
     "test:watch": "karma start"
   },

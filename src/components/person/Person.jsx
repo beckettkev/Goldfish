@@ -6,11 +6,8 @@ import Persona from '../persona/Persona.jsx';
 import FavouriteStore from '../../stores/FavouriteStore';
 import PeopleSearchActions from '../../actions/PeopleSearchActions';
 import Button from 'react-toolbox/lib/button';
-import Tooltip from 'react-toolbox/lib/tooltip';
 import FileSaver from '../../data/filesaver';
 import Exporter from '../../utils/exporter';
-
-const TooltipButton = Tooltip(Button);
 
 /*
 	TODO: Refactor this class it is horrible and it makes me want to cry.
@@ -108,11 +105,10 @@ class Person extends React.Component {
 		//otherwise show the favourite pin button
 		return (
 			<div key={'item-favourite-button'} styleName={icon} className={icon}>
-				<TooltipButton 
+				<Button 
 					icon={icon} 
 					onClick={bindClick} 
 					floating accent mini 
-					tooltip={icon.charAt(0).toUpperCase() + icon.slice(1) + ' favourite'} 
 					disabled={current.disabled} />
 			</div>
 		);
@@ -184,10 +180,9 @@ class Person extends React.Component {
 
 		return (
 			<span key={'command-documents-' + key} styleName='command' className='commandor'>
-				<TooltipButton
+				<Button
 					icon={'insert_drive_file'}
 					floating accent mini
-					tooltip={'Documents by ' + person.items.Cells.PreferredName}
 					onClick={bindClick} />
 			</span>
 		);
@@ -199,10 +194,9 @@ class Person extends React.Component {
 
 		return (
 			<span key={'command-everything-' + key} styleName='command' className='commandor'>
-				<TooltipButton
+				<Button
 					icon={'share'}
 					floating accent mini
-					tooltip={'Everything by ' + person.items.Cells.PreferredName}
 					onClick={bindClick} />
 			</span>
 		);
@@ -213,10 +207,9 @@ class Person extends React.Component {
 
 		return (
 			<span key={'command-yammer-' + key} styleName='command' className='commandor'>
-				<TooltipButton
+				<Button
 					icon={'comment'}
 					floating accent mini
-					tooltip={'Conversations by ' + person.items.Cells.PreferredName}
 					onClick={bindClick} />
 			</span>
 		);
@@ -227,10 +220,9 @@ class Person extends React.Component {
 
 		return (
 			<span key={'command-outlook-' + key} styleName='command' className='commandor'>
-				<TooltipButton
+				<Button
 					icon={'contact_mail'}
 					floating accent mini
-					tooltip={'Export for Outlook'}
 					onClick={bindClick} />
 			</span>
 		);

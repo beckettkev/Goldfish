@@ -4,7 +4,6 @@ import cssModules from 'react-css-modules';
 import Title from '../title/Title.jsx';
 import Available from '../available/Available.jsx';
 import Button from 'react-toolbox/lib/button';
-import Tooltip from 'react-toolbox/lib/tooltip';
 import {SortableItems, SortableItem} from 'react-sortable-component';
 import LayoutStore from '../../stores/LayoutStore';
 import PeopleSearchActions from '../../actions/PeopleSearchActions';
@@ -14,8 +13,6 @@ function getLayoutState () {
 		layout: LayoutStore.getLayout()
 	};
 }
-
-const TooltipButton = Tooltip(Button);
 
 class Layout extends React.Component {
 
@@ -88,12 +85,11 @@ class Layout extends React.Component {
 							{field.label}
 						</div>
 						<div styleName={'removal-button'} className={'animated flipInY'}>
-							<TooltipButton 
+							<Button 
 								icon='remove' 
 								key={i} 
 								onClick={this.onFieldRemoveClick.bind(this, i)} 
-								floating accent mini 
-								tooltip='Remove field' />
+								floating accent mini />
 						</div>
 					</div>
 				</SortableItem>

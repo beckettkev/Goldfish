@@ -52,6 +52,7 @@ class PeopleSearch extends React.Component {
 		super(props);
 
 		this.applyOptions();
+
 		//the very first thing we do in the app is apply any options present
 		this.setInitialState();
 	}

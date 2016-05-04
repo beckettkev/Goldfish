@@ -1,6 +1,20 @@
 import React from 'react';
 import PeopleSearch from './views/PeopleSearch/PeopleSearch.jsx';
 
+// custom event polyfill for IE9 - IE10
+(function () {
+  function CustomEvent (event, params) {
+    params = params || { bubbles: false, cancelable: false, detail: undefined };
+    
+    let evt = document.createEvent('CustomEvent');
+    evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+    
+    return evt;
+   };
+  CustomEvent.prototype = window.CustomEvent.prototype;
+  window.CustomEvent = CustomEvent;
+})();
+
 const Goldfish = {
 	options: {
 		//The default title (overridable with options)

@@ -8,13 +8,13 @@
 .item span {
 	display: block;
 }
-
+/*
 .item .phone {
 	font-size: 14px;
 	float:left;
 	padding:2px 3px;
 }
-
+*/
 .item a:link {
 	text-decoration: underline;
 	/* font-weight: bold; */
@@ -64,6 +64,10 @@
 .add input[type=button][disabled],
 .add button[disabled] {
 	opacity: 0.4;
+}
+
+div.buttons {
+	height: 50px;
 }
 
 .command {

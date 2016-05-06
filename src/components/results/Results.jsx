@@ -42,7 +42,7 @@ class Results extends React.Component {
 		//This function gets called for every search result and renders a person component
 		return (
 			<div styleName={'item-container'} key={'result-item-' + i}>
-				<div className={'item ms-bgc-w ms-bcl-nl o365cs-notifications-message'} style={this.itemStyles} styleName='results-items'>
+				<div className={'item ms-bgc-w ms-bcl-nl o365cs-notifications-message'} styleName='results-items'>
 					<Person
 						data={item}
 						layout={this.props.layout}
@@ -70,15 +70,8 @@ class Results extends React.Component {
 			}
 	}
 
-	getCommandButtonsAvailable (current) {
-		//This function is used to see if the result layout being used to render the data contains any command buttons
-		return current.some(function (el) {
-			return el.label === 'Documents' || el.label === 'Everything' || el.label === 'Export to Outlook' || el.label === 'Yammer';
-		});
-	}
-
 	render () {
-		this.itemStyles = this.getCommandButtonsAvailable(this.props.layout.current) ? { paddingBottom: '50px' } : { paddingBottom: '0' };
+		//this.itemStyles = { paddingBottom: '50px' };
 
 		return (
 			<div id={'component-results'} className={'o365-NFP-section'} styleName='results-container'>

@@ -46,12 +46,6 @@ class Layout extends React.Component {
 			layout.available = layout.available.concat(e.detail.layouts).sort();
 
 			PeopleSearchActions.updateLayout(layout);
-			
-			/*
-				TO DO: Push each template function...
-						need to work out how this will work with Local Storage.
-			*/
-			console.log('LAYOUTS UPDATED BY CLIENT!');
 		}
 	}
 

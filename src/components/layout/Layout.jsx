@@ -14,6 +14,18 @@ function getLayoutState () {
 	};
 }
 
+function filterFromCurrentLayout(newLayouts, current) {
+	return newLayouts.filter(function(item) {
+		return current.indexOf(item) === -1;
+	});
+}
+
+function joinAndSortLayoutArray(source, target) {
+	return source.concat(target).sort(function(a, b) {
+								    return a.label === b.label ? 0 : -1;
+								});
+}
+
 class Layout extends React.Component {
 
 	static propTypes: {
@@ -38,20 +50,26 @@ class Layout extends React.Component {
 		}
 	}
 
-	pushNewLayoutItems (e) {
+	//Only add new items when the state is ready
+	addNewLayoutItems (e) {
 		if (typeof e.detail.layouts !== 'undefined') {
+			if (typeof this.state === 'undefined') {
+				setTimeout(function() { this.addNewLayoutItems(e); }, 800);
+			} else {
+				const newLayouts = filterFromCurrentLayout(e.detail.layouts, this.state.layout.current);
 
-			let layout = this.state.layout;
+				let layout = this.state.layout;
 
-			layout.available = layout.available.concat(e.detail.layouts).sort();
+				layout.available = joinAndSortLayoutArray(layout.available, newLayouts);
 
-			PeopleSearchActions.updateLayout(layout);
+				PeopleSearchActions.updateLayout(layout);
+			}
 		}
 	}
 
 	registerLayoutListener () {
 		if (typeof window.goldfishLayoutEventRegistered === 'undefined') {
-			document.addEventListener("Goldfish.Layouts", this.pushNewLayoutItems.bind(this), false);
+			document.addEventListener("Goldfish.Layouts", this.addNewLayoutItems.bind(this), false);
 
 			window.goldfishLayoutEventRegistered = true;
 		}

@@ -8,7 +8,7 @@ module.exports = {
 	DEFAULT_CURRENT_LAYOUT: [
 		{ 
 			label: 'Name (with profile link)', 
-			value:'Name (with profile link)', 
+			value: 'Name (with profile link)', 
 			key: 0,
 			template: {
 				value: 'PreferredName',
@@ -18,7 +18,7 @@ module.exports = {
 		},
 		{ 
 			label: 'Job Title', 
-			value:'Job Title', 
+			value: 'Job Title', 
 			key: 1,
 			template: {
 				value: 'JobTitle'

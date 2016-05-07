@@ -231,6 +231,21 @@ const Goldfish = {
 		});
 
 		return valid;
+	},
+	RegisterLayouts: function (layouts) {
+		const newLayoutsAdded = new CustomEvent(
+			"Goldfish.Layouts", 
+			{
+				detail: {
+					layouts: layouts,
+					time: new Date(),
+				},
+				bubbles: true,
+				cancelable: true
+			}
+		);
+
+		document.dispatchEvent(newLayoutsAdded);
 	}
 };
 

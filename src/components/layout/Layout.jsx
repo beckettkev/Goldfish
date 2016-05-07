@@ -16,7 +16,7 @@ function getLayoutState () {
 
 function filterFromCurrentLayout(newLayouts, current) {
 	return newLayouts.filter(function(item) {
-		return current.indexOf(item) === -1;
+		return current.every(function(existing) { return existing.label !== item.label; });
 	});
 }
 

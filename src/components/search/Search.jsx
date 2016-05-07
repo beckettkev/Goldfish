@@ -60,13 +60,15 @@ class Search extends React.Component {
 		//a search has been commited so update with the new tag(s)
 		//TODO: move this common function to somewhere central
 		if (this.state.text.indexOf(':') > -1 && tags.length > 0) {
+			const properties = typeof this.props.properties !== 'undefined' ? this.props.properties : '';
+
 			const searchTerm = tags.map(function (tag) { return tag.search; }).join(' ');
 			
 			this.onInputChange(this, searchTerm);
 
 			this.props.onSearching();
 
-			PeopleSearchActions.fetchData(Utils.getFullSearchQueryUrl(searchTerm), searchTerm, 0);
+			PeopleSearchActions.fetchData(Utils.getFullSearchQueryUrl(searchTerm, properties), searchTerm, 0);
 		} else if (tags.length === 0) {
 			PeopleSearchActions.showNoResults();
 		}
@@ -94,7 +96,9 @@ class Search extends React.Component {
 	}
 
 	searchForPeople () {
-		const url = Utils.getFullSearchQueryUrl(this.state.text);
+		const properties = typeof this.props.properties !== 'undefined' ? this.props.properties : '';
+
+		const url = Utils.getFullSearchQueryUrl(this.state.text, properties);
 
 		this.props.onSearching();
 

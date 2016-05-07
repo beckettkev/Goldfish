@@ -183,6 +183,7 @@ class PeopleSearch extends React.Component {
 							<Search 
 								onSearchChanged={this.onSearch.bind(this)}
 								onSearching={this.onSearching.bind(this)}
+								properties={this.props.options.properties}
 								settings={this.state.settings}
 								termsets={this.state.termsets}
 								userInformationFields={this.state.userInformationFields} />
@@ -194,6 +195,7 @@ class PeopleSearch extends React.Component {
 							<Paging 
 								count={this.state.count}
 								onSearching={this.onSearching.bind(this)}
+								properties={this.props.options.properties}
 								pageNum={this.state.pageNum}
 								term={this.state.term}
 								onPaging={this.onPage.bind(this)} />

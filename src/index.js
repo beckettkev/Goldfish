@@ -18,7 +18,8 @@ import PeopleSearch from './views/PeopleSearch/PeopleSearch.jsx';
 const Goldfish = {
 	options: {
 		//The default title (overridable with options)
-		title: 'Goldfish'
+		title: 'Goldfish',
+		properties: ''
 	},
 
 	interval: null,
@@ -221,9 +222,10 @@ const Goldfish = {
 		const safe = [
 			'title',
 			'css',
+			'layout',
+			'properties',
 			'suggest',
-			'settings',
-			'layout'
+			'settings'
 		];
 
 		const valid = Object.keys(options).some(function (item) {

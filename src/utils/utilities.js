@@ -68,8 +68,10 @@ module.exports = {
           return `${window.location.origin}/${path[1]}/${path[2]}`;
       }
   },
-  getFullSearchQueryUrl: function (term) {
-      return this.getBaseUrl().replace('_layouts/15', '') + "/_api/search/query?sourceid='b09a7990-05ea-4af9-81ef-edfab16c4e31'&querytext='" + term.replace("'", "") + "*'&selectproperties='JobTitle,Department,Path,WorkPhone,MobilePhone,BaseOfficeLocation,PreferredName,WorkEmail,Office,Region,SipAddress'&sortby='PreferredName:descending'";
+  getFullSearchQueryUrl: function (term, selectProperties) {
+      const properties = selectProperties !== '' ? `, ${selectProperties}` : '';
+      
+      return `${this.getBaseUrl().replace('_layouts/15', '')}/_api/search/query?sourceid='b09a7990-05ea-4af9-81ef-edfab16c4e31'&querytext='${term.replace("'", "")}*'&selectproperties='JobTitle,Department,Path,WorkPhone,MobilePhone,BaseOfficeLocation,PreferredName,WorkEmail,Office,Region,SipAddress,SPS-Skills,Manager${properties}'&sortby='PreferredName:descending'`;
   },
   removeEncodedAmpersand: function (str) {
       return str.replace('amp;', '');

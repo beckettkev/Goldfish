@@ -34,7 +34,9 @@ class Paging extends React.Component {
 	}
 
 	getPageResults (pageNum) {
-		const url = Utils.getFullSearchQueryUrl(this.props.term);
+		const properties = typeof this.props.properties !== 'undefined' ? this.props.properties : '';
+
+		const url = Utils.getFullSearchQueryUrl(this.props.term, properties);
 
 		this.props.onSearching();
 

@@ -36,7 +36,7 @@ With version 1.0.0, we have changed the way layouts and person components work a
 		        'Department'
 		    ],
 			css: {
-				// Background primary color to overrides
+				//If you want to override the primary color
 				primary: "#00FF00"
 			}
 	};

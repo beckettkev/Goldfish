@@ -7,6 +7,47 @@ import Button from 'react-toolbox/lib/button';
 import FileSaver from '../../data/filesaver';
 import Exporter from '../../utils/exporter';
 
+function getPersonValuesFromArray(person, key) {
+	/*
+	[
+		'Skills: {0}, Past Projects {1},
+		'SPS-Skills'
+		'PastProjects'
+	];
+	*/
+	return key.map(function(item) {
+		return person[item];
+	}).filter(function(n){ return n != undefined });
+}
+
+function getConstructedFormatedString (format, values) {
+	return format.replace(/{(\d+)}/g, function(match, number) { 
+		return typeof values[number] != 'undefined'
+			? values[number] 
+			: match;
+	});
+}
+
+function getFormatStringOrValue (key, person) {
+	if (key.indexOf('{0}') > -1) {
+		/*
+		At this stage key is a string which needs to be converted into an array of strings.
+		e.g. 'Skills: {0}, Past Projects {1}|SPS-Skills|PastProjects'
+		*/
+		const format = key.split('|')[0];
+		const values = getPersonValuesFromArray(person, key.split('|').splice(1));
+		
+		if (values.join('').length > 0) {
+			return getConstructedFormatedString(format, values);
+		} else {
+			return '';
+		}		
+	} else {
+		//e.g. SPS-Skills
+		return person[key];
+	}
+}
+
 class Row extends React.Component {
 
 	constructor (props) {
@@ -17,7 +58,7 @@ class Row extends React.Component {
 		if (person[value] === null) {
 			return null;
 		} else {
-			return Utils.getTrimmedString(person[value], length);
+			return Utils.getTrimmedString(getFormatStringOrValue(value, person), length);
 		}
 	}
 
@@ -29,7 +70,7 @@ class Row extends React.Component {
 		} else {
 			return (
 				<a key={`item-${href}-${key}`} href={`${prefix}${person[href]}`} target={target}>
-					{Utils.getTrimmedString(person[value], length)}
+					{Utils.getTrimmedString(getFormatStringOrValue(value, person), length)}
 				</a>
 			);	
 		}		
@@ -45,12 +86,12 @@ class Row extends React.Component {
 		);
 	}
 
-    /**
-    * Function that takes the information about the item and layout and renders the row
-    * @param {key} the index of the item
-    * @param {layout} the row layout
-    * @param {person} the person data
-    */
+	/**
+	* Function that takes the information about the item and layout and renders the row
+	* @param {key} the index of the item
+	* @param {layout} the row layout
+	* @param {person} the person data
+	*/
 	getRowFromLayout(key, layout, person) {
 		let item = [];
 		

@@ -51,18 +51,18 @@ class PeopleSearch extends React.Component {
 	constructor (props) {
 		super(props);
 
-		this.applyOptions();
-
 		//the very first thing we do in the app is apply any options present
 		this.setInitialState();
+
+		this.applyOptions = this.applyOptions.bind(this);
 	}
 
 	componentDidUpdate () {
 		//ie workaround
 		if (this.state === null) {
-			this.applyOptions();
-
 			this.setInitialState();
+
+			this.applyOptions();
 		}
 	}
 

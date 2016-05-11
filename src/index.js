@@ -1,3 +1,4 @@
+//import 'babel-polyfill';
 import React from 'react';
 import PeopleSearch from './views/PeopleSearch/PeopleSearch.jsx';
 
@@ -42,6 +43,24 @@ const Goldfish = {
 		 };
 
 		 document.getElementsByTagName('head')[0].appendChild(sheet);
+	},
+	LoadScript: function (href, callback) {
+		const link = document.createElement('script');
+		link.setAttribute('type', 'text/javascript');
+		link.setAttribute('src', href);
+
+		//Handle IE
+		link.onreadystatechange = function () {
+			if (this.readyState === 'complete') {
+				callback();
+			}
+		};
+		//Handle better browsers
+		link.onload = function () {
+			callback();
+		};
+
+		document.getElementsByTagName('head')[0].appendChild(link);
 	},
 	HouseKeeping: function () {
 		//minimal download strategy page click house keeping
@@ -117,31 +136,20 @@ const Goldfish = {
 		return typeof jQuery !== 'undefined';
 	},
 	GetjQuery: function () {
-		const jQueryFetch = document.createElement('script');
-		jQueryFetch.setAttribute('type', 'text/javascript');
-		jQueryFetch.setAttribute('src', 'https://code.jquery.com/jquery-1.11.3.min.js');
-
-		//Handle IE
-		jQueryFetch.onreadystatechange = function () {
-			if (this.readyState === 'complete') {
-				Goldfish.Swim();
-			}
-		};
-		//Handle better browsers
-		jQueryFetch.onload = function () {
-			Goldfish.Swim();
-		};
-
-		document.getElementsByTagName('head')[0].appendChild(jQueryFetch);
+		Goldfish.LoadScript('https://code.jquery.com/jquery-1.11.3.min.js', Goldfish.Swim);
 	},
+	/*
+		This function checks for necessary dependencies and it will then notify waiting code that the app can run
+	*/
 	Swim: function () {
 		if (!Goldfish.GetjQueryStatus()) {
 			Goldfish.GetjQuery();
 			return false;
 			//check that jQuery has fully loaded...
 		}
-		 //setup the google materials font and animate css for the UI
-		 Goldfish.LoadStyleSheet('https://fonts.googleapis.com/icon?family=Material+Icons');
+		
+		//setup the google materials font and animate css for the UI
+		Goldfish.LoadStyleSheet('https://fonts.googleapis.com/icon?family=Material+Icons');
 	},
 	Create: function (options) {
 		//if options are provided do a cursory check and save them if they are valid

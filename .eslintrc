@@ -2,7 +2,6 @@
 // Copy this file, and add rule overrides as needed.
 {
 	"extends": "airbnb",
-
 	"bitwise": true,
 	"camelcase": true,
 	"curly": true,
@@ -28,7 +27,6 @@
 	"maxstatements": 40,
 	"maxcomplexity": 8,
 	"maxlen": 120,
-
 	"asi": false,
 	"boss": false,
 	"debug": false,

@@ -3,11 +3,10 @@ import { EventEmitter } from 'events';
 import PeopleSearchConstants from '../constants/data';
 import DefaultConstants from '../constants/default';
 import assign from 'object-assign';
-import Utils from '../utils/utilities';
 
 let _favourites = DefaultConstants.DEFAULT_FAVOURITES;
 
-function setPeopleSearchFavourites (favourites) {
+function setPeopleSearchFavourites(favourites) {
   _favourites = favourites;
 }
 
@@ -27,21 +26,21 @@ const FavouriteStore = assign({}, EventEmitter.prototype, {
 
   removeChangeListener(callback) {
     this.removeListener(DefaultConstants.CHANGE_EVENT, callback);
-  }
+  },
 
 });
 
 AppDispatcher.register( action => {
   switch (action.actionType) {
-    case PeopleSearchConstants.GOT_FAVOURITES:
-    case PeopleSearchConstants.FAVOURITES_CHANGED:
-      setPeopleSearchFavourites(
-          action.results
-      );
-      FavouriteStore.emitChange();
-      break;
-    default:
-      // no op
+  case PeopleSearchConstants.GOT_FAVOURITES:
+  case PeopleSearchConstants.FAVOURITES_CHANGED:
+    setPeopleSearchFavourites(
+      action.results
+    );
+    FavouriteStore.emitChange();
+    break;
+  default:
+  // no op
   }
 });
 

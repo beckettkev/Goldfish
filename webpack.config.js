@@ -60,7 +60,10 @@ module.exports = {
 			}
 		),
 		new webpack.optimize.UglifyJsPlugin({
-			comments: false
+			comments: false,
+			compress: {
+				warnings: false
+			}
 		})
 	]
 };

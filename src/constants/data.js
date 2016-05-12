@@ -11,5 +11,5 @@ module.exports = keyMirror({
   GOT_FAVOURITES: null,
   FAVOURITES_CHANGED: null,
   GOT_TAXONOMY: null,
-  GOT_BUSINESSINFO: null
+  GOT_BUSINESSINFO: null,
 });

@@ -15,232 +15,252 @@ import PeopleSearchActions from '../../actions/PeopleSearchActions';
 import Exporter from '../../utils/exporter';
 import SettingsManager from '../../utils/settings';
 
-function getFavouritesState () {
-	PeopleSearchActions.getFavourites();
+function getFavouritesState() {
+  PeopleSearchActions.getFavourites();
 
-	return FavouriteStore.getCurrentFavourites();
+  return FavouriteStore.getCurrentFavourites();
 }
 
-function getLayoutState () {
-	PeopleSearchActions.fetchLayout();
+function getLayoutState() {
+  PeopleSearchActions.fetchLayout();
 
-	return LayoutStore.getLayout();
+  return LayoutStore.getLayout();
 }
 
 class PeopleSearch extends React.Component {
 
-	static propTypes: {
-		options: React.PropTypes.object
-	};
-	
-	setInitialState () {
-		this.state = {
-			items: [],
-			searching: false,
-			refresh: false,
-			settings: [],
-			count: 0,
-			pageNum: 0,
-			term: '',
-			text: '',
-			favourites: getFavouritesState(),
-			layout: getLayoutState()
-		};
-	}
+  constructor(props) {
+    super(props);
 
-	constructor (props) {
-		super(props);
+    // the very first thing we do in the app is apply any options present
+    this.setInitialState();
 
-		//the very first thing we do in the app is apply any options present
-		this.setInitialState();
+    this.applyOptions = this.applyOptions.bind(this);
+  }
 
-		this.applyOptions = this.applyOptions.bind(this);
-	}
+  componentDidUpdate() {
+    // ie workaround
+    if (this.state === null) {
+      this.setInitialState();
 
-	componentDidUpdate () {
-		//ie workaround
-		if (this.state === null) {
-			this.setInitialState();
+      this.applyOptions();
+    }
+  }
 
-			this.applyOptions();
-		}
-	}
+  onSearch(items) {
+    this.setState(items);
 
-	onRefreshFinish () {
-		this.setState({
-			refresh: false
-		});
-	}
+    this.setState({
+      searching: false,
+      refresh: false,
+    });
+  }
 
-	onSettingChange (collection) {
-		this.setState({
-			settings: collection
-		});
+  onSearching() {
+    this.setState({
+      searching: true,
+      items: [],
+      count: 0,
+      pageNum: 0,
+      refresh: false,
+    });
+  }
 
-		this.applyOptions();
-	}
+  onExport() {
+    if (this.state.items.length > 0) {
+      const csv = Exporter.convertArrayObjectsToCsv(this.state.items);
 
-	onSearch (items) {
-		this.setState(items);
+      if (csv.length > 0) {
+        const csvFileName = this.state.term.replace(/ /g, '-');
 
-		this.setState({
-			searching: false,
-			refresh: false
-		});
-	}
+        Exporter.exportCsvStringToFile(csv, csvFileName);
+      }
+    }
+  }
 
-	onSearching () {
-		this.setState({
-			searching: true,
-			items: [],
-			count: 0,
-			pageNum: 0,
-			refresh: false
-		});
-	}
+  onPage(pages) {
+    this.setState(pages);
+  }
 
-	onExport () {
-		if (this.state.items.length > 0) {
-			const csv = Exporter.convertArrayObjectsToCsv(this.state.items);
+  onSettingChange(collection) {
+    this.setState({
+      settings: collection,
+    });
 
-			if (csv.length > 0) {
-				const csvFileName = this.state.term.replace(/ /g, '-');
+    this.applyOptions();
+  }
 
-				Exporter.exportCsvStringToFile(csv, csvFileName);
-			}
-		}
-	}
+  onRefreshFinish() {
+    this.setState({
+      refresh: false,
+    });
+  }
 
-	onPage (pages) {
-		this.setState(pages);
-	}
+  onItemUpdate(index, favourite, type) {
+    const items = this.state.items;
 
-	onFavouritesChange (favourites) {
-		this.setState({favourites: favourites});
-	}
+    if (type === 'person') {
+      items[index].Cells.Favourite = favourite;
 
-	onItemUpdate (index, favourite, type) {
-		let items = this.state.items;
+      this.setState({ items: items });
+    } else {
+      // refresh the view now the favourites have changed
+      this.setState({ refresh: true });
+    }
+  }
 
-		if (type === 'person') {
-		  items[index].Cells.Favourite = favourite;
+  onItemUpdate(index, favourite, type) {
+    const items = this.state.items;
 
-		  this.setState({ items: items });
-		} else {
-		  //refresh the view now the favourites have changed
-		  this.setState({ refresh: true });
-		}
-	}
+    if (type === 'person') {
+      items[index].Cells.Favourite = favourite;
 
-	onLayoutChange (view) {
-		this.setState(view);
-	}
+      this.setState({ items: items });
+    } else {
+      // refresh the view now the favourites have changed
+      this.setState({ refresh: true });
+    }
+  }
 
-	applyOptions () {
-		if (Object.keys(this.props.options).length > 0) {
-			//suggest taxonomy applied from options
+  onLayoutChange(view) {
+    this.setState(view);
+  }
 
-			if (typeof this.props.options.termsets !== 'undefined') {
-				this.setState({ termsets: this.props.options.termsets });
-			}
+  onFavouritesChange(favourites) {
+    this.setState({favourites: favourites});
+  }
 
-			if (typeof this.props.options.userInformationFields !== 'undefined') {
-				this.setState({ userInformationFields: this.props.options.userInformationFields });
-			}
+  applyOptions() {
+    if (Object.keys(this.props.options).length > 0) {
+      // suggest taxonomy applied from options
 
-			//css overrides applied from options
-			if (typeof this.props.options.css !== 'undefined') {
-				if (typeof this.props.options.css.overrides !== 'undefined') {
-				   SettingsManager.settingRouting('cssOveride', this.props.options.css.overrides);
-				}
-			}
-		} else {
-			this.setState({ suggestions: [] });
-		}
-	}
+      if (typeof this.props.options.termsets !== 'undefined') {
+        this.setState({ termsets: this.props.options.termsets });
+      }
 
-	render () {
-		if (this.state === null) {
-			this.componentDidUpdate();
+      if (typeof this.props.options.userInformationFields !== 'undefined') {
+        this.setState({ userInformationFields: this.props.options.userInformationFields });
+      }
 
-			return null;
-		} else {
-			return (
-				<div id={'outer-space'} key='outer-space' className={'animated bounceInRight'}>
+      // css overrides applied from options
+      if (typeof this.props.options.css !== 'undefined') {
+        if (typeof this.props.options.css.overrides !== 'undefined') {
+          SettingsManager.settingRouting('cssOveride', this.props.options.css.overrides);
+        }
+      }
+    } else {
+      this.setState({ suggestions: [] });
+    }
+  }
 
-				  <Menu onExport={this.onExport} />
+  setInitialState() {
+    this.state = {
+      items: [],
+      searching: false,
+      refresh: false,
+      settings: [],
+      count: 0,
+      pageNum: 0,
+      term: '',
+      text: '',
+      favourites: getFavouritesState(),
+      layout: getLayoutState(),
+    };
+  }
 
-				  <div id={'component'} styleName={'component'}>
-					  <div styleName='container'>
+  render() {
+    if (this.state === null) {
+      this.componentDidUpdate();
 
-							<Title 
-								text={this.props.options.title} />
+      return null;
+    }
 
-					  </div>
-					  <div className={'content'}>
-						<div className={'ui center aligned'} styleName='container'>
+    return (
+        <div id="outer-space" key="outer-space" className="animated bounceInRight">
 
-							<Search 
-								onSearchChanged={this.onSearch.bind(this)}
-								onSearching={this.onSearching.bind(this)}
-								properties={this.props.options.properties}
-								settings={this.state.settings}
-								termsets={this.state.termsets}
-								userInformationFields={this.state.userInformationFields} />
+          <Menu onExport={this.onExport} />
 
-						</div>
-					  </div>
-					  <div className={'content'} id={'component-vision'} styleName={'everything-worth-while'}>
+          <div id="component" styleName="component">
+            <div styleName="container">
 
-							<Paging 
-								count={this.state.count}
-								onSearching={this.onSearching.bind(this)}
-								properties={this.props.options.properties}
-								pageNum={this.state.pageNum}
-								term={this.state.term}
-								onPaging={this.onPage.bind(this)} />
+              <Title
+                text={this.props.options.title} />
 
-							<Results
-								items={this.state.items}
-								term={this.state.term}
-								refresh={this.state.refresh}
-								onRefreshFinish={this.onRefreshFinish.bind(this)}
-								searching={this.state.searching}
-								favourites={this.state.favourites}
-								layout={this.state.layout}
-								onLayoutChange={this.onLayoutChange.bind(this)}
-								onFavouritesChange={this.onFavouritesChange.bind(this)}
-								onItemUpdate={this.onItemUpdate.bind(this)} />
+            </div>
+            <div className="content">
+            <div className="ui center aligned" styleName="container">
 
-							<Paging
-								count={this.state.count}
-								onSearching={this.onSearching.bind(this)}
-								pageNum={this.state.pageNum}
-								term={this.state.term}
-								onPaging={this.onPage.bind(this)} />
+              <Search
+                onSearchChanged={this.onSearch.bind(this)}
+                onSearching={this.onSearching.bind(this)}
+                properties={this.props.options.properties}
+                settings={this.state.settings}
+                termsets={this.state.termsets}
+                userInformationFields={this.state.userInformationFields} />
 
-					  </div>
-				  </div>
+            </div>
+            </div>
+            <div className="content" id="component-vision" styleName="everything-worth-while">
 
-				  <Favourites
-						layout={this.state.layout}
-						title={this.props.options.title}
-						favourites={this.state.favourites}
-						onFavouritesChange={this.onFavouritesChange.bind(this)}
-						onItemUpdate={this.onItemUpdate.bind(this)} />
+              <Paging
+                count={this.state.count}
+                onSearching={this.onSearching.bind(this)}
+                properties={this.props.options.properties}
+                pageNum={this.state.pageNum}
+                term={this.state.term}
+                onPaging={this.onPage.bind(this)} />
 
-				  <Layout
-						title={this.props.options.title}
-						onLayoutChange={this.onLayoutChange.bind(this)} />
+              <Results
+                items={this.state.items}
+                term={this.state.term}
+                refresh={this.state.refresh}
+                onRefreshFinish={this.onRefreshFinish.bind(this)}
+                searching={this.state.searching}
+                favourites={this.state.favourites}
+                layout={this.state.layout}
+                onLayoutChange={this.onLayoutChange.bind(this)}
+                onFavouritesChange={this.onFavouritesChange.bind(this)}
+                onItemUpdate={this.onItemUpdate.bind(this)} />
 
-				  <Settings
-						title={this.props.options.title}
-						onSettingChange={this.onSettingChange.bind(this)} />
+              <Paging
+                count={this.state.count}
+                onSearching={this.onSearching.bind(this)}
+                pageNum={this.state.pageNum}
+                term={this.state.term}
+                onPaging={this.onPage.bind(this)} />
 
-				</div>
-			);
-		}
-	}
+            </div>
+          </div>
+
+          <Favourites
+            layout={this.state.layout}
+            title={this.props.options.title}
+            favourites={this.state.favourites}
+            onFavouritesChange={this.onFavouritesChange.bind(this)}
+            onItemUpdate={this.onItemUpdate.bind(this)} />
+
+          <Layout
+            title={this.props.options.title}
+            onLayoutChange={this.onLayoutChange.bind(this)} />
+
+          <Settings
+            title={this.props.options.title}
+            onSettingChange={this.onSettingChange.bind(this)} />
+
+        </div>
+    );
+  }
 }
+
+PeopleSearch.propTypes = {
+  options: React.PropTypes.object,
+};
+
+PeopleSearch.defaultProps = {
+  options: {
+    title: 'Goldfish',
+    properties: '',
+  },
+};
 
 export default cssModules(PeopleSearch, styles);

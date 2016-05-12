@@ -9,7 +9,7 @@ let _count = 0;
 let _pageNum = 0;
 let _term = '';
 
-function setPeopleSearchData (people, count, pageNum, term) {
+function setPeopleSearchData(people, count, pageNum, term) {
   _people = people;
   _count = count;
   _pageNum = pageNum;
@@ -18,70 +18,70 @@ function setPeopleSearchData (people, count, pageNum, term) {
 
 const SearchStore = assign({}, EventEmitter.prototype, {
 
-  getResult (id) {
+  getResult(id) {
     return _people[id];
   },
 
-  getResults () {
+  getResults() {
     return _people;
   },
 
-  getResultCount () {
+  getResultCount() {
     return _count;
   },
 
-  getCurrentPage () {
+  getCurrentPage() {
     return _pageNum;
   },
 
-  setNextPage () {
+  setNextPage() {
     _pageNum += 1;
   },
 
-  setPrevPage () {
+  setPrevPage() {
     _pageNum -= 1;
   },
 
-  getCurrentSearchTerm () {
+  getCurrentSearchTerm() {
     return _term;
   },
 
-  emitChange () {
+  emitChange() {
     this.emit(DefaultConstants.CHANGE_EVENT);
   },
 
-  addChangeListener (callback) {
+  addChangeListener(callback) {
     this.on(DefaultConstants.CHANGE_EVENT, callback);
   },
 
-  removeChangeListener (callback) {
+  removeChangeListener(callback) {
     this.removeListener(DefaultConstants.CHANGE_EVENT, callback);
-  }
+  },
 
 });
 
 AppDispatcher.register(action => {
   switch (action.actionType) {
-    case PeopleSearchConstants.PEOPLE_LOADED:
-      setPeopleSearchData(
-          action.data.payload,
-          action.data.count,
-          action.data.pageNum,
-          action.data.term
-      );
-      SearchStore.emitChange();
-      break;
-    case PeopleSearchConstants.NO_RESULTS:
-      setPeopleSearchData(
-          action.results,
-          0,
-          0,
-          typeof action.data !== 'undefined' ? action.data.term : ''
-      );
-      SearchStore.emitChange();
-      break;
-    default:
-      // no op
+  case PeopleSearchConstants.PEOPLE_LOADED:
+    setPeopleSearchData(
+      action.data.payload,
+      action.data.count,
+      action.data.pageNum,
+      action.data.term
+    );
+    SearchStore.emitChange();
+    break;
+  case PeopleSearchConstants.NO_RESULTS:
+    setPeopleSearchData(
+      action.results,
+      0,
+      0,
+      typeof action.data !== 'undefined' ? action.data.term : ''
+    );
+    SearchStore.emitChange();
+    break;
+  default:
+    // no op
   }
 });
 

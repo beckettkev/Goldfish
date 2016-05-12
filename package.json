@@ -92,9 +92,13 @@
     "yargs": "^4.6.0"
   },
   "dependencies": {
+    "autosuggest-highlight": "^2.1.1",
     "axios": "^0.6.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "cache-funk": "^0.1.0",
     "classnames": "^2.2.3",
     "es6-promise": "^3.0.2",
+    "eslint-config-airbnb": "^0.1.1",
     "flux": "^2.1.1",
     "history": "^1.13.0",
     "ismobilejs": "^0.3.9",
@@ -106,16 +110,14 @@
     "react-addons-css-transition-group": "^0.14.6",
     "react-autosuggest": "^3.4.0",
     "react-dom": "^0.14.3",
-    "react-sortable-component": "^0.3.0",
-    "react-toolbox": "^0.14.0",
     "react-select": "^0.9.1",
-    "autosuggest-highlight": "^2.1.1",
-    "babel-preset-stage-0": "^6.5.0"
+    "react-sortable-component": "^0.3.0",
+    "react-toolbox": "^0.14.0"
   },
   "scripts": {
     "start": "node server.js --colors",
     "build": "cross-env NODE_ENV=production UV_THREADPOOL_SIZE=100 webpack --config ./webpack.config",
-    "lint": "eslint src/index.js --ext .jsx --ext .js; exit 0",
+    "lint": ".\\node_modules\\.bin\\eslint src/index.js --ext .jsx --ext .js",
     "test": "karma start karma.config.js",
     "test:watch": "karma start"
   },

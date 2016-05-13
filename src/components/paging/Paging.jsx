@@ -113,10 +113,10 @@ class Paging extends React.Component {
     return (
       <div key="next" styleName={this.nextPageAvailable() ? 'next-pager' : 'hidden'}>
         <IconButton
-        icon="chevron_right"
-        id="next-page"
-        onClick={this.onNextPageClick.bind(this)}
-        accent raised mini />
+          icon="chevron_right"
+          id="next-page"
+          onClick={this.onNextPageClick.bind(this)}
+          accent raised mini />
       </div>
     );
   }
@@ -157,6 +157,9 @@ class Paging extends React.Component {
           return true;
         }
       }
+    } else if (typeof this.props.pageNum === 'undefined' && totalPageCount > 1) {
+      //no paging has been made but there are more than one pages
+      return true;
     }
 
     return false;

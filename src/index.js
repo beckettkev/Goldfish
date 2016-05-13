@@ -16,6 +16,11 @@ CustomEvent.prototype = window.CustomEvent.prototype;
 window.CustomEvent = CustomEvent;
 
 const Goldfish = {
+  options: {
+    title: 'Goldfish',
+    properties: '',
+  },
+
   interval: null,
 
   LoadStyleSheet: function LoadStyleSheet(href) {

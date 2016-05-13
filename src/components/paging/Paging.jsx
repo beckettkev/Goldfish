@@ -1,3 +1,4 @@
+/* eslint no-script-url: 0 */
 import React from 'react';
 import styles from './Paging.css';
 import cssModules from 'react-css-modules';
@@ -7,174 +8,184 @@ import PeopleSearchActions from '../../actions/PeopleSearchActions';
 import IconButton from 'react-toolbox/lib/button';
 
 function getStoreSearchResultPagingState() {
-	return {
-		items: SearchStore.getResults(),
-		searching: false,
-		count: SearchStore.getResultCount(),
-		term: SearchStore.getCurrentSearchTerm(),
-		pageNum: SearchStore.getCurrentPage(),
-		text: ''
-	};
+  return {
+    items: SearchStore.getResults(),
+    searching: false,
+    count: SearchStore.getResultCount(),
+    term: SearchStore.getCurrentSearchTerm(),
+    pageNum: SearchStore.getCurrentPage(),
+    text: '',
+  };
 }
 
 class Paging extends React.Component {
+  constructor(props) {
+    super(props);
 
-	static propTypes: {
-		count: React.PropTypes.number,
-		pageNum: React.PropTypes.number,
-		term: React.PropTypes.string,
-		onSearching: React.PropTypes.func,
-		onPaging: React.PropTypes.func
-	}
+    this.state = getStoreSearchResultPagingState();
+  }
 
-	constructor (props) {
-		super(props);
+  componentWillMount() {
+    SearchStore.removeChangeListener(this.onComponentChange);
+  }
 
-		this.state = getStoreSearchResultPagingState();
-	}
+  componentDidMount() {
+    SearchStore.addChangeListener(this.onComponentChange.bind(this));
+  }
 
-	getPageResults (pageNum) {
-		const properties = typeof this.props.properties !== 'undefined' ? this.props.properties : '';
+  onComponentChange() {
+    this.props.onPaging(getStoreSearchResultPagingState());
+  }
 
-		const url = Utils.getFullSearchQueryUrl(this.props.term, properties);
+  onPageClick(pageNum) {
+    this.getPageResults(pageNum);
+  }
 
-		this.props.onSearching();
+  onPreviousPageClick() {
+    // previous button click - go back to previous result set
+    const num = this.getCurrentPage();
 
-		PeopleSearchActions.fetchData(url, this.props.term, pageNum);
-	}
+    this.getPageResults(num - 1);
+  }
 
-	componentDidMount () {
-		SearchStore.addChangeListener(this.onComponentChange.bind(this));
-	}
+  onNextPageClick() {
+    // next button click - go back to the next result set
+    const num = this.getCurrentPage();
 
-	componentWillMount () {
-		SearchStore.removeChangeListener(this.onComponentChange);
-	}
+    this.getPageResults(num + 1);
+  }
 
-	onComponentChange () {
-		this.props.onPaging(getStoreSearchResultPagingState());
-	}
+  getPageResults(pageNum) {
+    const properties = typeof this.props.properties !== 'undefined' ? this.props.properties : '';
 
-	getPagingNodeCount () {
-		return Math.ceil(this.props.count / 10);
-	}
+    const url = Utils.getFullSearchQueryUrl(this.props.term, properties);
 
-	getCurrentPage () {
-		//we need to know which one to highlight in the pagination (set the default to one if we don't seem to have a page set)
-		const num = typeof this.props.pageNum !== 'undefined' ?
-								(
-									this.props.pageNum === 0 ?
-										1 :
-										this.props.pageNum
-								) : 1;
+    this.props.onSearching();
 
-		return num;
-	}
+    PeopleSearchActions.fetchData(url, this.props.term, pageNum);
+  }
 
-	onPageClick (pageNum) {
-		this.getPageResults(pageNum);
-	}
+  getPagingNodeCount() {
+    return Math.ceil(this.props.count / 10);
+  }
 
-	onPreviousPageClick () {
-		//previous button click - go back to previous result set
-		const num = this.getCurrentPage();
+  getCurrentPage() {
+    // we need to know which one to highlight in the pagination (set the default to one if we don't seem to have a page set)
+    if (typeof this.props.pageNum !== 'undefined') {
+      if (this.props.pageNum === 0) {
+        return 1;
+      }
 
-		this.getPageResults(num - 1);
-	}
+      return this.props.pageNum;
+    }
 
-	onNextPageClick () {
-		//next button click - go back to the next result set
-		let num = this.getCurrentPage();
+    return 1;
+  }
 
-		this.getPageResults(num + 1);
-	}
+  getPagingLink(num, current) {
+    const pagingCssClasses = current ? 'pager self' : 'pager';
 
-	prevPageAvailable () {
-		return typeof this.props.pageNum !== 'undefined' ? this.props.pageNum > 1 : false;
-	}
+    // render a paging hyper link for each available pagination item
+    return (
+      <a
+        href="javascript:void(0)"
+        key={num}
+        styleName={this.getPagingNodeCount() === 1 ? 'hidden' : pagingCssClasses}
+        onClick={this.onPageClick.bind(this, num)}>
+          {num}
+      </a>
+    );
+  }
 
-	nextPageAvailable () {
-		const totalPageCount = this.getPagingNodeCount();
+  getPreviousPageLink() {
+    return (
+      <div key="prev" styleName={this.prevPageAvailable() ? 'prev-pager' : 'hidden'}>
+        <IconButton
+          icon="chevron_left"
+          id="prev-page"
+          onClick={this.onPreviousPageClick.bind(this)}
+          accent raised mini />
+      </div>
+    );
+  }
 
-		return typeof this.props.pageNum !== 'undefined' ? this.props.pageNum < totalPageCount : totalPageCount > 1 ? true : false;
-	}
+  getNextPageLink() {
+    return (
+      <div key="next" styleName={this.nextPageAvailable() ? 'next-pager' : 'hidden'}>
+        <IconButton
+        icon="chevron_right"
+        id="next-page"
+        onClick={this.onNextPageClick.bind(this)}
+        accent raised mini />
+      </div>
+    );
+  }
 
-	getPagingLink (num, current) {
-		const pagingCssClasses = current ? 'pager self' : 'pager';
+  // This function creates the pagination links
+  getPagingNodes() {
+    let node = 0;
 
-		//render a paging hyper link for each available pagination item
-		return (
-			<a
-				href={'javascript:void(0)'}
-				key={num}
-				styleName={this.getPagingNodeCount() === 1 ? 'hidden' : pagingCssClasses}
-				onClick={this.onPageClick.bind(this, num)}>
-					{num}
-			</a>
-		);
-	}
+    const pages = [];
+    const current = this.getCurrentPage();
+    const count = this.getPagingNodeCount();
 
-	getPreviousPageLink () {
-		return (
-			<div key={'prev'} styleName={this.prevPageAvailable() ? 'prev-pager' : 'hidden'}>
-				<IconButton
-					icon='chevron_left'
-					id='prev-page'
-					onClick={this.onPreviousPageClick.bind(this)}
-					accent raised mini />
-			</div>
-		);
-	}
+    /*
+        TODO:
+            Only write out ten page links relative to where we are
 
-	getNextPageLink () {
-		return (
-			<div key={'next'} styleName={this.nextPageAvailable() ? 'next-pager' : 'hidden'}>
-				<IconButton
-				icon='chevron_right'
-				id='next-page'
-				onClick={this.onNextPageClick.bind(this)}
-				accent raised mini />
-			</div>
-		);
-	}
+    	 create a paging link for each result subset and set the current paging styles
+    */
+    while (node < count) {
+      if ((node + 1) === current) {
+        pages.push(this.getPagingLink(node + 1, true));
+      } else {
+        pages.push(this.getPagingLink(node + 1, false));
+      }
 
-	//This function creates the pagination links
-	getPagingNodes () {
-		let node = 0;
-		let pages = [];
+      node += 1;
+    }
 
-		const current = this.getCurrentPage();
-		const count = this.getPagingNodeCount();
+    return pages;
+  }
 
-		/*
-				TODO:
-						Only write out ten page links relative to where we are
-		*/
-		//create a paging link for each result subset and set the current paging styles
-		while (node < count) {
-			if ((node + 1) === current) {
-				pages.push(this.getPagingLink(node + 1, true));
-			} else {
-				pages.push(this.getPagingLink(node + 1, false));
-			}
+  nextPageAvailable() {
+    const totalPageCount = this.getPagingNodeCount();
 
-			node += 1;
-		}
+    if (typeof this.props.pageNum !== 'undefined') {
+      if (this.props.pageNum < totalPageCount) {
+        if (totalPageCount > 1) {
+          return true;
+        }
+      }
+    }
 
-		return pages;
-	}
+    return false;
+  }
 
-	render () {
-		return (
-			<div id={'component-paging'} styleName={this.getPagingNodeCount() < 2 ? 'paging-hidden' : 'paging'}>
-				<span>
-					{this.getPreviousPageLink()}
-					{this.getPagingNodes()}
-					{this.getNextPageLink()}
-				</span>
-			</div>
-		);
-	}
+  prevPageAvailable() {
+    return typeof this.props.pageNum !== 'undefined' ? this.props.pageNum > 1 : false;
+  }
+
+  render() {
+    return (
+      <div id="component-paging" styleName={this.getPagingNodeCount() < 2 ? 'paging-hidden' : 'paging'}>
+        <span>
+          {this.getPreviousPageLink()}
+          {this.getPagingNodes()}
+          {this.getNextPageLink()}
+        </span>
+      </div>
+    );
+  }
 }
+
+Paging.propTypes = {
+  properties: React.PropTypes.object,
+  count: React.PropTypes.number,
+  pageNum: React.PropTypes.number,
+  term: React.PropTypes.string,
+  onSearching: React.PropTypes.func,
+  onPaging: React.PropTypes.func,
+};
 
 export default cssModules(Paging, styles, { allowMultiple: true });

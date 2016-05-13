@@ -4,36 +4,43 @@ import cssModules from 'react-css-modules';
 import styles from './Available.css';
 
 class Available extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
-	constructor (props) {
-		super(props);
-	}
+  change(option) {
+    if (option.label !== 'Add a field...') {
+      this.props.onChange(option);
+    }
+  }
 
-	change (option) {
-		if (option.label !== 'Add a field...') {
-			this.props.onChange(option);
-		}
-	}
+  render() {
+    if (this.props !== null) {
+      if (typeof this.props.options !== 'undefined') {
+        const transition = this.props.options.length > 0 ? 'flipInY' : 'flipOutY';
 
-	render () {
-		if (this.props !== null) {
-			if (typeof this.props.options !== 'undefined') {
-				const transition = this.props.options.length > 0 ? 'flipInY' : 'flipOutY';
-
-				return (
-					<div key='available-selector'>
-						<ReactSelect
-							name='available-fields'
-						    className={'selector animated ' + transition}
-							placeholder='Add a field...'
-							options={this.props.options}
-							onChange={this.change.bind(this)} />
-					</div>
-				);
-			}
-		}
-	}
-
+        return (
+          <div key="available-selector">
+            <ReactSelect
+              name="available-fields"
+              className={'selector animated ' + transition}
+              placeholder="Add a field..."
+              options={this.props.options}
+              onChange={this.change.bind(this)} />
+          </div>
+        );
+      }
+    }
+  }
 }
+
+Available.propTypes = {
+  options: React.PropTypes.array,
+  onChange: React.PropTypes.func,
+};
+
+Available.defaultProps = {
+  options: [],
+};
 
 export default cssModules(Available, styles, { allowMultiple: true });

@@ -65,6 +65,11 @@ const getProfileProperties = () => {
     if (properties !== null) {
       resolve(properties);
     } else {
+      // return no properties if we are not on SharePoint
+      if (typeof window.fakeAjaxCalls !== 'undefined') {
+        resolve('');
+      }
+
       jQuery.ajax({
         dataType: 'json',
         contentType: 'application/json;odata=verbose',

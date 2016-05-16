@@ -121,9 +121,11 @@ const Goldfish = {
       Sys.Application.notifyScriptLoaded();
     }
 
-    if (typeof SP.SOD.notifyScriptLoadedAndExecuteWaitingJobs === 'function') {
-      // Inform the create functionthat Goldfish can now load safely
-      SP.SOD.notifyScriptLoadedAndExecuteWaitingJobs('goldfish.min.js');
+    if (typeof SP !== 'undefined') {
+	  if (typeof SP.SOD.notifyScriptLoadedAndExecuteWaitingJobs === 'function') {
+        // Inform the create functionthat Goldfish can now load safely
+        SP.SOD.notifyScriptLoadedAndExecuteWaitingJobs('goldfish.min.js');
+      }
     }
 
     Goldfish.KeyPressListener();
@@ -132,7 +134,15 @@ const Goldfish = {
     return typeof jQuery !== 'undefined';
   },
   GetjQuery: function GetjQuery() {
-    Goldfish.LoadScript('https:// code.jquery.com/jquery-1.11.3.min.js', Goldfish.Swim);
+    Goldfish.LoadScript('https://code.jquery.com/jquery-1.11.3.min.js', Goldfish.Swim);
+  },
+  FakeExecuteOrDelay: function FakeExecuteOrDelay() {
+	if (typeof window.ExecuteOrDelayUntilScriptLoaded === 'undefined') {
+	  window.ExecuteOrDelayUntilScriptLoaded = function(callback, script) {
+	    callback();
+	  };
+	  window.fakeAjaxCalls = true;
+	}
   },
   /*
     This functionchecks for necessary dependencies and it will then notify waiting code that the app can run
@@ -156,7 +166,8 @@ const Goldfish = {
         console.log('Goldfish.Swim - options ignored (invalid format)');
       }
     }
-
+    // fake the execute or delay functionality if we are showing this as a demo
+    Goldfish.FakeExecuteOrDelay();
     // we need to clear up if this is the first visit
     Goldfish.HouseKeeping();
     // due to the global way drag and drop is invoked on document libraries, we need to disable this whilst our component is active

@@ -122,7 +122,7 @@ const Goldfish = {
     }
 
     if (typeof SP !== 'undefined') {
-	  if (typeof SP.SOD.notifyScriptLoadedAndExecuteWaitingJobs === 'function') {
+      if (typeof SP.SOD.notifyScriptLoadedAndExecuteWaitingJobs === 'function') {
         // Inform the create functionthat Goldfish can now load safely
         SP.SOD.notifyScriptLoadedAndExecuteWaitingJobs('goldfish.min.js');
       }
@@ -137,12 +137,12 @@ const Goldfish = {
     Goldfish.LoadScript('https://code.jquery.com/jquery-1.11.3.min.js', Goldfish.Swim);
   },
   FakeExecuteOrDelay: function FakeExecuteOrDelay() {
-	if (typeof window.ExecuteOrDelayUntilScriptLoaded === 'undefined') {
-	  window.ExecuteOrDelayUntilScriptLoaded = function(callback, script) {
-	    callback();
-	  };
-	  window.fakeAjaxCalls = true;
-	}
+    if (typeof window.ExecuteOrDelayUntilScriptLoaded === 'undefined') {
+      window.ExecuteOrDelayUntilScriptLoaded = function(callback, script) {
+        callback();
+      };
+      window.fakeAjaxCalls = true;
+    }
   },
   /*
     This functionchecks for necessary dependencies and it will then notify waiting code that the app can run

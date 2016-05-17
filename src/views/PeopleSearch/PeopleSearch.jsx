@@ -12,7 +12,7 @@ import Title from '../../components/title/Title.jsx';
 import FavouriteStore from '../../stores/FavouriteStore';
 import LayoutStore from '../../stores/LayoutStore';
 import PeopleSearchActions from '../../actions/PeopleSearchActions';
-import Exporter from '../../utils/exporter';
+// import Exporter from '../../utils/exporter';
 import SettingsManager from '../../utils/settings';
 
 function getFavouritesState() {

@@ -1,0 +1,10 @@
+{
+  "app": {
+    "js": "http://localhost:3001/app.27af662e428b6ad2f77f.js",
+    "css": "http://localhost:3001/Goldfish.min.css"
+  },
+  "vendor": {
+    "js": "http://localhost:3001/vendor.804b6099726cb7ffb65d.js",
+    "css": "http://localhost:3001/Goldfish.min.css"
+  }
+}

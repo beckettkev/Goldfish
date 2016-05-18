@@ -42,14 +42,14 @@ class Paging extends React.Component {
   }
 
   onPreviousPageClick() {
-    // previous button click - go back to previous result set
+    // previous button click - go back to previous set of results
     const num = this.getCurrentPage();
 
     this.getPageResults(num - 1);
   }
 
   onNextPageClick() {
-    // next button click - go back to the next result set
+    // next button click - go back to the next set of results
     const num = this.getCurrentPage();
 
     this.getPageResults(num + 1);
@@ -70,7 +70,7 @@ class Paging extends React.Component {
   }
 
   getCurrentPage() {
-    // we need to know which one to highlight in the pagination (set the default to one if we don't seem to have a page set)
+    // we need to know which one to highlight in the pagination (set the default to one if we don't seem to be currently paging)
     if (typeof this.props.pageNum !== 'undefined') {
       if (this.props.pageNum === 0) {
         return 1;

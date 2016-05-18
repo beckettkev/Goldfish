@@ -92,6 +92,7 @@
   "scripts": {
     "start": "node server.js --colors",
     "build": "cross-env NODE_ENV=production UV_THREADPOOL_SIZE=100 webpack --config ./webpack.config",
+    "build-split": "cross-env NODE_ENV=production UV_THREADPOOL_SIZE=100 webpack --config ./webpack.chunk.config",
     "lint": ".\\node_modules\\.bin\\eslint src/index.js --ext .jsx --ext .js",
     "test": "karma start karma.config.js",
     "test:watch": "karma start"

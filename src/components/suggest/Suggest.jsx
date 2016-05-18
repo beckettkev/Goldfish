@@ -2,7 +2,7 @@ import React from 'react';
 import Autosuggest from './autosuggest/AutosuggestContainer';
 import AutosuggestHighlight from 'autosuggest-highlight';
 import Tag from '../tag/Tag';
-import {Button} from 'react-toolbox/lib/button';
+import Button from 'react-toolbox/lib/button';
 import styles from './Suggest.css';
 import cssModules from 'react-css-modules';
 import TaxonomyStore from '../../stores/TaxonomyStore';

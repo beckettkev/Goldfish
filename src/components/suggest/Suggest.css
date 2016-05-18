@@ -68,6 +68,7 @@
 
 :global(.react-autosuggest__section-container):first-child :global(.react-autosuggest__section-title) {
   border-top: 0;
+  font-size: 1em;
 }
 
 :global(.react-autosuggest__section-suggestions-container) {
@@ -79,6 +80,7 @@
 :global(.react-autosuggest__section-suggestions-container span) {
   display: inline !important;
   padding: 0 !important;
+  font-size: 1em;
 }
 
 /* Tags */

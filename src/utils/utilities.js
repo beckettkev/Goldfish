@@ -66,7 +66,7 @@ module.exports = {
 
     const path = window.location.pathname.split('/');
 
-    if (typeof path[2] === 'undefined') {
+    if (typeof path[2] === 'undefined' || path[1].toLowerCase() === 'pages') {
       return `${window.location.origin}`;
     }
 

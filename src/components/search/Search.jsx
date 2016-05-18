@@ -146,7 +146,7 @@ class Search extends React.Component {
     if (this.state !== null) {
       return (
         <form onSubmit={this.handleSubmit.bind(this)} key="form-soon-to-be-deleted">
-          <div className="ui fluid category search">
+          <div className="ui fluid search">
             <div className="ui icon input" styleName="search-container">
               {this.searchInputSelector()}
             </div>

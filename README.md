@@ -8,11 +8,13 @@ The aim of this project is to allow you to search and save people anywhere withi
 
 ## Important - Breaking Changes
 
-With version 1.0.0, we have changed the way layouts and person components work and therefore you will need to clear down your layout local storage key before using the latest code. Using the JavaScript below, in your browser developer console:
+With version 1.0.0, we have changed the way layouts and person components work and therefore if you have used Goldfish before you will need to clear down your Goldfish local storage keys before using the latest code. It's a one of thing and it's quick and easy to do using the JavaScript below in your browser developer console:
 
 ```javascript
-  localStorage.removeItem('PeopleSearch-Layout');
+  // The objects have changed, clear down any ones that may have been created previously
+  Object.keys(localStorage).forEach(function(item) { if (item.indexOf('PeopleSearch-') > -1) { localStorage.removeItem(item); });
 ```
+
 ## Code Example
 ```javascript
   // include a script link to the Goldfish bundle and then add the following line to load Goldfish

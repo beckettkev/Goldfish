@@ -5,7 +5,7 @@
     You can copy the relevant outputs from the developer toolbar (console window) to your Goldfish options file.
     Remember to amend the values to insert your managed propert(ies).
 */
-jQuery.getScript(getBaseUrl() + '/_layouts/15/sp.taxonomy.js', function () {
+jQuery.getScript(getBaseUrl() + '/_layouts/15/sp.taxonomy.js', function() {
     var context = new SP.ClientContext.get_current();
     var session = SP.Taxonomy.TaxonomySession.getTaxonomySession(context);
     var termStore = session.getDefaultSiteCollectionTermStore();
@@ -20,15 +20,13 @@ jQuery.getScript(getBaseUrl() + '/_layouts/15/sp.taxonomy.js', function () {
         console.log('Suggest Options');
         console.log('===============')
 
-        while (groupsEnum.moveNext()) {            
+        while (groupsEnum.moveNext()) {
             var currentGroup = groupsEnum.get_current();
 
             var group = {
               name: currentGroup.get_name(),
               id: currentGroup.get_id()
             };
-
-            //console.log(group.name + ':' + group.id);
 
             getTermSets(context, currentGroup.get_termSets(), group.name);
         }

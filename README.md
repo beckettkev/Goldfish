@@ -11,47 +11,63 @@ The aim of this project is to allow you to search and save people anywhere withi
 With version 1.0.0, we have changed the way layouts and person components work and therefore you will need to clear down your layout local storage key before using the latest code. Using the JavaScript below, in your browser developer console:
 
 ```javascript
-	localStorage.removeItem('PeopleSearch-Layout');
+  localStorage.removeItem('PeopleSearch-Layout');
 ```
 
 ## Code Example
 ```javascript
-	var options = {
-			// override the default title
-		    title: 'People',
-		    // change the menu look and feel
-		    menu: 'alternate-tabs',
-		    // hookup custom termsets to the tag suggest search
-		    termsets: [
-		        {
-		        	//the heading of the grouping
-		        	title: 'Groups',
-					type: 'Termset',
-		        	//the managed property
-		        	property: 'owsPeopleGroup',
-		        	//the termset id to get the terms back to populate the group
-		        	id: 'ae53d31c-ef24-4cca-a040-5e065d15bb31'
-		        },
-		        {
-		        	title: 'Regions',
-		        	property: 'owsPeopleRegion',
-		        	type: 'Termset',
-		        	id: 'fdf1d1d0-769c-4b4d-b911-0ff8352a5d15'
-		        }
-		    ],
-		    // hookup user information fields to the tag suggest tool
-		    userInformationFields: [
-		        'JobTitle',
-		        'Department'
-		    ],
-		    // custom CSS classes
-			css: {
-				//If you want to override the primary color
-				primary: "#00FF00"
-			}
-	};
 
-	Goldfish.Create(options);
+  var options = {
+        // override the default title 'Goldfish'
+        title: 'People Finder',
+        // change the menu look and feel
+        menu: 'alternate-tabs',
+        // pull back some extra custom properties so we can extend the layouts
+        properties: 'Interests,Colleagues,PastProjects,Responsibilities',
+        // hookup custom termsets to the tag suggest search
+        termsets: [
+            {
+              //the heading of the grouping
+              title: 'Groups',
+              type: 'Termset',
+              //the managed property
+              property: 'owsPeopleGroup',
+              //the termset id to get the terms back to populate the group
+              id: 'ae53d31c-ef24-4cca-a040-5e065d15bb31'
+            }
+        ],
+        // hookup user information fields to the tag suggest tool
+        userInformationFields: [
+            'JobTitle',
+            'Department'
+        ]
+  };
+
+  Goldfish.Create();
+
+  // this is enough to get Goldfish up and running, but you may want to add some custom fields to the layout...
+  Goldfish.RegisterLayouts(
+    [
+      {
+        label: 'Interests',
+        value: 'Interests',
+        key: 9,
+        template: {
+          // Prefix the interests with a label (e.g. Interests: JavaScript, Development)
+          value: 'Interests:{0}|Interests'
+        }
+      },
+      {
+        label: 'Colleagues',
+        value: 'Colleagues',
+        key: 10,
+        template: {
+          value: 'Colleagues'
+        }
+      }
+    ]
+  );
+
 ```
 
 ## Installation
@@ -83,7 +99,66 @@ npm run chunk
 
 ## API Reference
 
-So the first thing to do is decide if you need to supply some **options**. Options allow you to override the default settings for **Goldfish** and you can do this by taking a look at the Code Example above. Once you have sorted that out, you have a few options for using Goldfish...
+The first thing to do is decide if you need to supply some **options**. Options allow you to override the default settings for **Goldfish** and you can do this by taking a look at the full example below.
+
+```javascript
+var options = {
+      // override the default title 'Goldfish'
+        title: 'People Finder',
+        // change the menu look and feel
+        menu: 'alternate-tabs',
+        // pull back some extra custom properties so we can extend the layouts
+        properties: 'Interests,Colleagues,PastProjects,Responsibilities',
+        // hookup custom termsets to the tag suggest search
+        termsets: [
+            {
+              //the heading of the grouping
+              title: 'Groups',
+          type: 'Termset',
+              //the managed property
+              property: 'owsPeopleGroup',
+              //the termset id to get the terms back to populate the group
+              id: 'ae53d31c-ef24-4cca-a040-5e065d15bb31'
+            },
+            {
+              title: 'Regions',
+              property: 'owsPeopleRegion',
+              type: 'Termset',
+              id: 'fdf1d1d0-769c-4b4d-b911-0ff8352a5d15'
+            }
+        ],
+        // hookup user information fields to the tag suggest tool
+        userInformationFields: [
+            'JobTitle',
+            'Department'
+        ],
+        // custom CSS classes
+        css: {
+          //If you want to override the primary color
+          primary: "#00FF00"
+        }
+  };
+```
+Then you can safely load Goldfish applying your parameters.
+
+```
+Goldfish.Create(options);
+```
+
+Alternatively you can just run it with the default settings.
+```
+Goldfish.Create();
+```
+
+Within the project there are some bundled some helper scripts to help you find the option values for when you want to add termsets to the tag suggest search. Simply run the following file on the SharePoint site you which will be using Goldfish and then copy the output and fill in the blank spaces (use this in the options as demonstrated above):
+
+> https://github.com/beckettkev/Goldfish/blob/master/helpers/GoldfishTaxonomyHelper.js
+
+If you need Goldfish to work on IE as well, you will probably want the relevant pollyfills to be included. We have a script to show how this can be done easily as well:
+
+> https://github.com/beckettkev/Goldfish/blob/master/helpers/GoldfishLoadSafelyForIe.js
+
+Once you have sorted that out, you have a few options for using Goldfish...
 
 ### Custom Action
 

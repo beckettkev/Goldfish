@@ -13,7 +13,11 @@ With version 1.0.0, we have changed the way layouts and person components work a
 ## Code Example
 ```javascript
 	var options = {
+			// override the default title
 		    title: 'People',
+		    // change the menu look and feel
+		    menu: 'alternate-tabs',
+		    // hookup custom termsets to the tag suggest search
 		    termsets: [
 		        {
 		        	//the heading of the grouping
@@ -31,10 +35,12 @@ With version 1.0.0, we have changed the way layouts and person components work a
 		        	id: 'fdf1d1d0-769c-4b4d-b911-0ff8352a5d15'
 		        }
 		    ],
+		    // hookup user information fields to the tag suggest tool
 		    userInformationFields: [
 		        'JobTitle',
 		        'Department'
 		    ],
+		    // custom CSS classes
 			css: {
 				//If you want to override the primary color
 				primary: "#00FF00"

@@ -13,29 +13,35 @@ With version 1.0.0, we have changed the way layouts and person components work a
 ```javascript
   localStorage.removeItem('PeopleSearch-Layout');
 ```
-
 ## Code Example
 ```javascript
+  // include a script link to the Goldfish bundle and then add the following line to load Goldfish
+  Goldfish.Create();
+```
 
+## Code Example - Advanced
+```javascript
+  /*
+   We can override and apply settings by creating an options object which we will pass into the goldfish create function.
+   you can include as many or few of these as you choose.
+   */
   var options = {
         // override the default title 'Goldfish'
         title: 'People Finder',
-        // change the menu look and feel
+        // change the menu look and feel to have a horizontal menu
         menu: 'alternate-tabs',
         // pull back some extra custom properties so we can extend the layouts (see the RegisterLayouts code below)
         properties: 'Interests,Colleagues,PastProjects,Responsibilities',
-        // hookup custom termsets to the tag suggest search
-        termsets: [
-            {
-              //the heading of the grouping
+        // hookup custom termsets to the tag suggest search (you can add more than one)...
+        termsets: [{
+              // the heading of the grouping
               title: 'Groups',
               type: 'Termset',
-              //the managed property
+              // the managed property
               property: 'owsPeopleGroup',
-              //the termset id to get the terms back to populate the group
+              // the termset id to get the terms back to populate the group
               id: 'ae53d31c-ef24-4cca-a040-5e065d15bb31'
-            }
-        ],
+        }],
         // hookup user information fields to the tag suggest tool
         userInformationFields: [
             'JobTitle',
@@ -43,9 +49,10 @@ With version 1.0.0, we have changed the way layouts and person components work a
         ]
   };
 
+  // this function loads Goldfish with the options you have specified
   Goldfish.Create(options);
 
-  // this is enough to get Goldfish up and running, but you may want to add some custom fields to the layout...
+  // If you want to add some custom fields to the layout, you can do that straight after calling the create function
   Goldfish.RegisterLayouts(
     [
       {

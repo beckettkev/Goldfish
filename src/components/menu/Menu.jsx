@@ -39,7 +39,7 @@ class Menu extends React.Component {
   render() {
     return (
       <div key="menu-items" id="menu-items">
-        <div key="component-tabs" id="component-tabs" styleName="component-tabs">
+        <div key="component-tabs" id="component-tabs" styleName={'component-tabs ' + this.props.alternate}>
           <div id="component-tab-favourites" className="tab">
             <i className="material-icons" onClick={this.itemAction.bind(this, 'Favourites')} title="Goldfish Favourites">star</i>
           </div>
@@ -64,6 +64,7 @@ class Menu extends React.Component {
 Menu.propTypes = {
   view: React.PropTypes.string,
   onExport: React.PropTypes.func,
+  alternate: React.PropTypes.string,
 };
 
 export default cssModules(Menu, styles, { allowMultiple: true });

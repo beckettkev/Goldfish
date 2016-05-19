@@ -174,6 +174,7 @@ class Layout extends React.Component {
     if (this.state !== null) {
       const layoutComponentStyles = {
         display: 'none !important',
+        paddingTop: this.props.paddingTop,
       };
 
       return (
@@ -195,6 +196,7 @@ class Layout extends React.Component {
 
 Layout.propTypes = {
   title: React.PropTypes.string,
+  paddingTop: React.PropTypes.string,
   onLayoutChange: React.PropTypes.func,
 };
 

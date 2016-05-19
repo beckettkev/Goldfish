@@ -97,6 +97,7 @@ class Settings extends React.Component {
   render() {
     const settingComponentStyles = {
       display: 'none !important',
+      paddingTop: this.props.paddingTop,
     };
 
     if (this.state !== null) {
@@ -130,6 +131,7 @@ class Settings extends React.Component {
 
 Settings.propTypes = {
   title: React.PropTypes.string,
+  paddingTop: React.PropTypes.string,
   onSettingChange: React.PropTypes.func,
 };
 

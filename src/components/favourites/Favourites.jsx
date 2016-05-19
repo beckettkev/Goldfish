@@ -98,6 +98,7 @@ class Favourites extends React.Component {
   render() {
     const favouritesComponentStyles = {
       display: 'none !important',
+      paddingTop: this.props.paddingTop,
     };
 
     this.itemStyles = this.getCommandButtonsAvailable(this.props.layout.current) ? { paddingBottom: '50px' } : { paddingBottom: '0' };
@@ -123,6 +124,7 @@ Favourites.propTypes = {
   onFavouritesChange: React.PropTypes.func,
   onItemUpdate: React.PropTypes.func,
   title: React.PropTypes.string,
+  paddingTop: React.PropTypes.string,
   layout: React.PropTypes.object,
   favourites: React.PropTypes.array,
 };

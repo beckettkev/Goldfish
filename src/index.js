@@ -155,7 +155,7 @@ const Goldfish = {
     }
 
     // Setup the google materials font and animate css for the UI
-    Goldfish.LoadStyleSheet('https://fonts.googleapis.com/icon?family=Material+Icons');
+    Goldfish.LoadStyleSheet('https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css');
   },
   Create: function Create(options) {
     // If options are provided do a cursory check and save them if they are valid
@@ -225,7 +225,7 @@ const Goldfish = {
 
         overrides.type = 'text/css';
 
-        const css = '#O365fpcontainerid { z-index:2010; } #outer-space { position: absolute; z-index: 2000; top: 85px; display: block; right: 0; height: 100%; width: 570px; overflow-y: scroll; } #outer-space::-webkit-scrollbar { background: #eeeeee } #outer-space::-webkit-scrollbar-thumb { background: #cccccc } #outer-space div.sortable-container div.sortable-item div:hover, #outer-space div.sortable-container div.sortable-item:hover { background-color: ' + colour + '; } #outer-space .highlight { color:' + colour + ' !important; } #outer-space span.commandor input[type=button], #outer-space span.commandor button { background: #eeeeee !important; color: #666666; border-radius: 0%; box-shadow: none; } #outer-space input[type=text]:focus, #outer-space input[type=text]:hover { border-color: ' + colour + ' !important; } #outer-space button, #outer-space input[type=button] { background-color: ' + colour + ' !important; } #outer-space div.nocolour button, #outer-space div.nocolour input[type=button] { background-color: #f4f4f4 !important; } #outer-space div.remove button, #outer-space div.remove input[type=button] { background-color: #666666 !important; } div.switches-with-broomsticks label span[role=switch] { background-color: ' + colour + ' !important; } div.switches-with-broomsticks label span span[role=thumb] { background-color: ' + colour + ' !important; } #outer-space div.Select-option.is-focused { background-color: ' + colour + ' !important; color:#ffffff; }';
+        const css = '#O365fpcontainerid { z-index:2010; } #outer-space { position: absolute; z-index: 2000; top: 85px; display: block; right: 0; height: 100%; width: 570px; overflow-y: scroll; } #outer-space::-webkit-scrollbar { background: #eeeeee } #outer-space::-webkit-scrollbar-thumb { background: #cccccc } #outer-space div.sortable-container div.sortable-item div:hover, #outer-space div.sortable-container div.sortable-item:hover { background-color: ' + colour + '; } #outer-space .highlight, #component-tabs .active { color:' + colour + ' !important; } #outer-space span.commandor input[type=button], #outer-space span.commandor button { background: #eeeeee !important; color: #666666; border-radius: 0%; box-shadow: none; } #outer-space input[type=text]:focus, #outer-space input[type=text]:hover { border-color: ' + colour + ' !important; } #outer-space button, #outer-space input[type=button] { background-color: ' + colour + ' !important; } #outer-space div.nocolour button, #outer-space div.nocolour input[type=button] { background-color: #f4f4f4 !important; } #outer-space div.remove button, #outer-space div.remove input[type=button] { background-color: #666666 !important; } div.switches-with-broomsticks label span[role=switch] { background-color: ' + colour + ' !important; } div.switches-with-broomsticks label span span[role=thumb] { background-color: ' + colour + ' !important; } #outer-space div.Select-option.is-focused { background-color: ' + colour + ' !important; color:#ffffff; }';
 
         if (overrides.styleSheet) {
           overrides.styleSheet.cssText = css;
@@ -247,6 +247,7 @@ const Goldfish = {
       'title',
       'css',
       'layout',
+      'menu',
       'properties',
       'suggest',
       'settings',

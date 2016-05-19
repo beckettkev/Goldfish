@@ -108,19 +108,6 @@ class PeopleSearch extends React.Component {
     }
   }
 
-  onItemUpdate(index, favourite, type) {
-    const items = this.state.items;
-
-    if (type === 'person') {
-      items[index].Cells.Favourite = favourite;
-
-      this.setState({ items: items });
-    } else {
-      // refresh the view now the favourites have changed
-      this.setState({ refresh: true });
-    }
-  }
-
   onLayoutChange(view) {
     this.setState(view);
   }
@@ -174,12 +161,17 @@ class PeopleSearch extends React.Component {
       return null;
     }
 
+    const alternateMenu = typeof this.props.options.menu === 'string' ? this.props.options.menu : '';
+    const inlineStyles = alternateMenu !== '' ? { paddingTop: '45px' } : { paddingTop: '0' };
+
     return (
         <div id="outer-space" key="outer-space" className="animated bounceInRight">
 
-          <Menu onExport={this.onExport} />
+          <Menu
+            onExport={this.onExport}
+            alternate={alternateMenu} />
 
-          <div id="component" styleName="component">
+          <div id="component" styleName="component" style={inlineStyles}>
             <div styleName="container">
 
               <Title
@@ -234,16 +226,19 @@ class PeopleSearch extends React.Component {
           <Favourites
             layout={this.state.layout}
             title={this.props.options.title}
+            paddingTop={inlineStyles.paddingTop}
             favourites={this.state.favourites}
             onFavouritesChange={this.onFavouritesChange.bind(this)}
             onItemUpdate={this.onItemUpdate.bind(this)} />
 
           <Layout
             title={this.props.options.title}
+            paddingTop={inlineStyles.paddingTop}
             onLayoutChange={this.onLayoutChange.bind(this)} />
 
           <Settings
             title={this.props.options.title}
+            paddingTop={inlineStyles.paddingTop}
             onSettingChange={this.onSettingChange.bind(this)} />
 
         </div>

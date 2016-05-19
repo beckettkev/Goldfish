@@ -76,7 +76,14 @@ module.exports = {
 
     while (t < tabs.length) {
       current = document.getElementById(tabs[t]);
-      current.className = tab === tabs[t] ? 'tab active animated tada' : 'tab';
+
+      if (tab === tabs[t]) {
+        current.className = 'tab active';
+        current.childNodes[0].className = 'material-icons animated tada';
+      } else {
+        current.className = 'tab';
+        current.childNodes[0].className = 'material-icons';
+      }
 
       if (t === (tabs.length - 1)) {
         current.className += ' last';

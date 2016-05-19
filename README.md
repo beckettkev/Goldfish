@@ -2,6 +2,10 @@
 
 Goldfish is a React.JS inline People Search tool for SharePoint 2013 (SPO). This tool provides people search results in a format configurable by the individual, inline within a SharePoint site (without taking you away from what you are doing).
 
+## Motivation
+
+The aim of this project is to allow you to search and save people anywhere within a SharePoint site without stopping what you are doing (the results are displayed where you are). The results show only the information that **you** the individual choose to see.
+
 ## Important - Breaking Changes
 
 With version 1.0.0, we have changed the way layouts and person components work and therefore you will need to clear down your layout local storage key before using the latest code. Using the JavaScript below, in your browser developer console:
@@ -49,9 +53,6 @@ With version 1.0.0, we have changed the way layouts and person components work a
 
 	Goldfish.Create(options);
 ```
-## Motivation
-
-The aim of this project is to allow you to search and save people anywhere within a SharePoint site without stopping what you are doing (the results are displayed where you are). The results show only the information that **you** the individual choose to see.
 
 ## Installation
 

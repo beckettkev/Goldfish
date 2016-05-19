@@ -69,11 +69,15 @@ npm install
 ```
 Then you can build for development:
 ```node
-webpack
+webpack --progress
 ```
 Or for production:
 ```node
 npm run build
+```
+Alternatively you can split the SPA into two chunks for cache busting:
+```node
+npm run chunk
 ```
 
 ## API Reference

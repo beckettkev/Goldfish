@@ -22,7 +22,7 @@ With version 1.0.0, we have changed the way layouts and person components work a
         title: 'People Finder',
         // change the menu look and feel
         menu: 'alternate-tabs',
-        // pull back some extra custom properties so we can extend the layouts
+        // pull back some extra custom properties so we can extend the layouts (see the RegisterLayouts code below)
         properties: 'Interests,Colleagues,PastProjects,Responsibilities',
         // hookup custom termsets to the tag suggest search
         termsets: [
@@ -43,7 +43,7 @@ With version 1.0.0, we have changed the way layouts and person components work a
         ]
   };
 
-  Goldfish.Create();
+  Goldfish.Create(options);
 
   // this is enough to get Goldfish up and running, but you may want to add some custom fields to the layout...
   Goldfish.RegisterLayouts(

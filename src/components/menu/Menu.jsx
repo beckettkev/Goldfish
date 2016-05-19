@@ -53,7 +53,7 @@ class Menu extends React.Component {
             <i className="material-icons" onClick={this.itemAction.bind(this, 'Settings')} title="Goldfish Settings">settings</i>
           </div>
         </div>
-        <div key="close-control" id="close-control" className="tab">
+        <div key="close-control" id="close-control" className="tab closer">
           <i className="material-icons" onClick={this.itemAction.bind(this, 'Close')} title="Close">cancel</i>
         </div>
       </div>

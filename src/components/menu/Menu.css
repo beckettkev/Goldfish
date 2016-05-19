@@ -64,7 +64,7 @@
   border-right-width: 1px;
 }
 
-.alternate-tabs #close-control {
-  right:20px;
-  top:2px;
+.alternate-tabs + div {
+  right:20px !important;
+  top:1px !important;
 }

@@ -1,5 +1,5 @@
 {
-  "name": "Goldfish",
+  "name": "goldfish-search",
   "version": "1.1.0",
   "description": "A SharePoint 2013 inline People Search component",
   "author": "Kevin Beckett (http://sharepointcookies.com), beckettkev",
@@ -80,14 +80,15 @@
     "cache-funk": "^0.1.2",
     "es6-promise": "^3.0.2",
     "flux": "^2.1.1",
-    "redux": "^3.5.2",
     "keymirror": "^0.1.1",
     "object-assign": "^4.0.1",
     "react": "^0.14.3",
     "react-addons-css-transition-group": "^0.14.6",
     "react-select": "^0.9.1",
     "react-sortable-component": "^0.3.0",
-    "react-toolbox": "^0.14.0"
+    "react-toolbox": "^0.14.0",
+    "react-waypoint": "^2.0.2",
+    "redux": "^3.5.2"
   },
   "scripts": {
     "start": "node server.js --colors",

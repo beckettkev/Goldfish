@@ -1,111 +1,107 @@
 .pins {
-	position: absolute;
-	height:100%;
-	top: 50px;
-	right: 400px;
-	width:400px;
-	margin: 50px 20px !important;
-	background-color:#ffffff;
+  position: absolute;
+  height:100%;
+  top: 50px;
+  right: 400px;
+  width:400px;
+  margin: 50px 20px !important;
+  background-color:#ffffff;
 }
 
 .component {
   width: 400px !important;
   background-color: #f9f9f9;
   border-color: #c8c8c8;
-	box-shadow: 0 0 18px #d9d9d9;
+  box-shadow: 0 0 18px #d9d9d9;
   position: absolute;
   right: 0px;
-	overflow-x: visible;
+  overflow-x: visible;
   height: 1900px;
-	padding: 0 0 200px 0;
-	z-index:2000;
+  padding: 0 0 200px 0;
+  z-index:2000;
   direction: ltr;
 }
 .component p {
-	font-size: 14px;
-	margin: 0 20px 20px 20px;
+  font-size: 14px;
+  margin: 0 20px 20px 20px;
 }
 .container {
   width: 320px !important;
 }
 
 .layout-heading {
-	margin: 0 20px 20px 20px;
+  margin: 0 20px 20px 20px;
 }
 /* drag and drop */
 .sortable-favourite-container {
-	margin: 0 20px 20px 20px;
-	border: 1px solid #eeeeee;
-	border-left: 0px;
-	border-right: 0px;
-	font-size: 14px;
-	box-shadow: 0px 4px 12px #d9d9d9;
-	background: #ffffff;
+  margin: 0 20px 20px 20px;
+  border: 1px solid #eeeeee;
+  border-left: 0px;
+  border-right: 0px;
+  font-size: 14px;
+  box-shadow: 0px 4px 12px #d9d9d9;
+  background: #ffffff;
 }
 .sortable-favourite-container i {
-	float:left;
+  float:left;
 }
 .sortable-favourite-container div:hover {
-	background-color: #ffffff;
+  background-color: #ffffff;
 }
-.sortable-favourite-container div div {
-	padding: 5px;
+.sortable-favourite-container :global(.sortable-item) {
+  padding: 10px;
 }
 :global(div.ms-Persona-imageArea),
 :global(div.ms-Persona-presence),
 :global(div.contact) {
-	padding: 0 !important;
-}
-:global(div#component-favourites) :global(div.ms-Persona-presence) {
-	left: 2px !important;
-	top: 5px !important;
+  padding: 0 !important;
 }
 .sortable-favourite-container div div span {
-	display:none;
+  display:none;
 }
 .sortable-favourite-container div div div span {
-	display: block;
+  display: block;
 }
 .sortable-favourite-container button,
 .sortable-favourite-container input[type=button] {
-	min-width: auto;
-	padding: 0;
-	font-size: 1rem;
-	float:right;
+  min-width: auto;
+  padding: 0;
+  font-size: 1rem;
+  float:right;
 }
 .sortable-favourite-container button span,
 .sortable-favourite-container input[type=button] span {
-	line-height: 2rem !important;
+  line-height: 2rem !important;
 }
 
 .sortable-item-content {
-	background: #ffffff;
-	border-bottom: 1px solid #eeeeee;
+  background: #ffffff;
+  border-bottom: 1px solid #eeeeee;
 }
 .sortable-item-content:hover {
-	cursor: move;
+  cursor: move;
 }
 
 .removal-button {
-	float: right;
-	margin-top: -27px;
+  float: right;
+  margin-top: -27px;
 }
 
 .sortable-favourite-container div div.removal-button:hover {
-  	background: transparent !important;
+    background: transparent !important;
 }
 
 /* other miscellaneous */
 .left {
-	clear: both;
-	color: #000;
+  clear: both;
+  color: #000;
 }
 
 .complete button {
-	background-color: rgb(229, 29, 46) !important;
-	margin:0 130px;
+  background-color: rgb(229, 29, 46) !important;
+  margin:0 130px;
 }
 
 .component :global(div.ms-peopleux-userImgDiv), .component :global(div.ms-tableCell) {
-	padding:0;
+  padding:0;
 }

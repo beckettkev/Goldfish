@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './PeopleSearch.css';
 import cssModules from 'react-css-modules';
+import Waypoint from 'react-waypoint';
 import Menu from '../../components/menu/Menu.jsx';
 import Search from '../../components/search/Search.jsx';
 import Settings from '../../components/settings/Settings.jsx';
@@ -63,6 +64,24 @@ class PeopleSearch extends React.Component {
       pageNum: 0,
       refresh: false,
     });
+  }
+
+  loadMoreItems() {
+    this.setState({ searching: true });
+    // Do the fetching of data here with AJAX
+    // In this fake example we just generate more image urls
+    // and set the state of 'loading' to false.
+    console.log('BOOM SHAKE THE ROOM');
+  }
+
+  renderWaypoint() {
+    if (!this.state.searching) {
+      return (
+        <Waypoint
+          onEnter={this.loadMoreItems}
+          threshold={2.0} />
+      );
+    }
   }
 
   onExport() {
@@ -179,17 +198,17 @@ class PeopleSearch extends React.Component {
 
             </div>
             <div className="content">
-            <div className="ui center aligned" styleName="container">
+              <div className="ui center aligned" styleName="container">
 
-              <Search
-                onSearchChanged={this.onSearch.bind(this)}
-                onSearching={this.onSearching.bind(this)}
-                properties={this.props.options.properties}
-                settings={this.state.settings}
-                termsets={this.state.termsets}
-                userInformationFields={this.state.userInformationFields} />
+                <Search
+                  onSearchChanged={this.onSearch.bind(this)}
+                  onSearching={this.onSearching.bind(this)}
+                  properties={this.props.options.properties}
+                  settings={this.state.settings}
+                  termsets={this.state.termsets}
+                  userInformationFields={this.state.userInformationFields} />
 
-            </div>
+              </div>
             </div>
             <div className="content" id="component-vision" styleName="everything-worth-while">
 

@@ -2,6 +2,7 @@ import keyMirror from 'keymirror';
 
 module.exports = keyMirror({
   PEOPLE_LOADED: null,
+  PEOPLE_LOADED_APPEND: null,
   GOT_DATA: null,
   NO_RESULTS: null,
   GOT_LAYOUT: null,

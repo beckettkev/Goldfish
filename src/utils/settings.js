@@ -57,9 +57,6 @@ module.exports = {
     case 'showFavourites':
       // do some stuff
       break;
-    case 'showInfiniteScroll':
-      // do some stuff
-      break;
     case 'showLaunchButton':
       // do some stuff
       break;

@@ -7,12 +7,14 @@ import UserInformationList from '../data/userInformationList';
 
 const PeopleSearchActions = {
 
-  fetchData(url, term, pageNum) {
-    Data.getPeopleResults(url, term, pageNum).then(data => {
-      AppDispatcher.dispatch({
-        actionType: PeopleSearchConstants.GOT_DATA,
+  fetchData(url, term, pageNum, append) {
+    const appendResults = typeof append === 'undefined' ? false : append;
+
+    Data.getPeopleResults(url, term, pageNum, appendResults).then(data => {
+      /*AppDispatcher.dispatch({
+        actionType: appendResults ? PeopleSearchConstants.GOT_DATA_APPEND : PeopleSearchConstants.GOT_DATA,
         results: data,
-      });
+      });*/
     });
   },
 

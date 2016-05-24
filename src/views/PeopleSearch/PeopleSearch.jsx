@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './PeopleSearch.css';
 import cssModules from 'react-css-modules';
+import Utils from '../../utils/utilities';
 import Waypoint from 'react-waypoint';
 import Menu from '../../components/menu/Menu.jsx';
 import Search from '../../components/search/Search.jsx';
@@ -64,24 +65,6 @@ class PeopleSearch extends React.Component {
       pageNum: 0,
       refresh: false,
     });
-  }
-
-  loadMoreItems() {
-    this.setState({ searching: true });
-    // Do the fetching of data here with AJAX
-    // In this fake example we just generate more image urls
-    // and set the state of 'loading' to false.
-    console.log('BOOM SHAKE THE ROOM');
-  }
-
-  renderWaypoint() {
-    if (!this.state.searching) {
-      return (
-        <Waypoint
-          onEnter={this.loadMoreItems}
-          threshold={2.0} />
-      );
-    }
   }
 
   onExport() {
@@ -158,6 +141,59 @@ class PeopleSearch extends React.Component {
     }
   }
 
+  isInfiniteScrollActive() {
+    // check to see if the super search is enabled
+    return this.state.settings.some(function(el) {
+      return Object.keys(el)[0] === 'inifiniteScroll' && el[Object.keys(el)[0]];
+    });
+  }
+
+  renderPaging() {
+    if (!this.isInfiniteScrollActive()) {
+      return (<Paging
+                count={this.state.count}
+                onSearching={this.onSearching.bind(this)}
+                properties={this.props.options.properties}
+                pageNum={this.state.pageNum}
+                term={this.state.term}
+                onPaging={this.onPage.bind(this)} />);
+    }
+  }
+
+  infiniteScroll() {
+    if (this.isInfiniteScrollActive()) {
+      
+        const self = this;
+
+        if (this.state.count > this.state.items.length) { 
+          return (
+            <Waypoint
+              onEnter={({ previousPosition, currentPosition, event }) => {
+
+               // if we have some results enable constant result fetching (infinite scroll)
+               if (self.state.items.length > 0) {
+                  // get the page number for the search
+                  const next = (typeof self.state.pageNum === 'undefined' || self.state.pageNum === 0) ? 2 : (self.state.pageNum + 1);
+                    
+                  if (Math.ceil(self.state.items.length / 10) < next) { 
+                    self.setState({
+                      searching: true,
+                    });
+          
+                    const url = Utils.getFullSearchQueryUrl(self.state.term, self.props.options.properties);
+
+                    PeopleSearchActions.fetchData(url, self.state.term, next, true);
+
+                    console.log('KAZAM! - IT IS SCROLL TIME');
+                  }
+                }
+              }} />
+          );
+        }
+
+    }
+  }
+
   setInitialState() {
     this.state = {
       items: [],
@@ -212,13 +248,7 @@ class PeopleSearch extends React.Component {
             </div>
             <div className="content" id="component-vision" styleName="everything-worth-while">
 
-              <Paging
-                count={this.state.count}
-                onSearching={this.onSearching.bind(this)}
-                properties={this.props.options.properties}
-                pageNum={this.state.pageNum}
-                term={this.state.term}
-                onPaging={this.onPage.bind(this)} />
+              {this.renderPaging()}
 
               <Results
                 items={this.state.items}
@@ -232,12 +262,9 @@ class PeopleSearch extends React.Component {
                 onFavouritesChange={this.onFavouritesChange.bind(this)}
                 onItemUpdate={this.onItemUpdate.bind(this)} />
 
-              <Paging
-                count={this.state.count}
-                onSearching={this.onSearching.bind(this)}
-                pageNum={this.state.pageNum}
-                term={this.state.term}
-                onPaging={this.onPage.bind(this)} />
+              {this.infiniteScroll()}
+
+              {this.renderPaging()}
 
             </div>
           </div>

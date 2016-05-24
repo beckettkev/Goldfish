@@ -95,7 +95,8 @@ module.exports = {
   DEFAULT_SETTINGS: [
     { label: 'Show Favourites', internal: 'showFavourites', type: 'switch', value: true },
     { label: 'Show on Right', internal: 'showOnRight', type: 'switch', value: true },
-    { label: 'Enable Tag Suggest Search', internal: 'enableSuperSearch', type: 'switch', value: false },
+    { label: 'Suggest Search', internal: 'enableSuperSearch', type: 'switch', value: false },
+    { label: 'Constant Results', internal: 'inifiniteScroll', type: 'switch', value: false },
   ],
   // no need for default favourites, but nice to have the option
   DEFAULT_FAVOURITES: [],

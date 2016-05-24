@@ -58,9 +58,9 @@ function isPayloadStillValid(payloadDate) {
   return Utils.getDaysBetweenDates(now, payloadDate) > -1;
 }
 
-function initAppDispatcher(items) {
+function initAppDispatcher(items, append) {
   AppDispatcher.dispatch({
-    actionType: PeopleSearchConstants.PEOPLE_LOADED,
+    actionType: append ? PeopleSearchConstants.PEOPLE_LOADED_APPEND : PeopleSearchConstants.PEOPLE_LOADED,
     data: items,
   });
 }
@@ -119,7 +119,7 @@ function cacheKeySizeExceedsLimit() {
 }
 
 module.exports = {
-  getPeopleResults: function(queryUrl, term, pageNum) {
+  getPeopleResults: function(queryUrl, term, pageNum, append) {
     return new Promise((resolve, reject) => {
       const key = PEOPLE_STORAGE_KEY_PREFIX + Utils.createStorageKey(term).toLowerCase();
 
@@ -156,7 +156,9 @@ module.exports = {
 
             operations.fetch = false;
 
-            initAppDispatcher(cachedResults);
+            initAppDispatcher(cachedResults, append);
+            
+            return;
           } else {
             // we have a valid payload, but we need to insert a new page
             operations.insert = true;
@@ -214,7 +216,7 @@ module.exports = {
               resolve(buildCachePayload(items, 0, term, sets));
             }
 
-            initAppDispatcher(items);
+            initAppDispatcher(items, append);
           },
           fail: function(xhr, status, err) {
             reject(this.props.url + ', ' + status + ', ' + err.toString());

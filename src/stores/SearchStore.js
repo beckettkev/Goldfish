@@ -16,6 +16,15 @@ function setPeopleSearchData(people, count, pageNum, term) {
   _term = term;
 }
 
+function appendPeopleSearchData(people, count, pageNum, term) {
+  if (Math.ceil(_people.length / 10) !== pageNum) {
+    _people = _people.concat(people);
+    _count = count;
+    _pageNum = pageNum;
+    _term = term; 
+  }
+}
+
 const SearchStore = assign({}, EventEmitter.prototype, {
 
   getResult(id) {
@@ -64,6 +73,15 @@ AppDispatcher.register(action => {
   switch (action.actionType) {
   case PeopleSearchConstants.PEOPLE_LOADED:
     setPeopleSearchData(
+      action.data.payload,
+      action.data.count,
+      action.data.pageNum,
+      action.data.term
+    );
+    SearchStore.emitChange();
+    break;
+  case PeopleSearchConstants.PEOPLE_LOADED_APPEND:
+    appendPeopleSearchData(
       action.data.payload,
       action.data.count,
       action.data.pageNum,

@@ -161,30 +161,34 @@ class PeopleSearch extends React.Component {
   }
 
   infiniteScroll() {
+    // check the settings to see if we have asked for results to be fetch on scroll
     if (this.isInfiniteScrollActive()) {
-      
+
         const self = this;
 
-        if (this.state.count > this.state.items.length) { 
+        // only add a scroll waypoint if we do not have all the results already
+        if (this.state.count > this.state.items.length) {
           return (
             <Waypoint
               onEnter={({ previousPosition, currentPosition, event }) => {
+                // only fetch new results if we are not currently doing so...
+                if (!self.state.searching) {
+                  // if we have some results enable constant result fetching (infinite scroll)
+                  if (self.state.items.length > 0) {
+                    // get the page number for the search
+                    const next = (typeof self.state.pageNum === 'undefined' || self.state.pageNum === 0) ? 2 : (self.state.pageNum + 1);
 
-               // if we have some results enable constant result fetching (infinite scroll)
-               if (self.state.items.length > 0) {
-                  // get the page number for the search
-                  const next = (typeof self.state.pageNum === 'undefined' || self.state.pageNum === 0) ? 2 : (self.state.pageNum + 1);
-                    
-                  if (Math.ceil(self.state.items.length / 10) < next) { 
-                    self.setState({
-                      searching: true,
-                    });
-          
-                    const url = Utils.getFullSearchQueryUrl(self.state.term, self.props.options.properties);
+                    // ensure we haven't already fetched these results
+                    if (Math.ceil(self.state.items.length / 10) < next) {
+                      self.setState({
+                        searching: true,
+                      });
 
-                    PeopleSearchActions.fetchData(url, self.state.term, next, true);
+                      const url = Utils.getFullSearchQueryUrl(self.state.term, self.props.options.properties);
 
-                    console.log('KAZAM! - IT IS SCROLL TIME');
+                      // load x more search results
+                      PeopleSearchActions.fetchData(url, self.state.term, next, true);
+                    }
                   }
                 }
               }} />

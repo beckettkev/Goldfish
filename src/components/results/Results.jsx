@@ -30,7 +30,7 @@ class Results extends React.Component {
   createItem(item, i) {
     // This function gets called for every search result and renders a person component
     return (
-      <div styleName="item-container" key={'result-item-' + i}>
+      <div styleName="item-container" className="animated flipInX" key={'result-item-' + i}>
         <div className="item ms-bgc-w ms-bcl-nl o365cs-notifications-message" styleName="results-items">
           <Person
             data={item}

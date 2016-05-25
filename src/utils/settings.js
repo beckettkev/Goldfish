@@ -56,6 +56,7 @@ module.exports = {
     switch (key) {
     case 'showFavourites':
       // do some stuff
+      this.toggleFavouritesTab(value);
       break;
     case 'showOnRight':
       this.setPosition(value ? 'right' : 'left');
@@ -66,6 +67,22 @@ module.exports = {
     default:
       // no default action
       break;
+    }
+  },
+  toggleFavouritesTab: function toggleFavouritesTab(value) {
+    const tab = document.getElementById('component-tab-favourites');
+
+    if (tab !== null) {
+      if (value) {
+        tab.className = 'tab';
+        tab.style.display = '';
+      } else {
+        tab.className = 'tab animated flipOutX';
+        
+        window.setTimeout(function() {
+          tab.style.display = 'none';
+        }, 1000);
+      }
     }
   },
   applyCssOverride: function applyCssOverride(value) {

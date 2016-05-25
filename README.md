@@ -179,7 +179,7 @@ Then you can grab the SharePoint **Custom Action** project from Github and deplo
 
 ### Direct Reference
 
-Or as an alternative to the above, simply add the script link to the Goldfish bundle app and then invoke Goldfish from a click event.
+As an alternative to the above, simply add the script link to the Goldfish bundle app and then invoke Goldfish from a click event.
 
 ## Tests
 

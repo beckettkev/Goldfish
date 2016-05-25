@@ -57,9 +57,6 @@ module.exports = {
     case 'showFavourites':
       // do some stuff
       break;
-    case 'showLaunchButton':
-      // do some stuff
-      break;
     case 'showOnRight':
       this.setPosition(value ? 'right' : 'left');
       break;
@@ -77,9 +74,6 @@ module.exports = {
     } else {
       console.log('Goldfish.SettingsManager - CSS overrides must be plain text and not an object or array');
     }
-  },
-  toggleFunctionality: function toggleFunctionality(show) {
-
   },
   setPosition: function setPosition(pos) {
     const css = '#outer-space { direction: ' + (pos === 'right' ? 'ltr' : 'rtl') + '; ' + pos + ': 0px }';

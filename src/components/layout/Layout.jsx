@@ -43,7 +43,7 @@ class Layout extends React.Component {
 
     this.registerLayoutListener();
 
-    this.setState(getLayoutState());
+    this.state = getLayoutState();
   }
 
   componentWillMount() {
@@ -58,7 +58,7 @@ class Layout extends React.Component {
     if (this.state === null) {
       PeopleSearchActions.fetchLayout();
 
-      this.setState(getLayoutState());
+      this.state = getLayoutState();
     }
   }
 
@@ -75,7 +75,7 @@ class Layout extends React.Component {
   onLayoutChange() {
     this.props.onLayoutChange(getLayoutState());
 
-    this.setState(getLayoutState());
+    this.state = getLayoutState();
   }
 
   onFieldRemoveClick(index) {

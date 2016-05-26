@@ -155,6 +155,7 @@ const Goldfish = {
     }
 
     // Setup the google materials font and animate css for the UI
+    Goldfish.LoadStyleSheet('https://fonts.googleapis.com/icon?family=Material+Icons');
     Goldfish.LoadStyleSheet('https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css');
   },
   Create: function Create(options) {

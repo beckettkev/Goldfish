@@ -49,7 +49,7 @@ class Row extends React.Component {
   constructor(props) {
     super(props);
   }
-  
+
   normal(person, key, value, style, length) {
     if (person[value] === null) {
       return null;
@@ -58,7 +58,7 @@ class Row extends React.Component {
     }
   }
 
-  hyperlink(person, key, href, target, value, style, length) { 
+  hyperlink(person, key, href, target, value, style, length) {
     const prefix = href.toLowerCase().indexOf('email') > -1 ? 'mailto:' : '';
 
     if (person[href] === null) {
@@ -68,13 +68,13 @@ class Row extends React.Component {
         <a key={`item-${href}-${key}`} href={`${prefix}${person[href]}`} target={target}>
           {Utils.getTrimmedString(getFormatStringOrValue(value, person), length)}
         </a>
-      );  
-    }    
+      );
+    }
   }
-  
+
   icon(icon, key) {
     return (
-      <i 
+      <i
         key={`item-${icon}-${key}`}
         className={'material-icons'} styleName={'icon'}>
           {icon}
@@ -90,11 +90,11 @@ class Row extends React.Component {
   */
   getRowFromLayout(key, layout, person) {
     let item = [];
-    
+
     //regardless of if the row is a link or plain text, we need these values
     const { value } = layout;
-    const length = typeof layout.max === 'undefined' ? 30 : layout.max;
-    
+    const length = typeof layout.max === 'undefined' ? 28 : layout.max;
+
     let style = '';
     let prefix = null;
 
@@ -123,8 +123,8 @@ class Row extends React.Component {
 
     return item;
   }
-    
-  render() {        
+
+  render() {
     const { id, element, person } = this.props;
 
     return (

@@ -56,7 +56,8 @@ module.exports = {
     switch (key) {
     case 'showFavourites':
       // do some stuff
-      this.toggleFavouritesTab(value);
+      this.toggleFavourites(value);
+      this.toggleFavouriteButtons(value);
       break;
     case 'showOnRight':
       this.setPosition(value ? 'right' : 'left');
@@ -69,8 +70,9 @@ module.exports = {
       break;
     }
   },
-  toggleFavouritesTab: function toggleFavouritesTab(value) {
+  toggleFavourites: function toggleFavouritesTab(value) {
     const tab = document.getElementById('component-tab-favourites');
+    const favourites = document.getElementById('component-favourites');
 
     if (tab !== null) {
       if (value) {
@@ -78,12 +80,25 @@ module.exports = {
         tab.style.display = '';
       } else {
         tab.className = 'tab animated flipOutX';
-        
+
         window.setTimeout(function() {
           tab.style.display = 'none';
+          favourites.style.display = 'none';
         }, 1000);
       }
     }
+  },
+  toggleFavouriteButtons: function toggleFavouriteButtons(value) {
+    const { inCss, outCss, removeClass, addClass } = { inCss: 'flipInY', outCss: 'flipOutY', removeClass: 'remove', addClass: 'add' };
+    const buttons = [].slice.call(document.getElementsByClassName('add')).concat([].slice.call(document.getElementsByClassName('remove')));
+
+    buttons.forEach(function(item) {
+      if (value) {
+        item.className = item.className.indexOf(` animated ${outCss}`) > -1 ? item.className.replace(outCss, inCss) : `${item.className} animated ${inCss}`;
+      } else {
+        item.className = item.className.indexOf(` animated ${inCss}`) > -1 ? item.className.replace(inCss, outCss) : `${item.className} animated ${outCss}`;
+      }
+    });
   },
   applyCssOverride: function applyCssOverride(value) {
     if (typeof value === 'string') {

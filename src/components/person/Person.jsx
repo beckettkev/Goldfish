@@ -189,7 +189,7 @@ class Person extends React.Component {
     };
 
     return (
-      <span key={'person-' + this.props.id}>
+      <span key={'person-' + this.props.id} ref="person">
         {this.getFavouriteButton(person, this.props.id)}
         <div styleName="item">
           {this.getPerson(person, this.props.id)}

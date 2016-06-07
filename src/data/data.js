@@ -122,15 +122,18 @@ function cacheKeySizeExceedsLimit() {
 module.exports = {
   getMockPeopleResults: function getMockPeopleResults(term, pageNum, append) {
     return new Promise((resolve, reject) => {
-        const mockPayload = buildCachePayload(Mock, Mock.length, term, [1,2]);
+      const mockPayload = buildCachePayload(Mock, Mock.length, term, [1,2]);
+      mockPayload.pageNum = pageNum;
 
-        const index = pageNum === 0 ? 1 : pageNum - 1;
-        // only return the page we need
-        mockPayload.payload = mockPayload.payload.splice(index,10);
+      const start = pageNum < 2 ? 0 : (pageNum - 1) * 10;
+      const end = pageNum < 2 ? 10 : pageNum * 10;
 
-        resolve(mockPayload);
+      // only return the page we need
+      mockPayload.payload = mockPayload.payload.slice(start, end);
 
-        initAppDispatcher(mockPayload, append);
+      resolve(mockPayload);
+
+      initAppDispatcher(mockPayload, append);
     });
   },
   getPeopleResults: function getPeopleResults(queryUrl, term, pageNum, append) {

@@ -9,13 +9,14 @@ const PeopleSearchActions = {
 
   fetchData(url, term, pageNum, append) {
     const appendResults = typeof append === 'undefined' ? false : append;
+    // we will handle the dispatcher within the logic
 
-    Data.getPeopleResults(url, term, pageNum, appendResults).then(data => {
-      /*AppDispatcher.dispatch({
-        actionType: appendResults ? PeopleSearchConstants.GOT_DATA_APPEND : PeopleSearchConstants.GOT_DATA,
-        results: data,
-      });*/
-    });
+    if (typeof window.fakeAjaxCalls === 'undefined') {
+      Data.getPeopleResults(url, term, pageNum, appendResults).then(data => {});
+    } else {
+      // load mock data
+      Data.getMockPeopleResults(term, pageNum, appendResults);
+    }
   },
 
   showNoResults() {

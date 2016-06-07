@@ -10,10 +10,15 @@ function toggleElementVisibility(id, show) {
 module.exports = {
   closePeopleSearch: function closePeopleSearch() {
     const component = document.getElementById('component-holder');
+    const holder = document.getElementById('outer-space');
 
-    React.unmountComponentAtNode(component);
+    holder.className = 'animated bounceOutRight';
 
-    document.body.removeChild(component);
+    window.setTimeout(function() {
+      React.unmountComponentAtNode(component);
+
+      document.body.removeChild(component);
+    }, 1000);
 
     // if necessary re-enable drag and drop on document libraries
     window.ExecuteOrDelayUntilScriptLoaded(function() {

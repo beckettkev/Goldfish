@@ -4,6 +4,7 @@ import PeopleSearchDefaults from '../constants/default';
 import Cache from 'cache-funk';
 import Utils from '../utils/utilities';
 import FavouriteStore from '../stores/FavouriteStore';
+import Mock from '../mock/Mock.js';
 require('es6-promise').polyfill();
 
 const PEOPLE_STORAGE_KEY_PREFIX = 'PeopleSearch-Results-';
@@ -119,7 +120,20 @@ function cacheKeySizeExceedsLimit() {
 }
 
 module.exports = {
-  getPeopleResults: function(queryUrl, term, pageNum, append) {
+  getMockPeopleResults: function getMockPeopleResults(term, pageNum, append) {
+    return new Promise((resolve, reject) => {
+        const mockPayload = buildCachePayload(Mock, Mock.length, term, [1,2]);
+
+        const index = pageNum === 0 ? 1 : pageNum - 1;
+        // only return the page we need
+        mockPayload.payload = mockPayload.payload.splice(index,10);
+
+        resolve(mockPayload);
+
+        initAppDispatcher(mockPayload, append);
+    });
+  },
+  getPeopleResults: function getPeopleResults(queryUrl, term, pageNum, append) {
     return new Promise((resolve, reject) => {
       const key = PEOPLE_STORAGE_KEY_PREFIX + Utils.createStorageKey(term).toLowerCase();
 
@@ -157,7 +171,7 @@ module.exports = {
             operations.fetch = false;
 
             initAppDispatcher(cachedResults, append);
-            
+
             return;
           } else {
             // we have a valid payload, but we need to insert a new page

@@ -17,7 +17,7 @@ class Available extends React.Component {
   render() {
     if (this.props !== null) {
       if (typeof this.props.options !== 'undefined') {
-        const transition = this.props.options.length > 0 ? 'flipInY' : 'flipOutY';
+        const transition = 'flipInX';
 
         return (
           <div key="available-selector">

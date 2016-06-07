@@ -96,9 +96,16 @@ const Goldfish = {
         if (component === null) {
           Goldfish.Create();
         } else if (component !== null) {
-          // destroy
-          React.unmountComponentAtNode(component);
-          document.body.removeChild(component);
+          const holder = document.getElementById('outer-space');
+
+          holder.className = 'animated bounceOutRight';
+
+          window.setTimeout(function() {
+            // destroy
+            React.unmountComponentAtNode(component);
+
+            document.body.removeChild(component);
+          }, 1000);
         }
 
         window.keyWatcher = null;
@@ -141,6 +148,7 @@ const Goldfish = {
       window.ExecuteOrDelayUntilScriptLoaded = function(callback, script) {
         callback();
       };
+      window.IMNRC = function() {};
       window.fakeAjaxCalls = true;
     }
   },

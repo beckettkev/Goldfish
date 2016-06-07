@@ -122,12 +122,12 @@ class Layout extends React.Component {
 
   createLayoutItems(type, field, i) {
     return (
-      <SortableItem key={'layout-' + i} className="animated flipInY">
+      <SortableItem key={'layout-' + i} className="animated flipInX">
         <div styleName="current-item">
           <div key={i}>
             {field.label}
           </div>
-          <div styleName="removal-button" className="animated flipInY">
+          <div styleName="removal-button">
             <Button
               icon="remove"
               key={i}

@@ -190,7 +190,12 @@ const Goldfish = {
     holder.id = 'component-holder';
     holder.style.width = '400px';
 
+    const ghost = document.createElement('div');
+    ghost.id = 'component-ghostpane';
+    ghost.style.display = 'none';
+
     document.getElementsByTagName('body')[0].appendChild(holder);
+    document.getElementsByTagName('body')[0].appendChild(ghost);
 
     // When we close the People Search component, we trash it. Recreate if it is opened again
     window.ExecuteOrDelayUntilScriptLoaded(() => {

@@ -1,3 +1,24 @@
+:global(#component-ghostpane) {
+  background: #999;
+  opacity: 0.2;
+
+  width: 45%;
+  height: 45%;
+  top: 20%;
+  left: 20%;
+
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  z-index: 1999;
+
+  -webkit-transition: all 0.25s ease-in-out;
+  -moz-transition: all 0.25s ease-in-out;
+  -ms-transition: all 0.25s ease-in-out;
+  -o-transition: all 0.25s ease-in-out;
+  transition: all 0.25s ease-in-out;
+}
+
 :global(.material-icons) {
   font-family: 'Material Icons';
   font-weight: normal;

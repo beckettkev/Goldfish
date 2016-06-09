@@ -90,7 +90,7 @@ class PeopleSearch extends React.Component {
     this.setState({
       settings: collection,
     });
-    
+
     this.applyOptions();
   }
 

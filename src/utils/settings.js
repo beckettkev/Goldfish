@@ -89,7 +89,7 @@ module.exports = {
     }
   },
   toggleFavouriteButtons: function toggleFavouriteButtons(value) {
-    const { inCss, outCss, removeClass, addClass } = { inCss: 'flipInY', outCss: 'flipOutY', removeClass: 'remove', addClass: 'add' };
+    const { inCss, outCss, removeClass, addClass } = { inCss: 'pulse', outCss: 'flipOutX', removeClass: 'remove', addClass: 'add' };
     const buttons = [].slice.call(document.getElementsByClassName('add')).concat([].slice.call(document.getElementsByClassName('remove')));
 
     buttons.forEach(function(item) {

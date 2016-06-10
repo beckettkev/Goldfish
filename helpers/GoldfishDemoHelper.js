@@ -1,286 +1,321 @@
 /*
   Demo helper for launching goldfish on a non-sharepoint site (for demo purposes).
 */
-
 var heightOfDemo = document.body.getBoundingClientRect().bottom;
 
 Goldfish.Create({
-	menu: 'alternate-tabs',
-	css: {
-		primary: '#188efb',
-		overrides: '#component-holder { width:100%; } #outer-space { top:0; height:' + heightOfDemo + 'px; } #component, #component-favourites, #component-layout, #component-settings { width: inherit !important; } #component .input input[type="text"] { background-color: #ffffff; }'
-	}
+  menu: 'alternate-tabs',
+  css: {
+    primary: '#188efb',
+    overrides: '#component-holder { width:100%; } #outer-space { top:0; height:' + heightOfDemo + 'px; } #component, #component-favourites, #component-layout, #component-settings { width: inherit !important; margin-right: -170px; } #component .input input[type="text"] { background-color: #ffffff; }'
+  }
 });
 
 /*
- * @author https://twitter.com/blurspline / https://github.com/zz85
+ * Resize Snapin - based ont he work done by @author https://twitter.com/blurspline / https://github.com/zz85
  * See post @ http://www.lab4games.net/zz85/blog/2014/11/15/resizing-moving-snapping-windows-with-js-css/
  */
 
 "use strict";
 
+(function(namespace, el, ghost) {
+  // Minimum resizable area
+  var minWidth = 400;
+  var minHeight = 400;
 
-(function() {
-	// Minimum resizable area
-	var minWidth = 400;
-	var minHeight = 400;
+  // Thresholds - leave these alone
+  var FULLSCREEN_MARGINS = -10;
+  var MARGINS = 4;
 
-	// Thresholds
-	var FULLSCREEN_MARGINS = -10;
-	var MARGINS = 4;
+  // End of what's configurable.
+  var clicked = null;
+  var onRightEdge, onBottomEdge, onLeftEdge, onTopEdge;
 
-	// End of what's configurable.
-	var clicked = null;
-	var onRightEdge, onBottomEdge, onLeftEdge, onTopEdge;
+  var rightScreenEdge, bottomScreenEdge;
 
-	var rightScreenEdge, bottomScreenEdge;
+  var preSnapped;
 
-	var preSnapped;
+  var b, x, y;
 
-	var b, x, y;
+  var redraw = false;
 
-	var redraw = false;
+  var pane = document.getElementById(el);
+  var ghostpane = document.getElementById(ghost);
 
-	var pane = document.getElementById('outer-space');
-	var ghostpane = document.getElementById('component-ghostpane');
+  function setBounds(element, x, y, w, h) {
+    element.style.left = x + 'px';
+    element.style.top = y + 'px';
+    element.style.width = w + 'px';
+    element.style.height = h + 'px';
+  }
 
-	function setBounds(element, x, y, w, h) {
-		element.style.left = x + 'px';
-		element.style.top = y + 'px';
-		element.style.width = w + 'px';
-		element.style.height = h + 'px';
-	}
+  function hintHide() {
+    setBounds(ghostpane, b.left, b.top, b.width, b.height);
+    ghostpane.style.opacity = 0;
+  }
 
-	function hintHide() {
-	  setBounds(ghostpane, b.left, b.top, b.width, b.height);
-	  ghostpane.style.opacity = 0;
-	}
+  function onTouchDown(e) {
+    onDown(e.touches[0]);
+    e.preventDefault();
+  }
 
-	// Mouse events
-	pane.addEventListener('mousedown', onMouseDown);
-	document.addEventListener('mousemove', onMove);
-	document.addEventListener('mouseup', onUp);
+  function onTouchMove(e) {
+    onMove(e.touches[0]);
+  }
 
-	// Touch events
-	pane.addEventListener('touchstart', onTouchDown);
-	document.addEventListener('touchmove', onTouchMove);
-	document.addEventListener('touchend', onTouchEnd);
+  function onTouchEnd(e) {
+    if (e.touches.length ==0) onUp(e.changedTouches[0]);
+  }
 
-	function onTouchDown(e) {
-	  onDown(e.touches[0]);
-	  e.preventDefault();
-	}
+  function onMouseDown(e) {
+    onDown(e);
+    e.preventDefault();
+  }
 
-	function onTouchMove(e) {
-	  onMove(e.touches[0]);
-	}
+  function onDown(e) {
+    ghostpane.style.display = '';
 
-	function onTouchEnd(e) {
-	  if (e.touches.length ==0) onUp(e.changedTouches[0]);
-	}
+    calc(e);
 
-	function onMouseDown(e) {
-	  onDown(e);
-	  e.preventDefault();
-	}
+    var isResizing = onRightEdge || onBottomEdge || onTopEdge || onLeftEdge;
 
-	function onDown(e) {
-	  ghostpane.style.display = '';
+    clicked = {
+      x: x,
+      y: y,
+      cx: e.clientX,
+      cy: e.clientY,
+      w: b.width,
+      h: b.height,
+      isResizing: isResizing,
+      isMoving: !isResizing && canMove(),
+      onTopEdge: onTopEdge,
+      onLeftEdge: onLeftEdge,
+      onRightEdge: onRightEdge,
+      onBottomEdge: onBottomEdge
+    };
+  }
 
-	  calc(e);
+  function canMove() {
+    return x > 0 && x < b.width && y > 0 && y < b.height
+    && y < 30;
+  }
 
-	  var isResizing = onRightEdge || onBottomEdge || onTopEdge || onLeftEdge;
+  function calc(e) {
+    b = pane.getBoundingClientRect();
+    x = e.clientX - b.left;
+    y = e.clientY - b.top;
 
-	  clicked = {
-	    x: x,
-	    y: y,
-	    cx: e.clientX,
-	    cy: e.clientY,
-	    w: b.width,
-	    h: b.height,
-	    isResizing: isResizing,
-	    isMoving: !isResizing && canMove(),
-	    onTopEdge: onTopEdge,
-	    onLeftEdge: onLeftEdge,
-	    onRightEdge: onRightEdge,
-	    onBottomEdge: onBottomEdge
-	  };
-	}
+    onTopEdge = y < MARGINS;
+    onLeftEdge = x < MARGINS;
+    onRightEdge = x >= b.width - MARGINS;
+    onBottomEdge = y >= b.height - MARGINS;
 
-	function canMove() {
-	  return x > 0 && x < b.width && y > 0 && y < b.height
-	  && y < 30;
-	}
+    rightScreenEdge = window.innerWidth - MARGINS;
+    bottomScreenEdge = window.innerHeight - MARGINS;
+  }
 
-	function calc(e) {
-	  b = pane.getBoundingClientRect();
-	  x = e.clientX - b.left;
-	  y = e.clientY - b.top;
+  var e;
 
-	  onTopEdge = y < MARGINS;
-	  onLeftEdge = x < MARGINS;
-	  onRightEdge = x >= b.width - MARGINS;
-	  onBottomEdge = y >= b.height - MARGINS;
+  function onMove(ee) {
+    calc(ee);
 
-	  rightScreenEdge = window.innerWidth - MARGINS;
-	  bottomScreenEdge = window.innerHeight - MARGINS;
-	}
+    e = ee;
 
-	var e;
+    redraw = true;
+  }
 
-	function onMove(ee) {
-	  calc(ee);
+  function getApplyBounds(el, drop, snapped) {
+    var compiledWidth = pane.getBoundingClientRect().width > window.innerWidth ? 500 : pane.getBoundingClientRect().width;
 
-	  e = ee;
+  	if (b.top < MARGINS) {
+        // hintTop();
+        setBounds(el, 0, 0, window.innerWidth, 500);
+        if (drop) {
+          return snapped;
+        }
+      } else if (b.left < MARGINS) {
+        // hintLeft();
+        setBounds(el, 0, 0, compiledWidth, window.innerHeight);
+        if (drop) {
+          return snapped;
+        }
+      } else if (b.right > rightScreenEdge) {
+        // hintRight();
+        setBounds(el, window.innerWidth - compiledWidth, 0, compiledWidth, window.innerHeight);
+        if (drop) {
+          return snapped;
+        }
+      } else if (b.bottom > bottomScreenEdge) {
+        // hintBottom();
+        setBounds(el, 0, window.innerHeight / 2, window.innerWidth, 500);
+        if (drop) {
+          return snapped;
+        }
+      } else {
+      	if (drop) {
+          return null;
+        } else {
+          hintHide();
+          return;
+        }
+      }
 
-	  redraw = true;
-	}
+      el.style.opacity = 0.2;
+  }
 
-	function animate() {
+  function animate() {
+    requestAnimationFrame(animate);
 
-	  requestAnimationFrame(animate);
+    if (!redraw) return;
 
-	  if (!redraw) return;
+    redraw = false;
 
-	  redraw = false;
+    if (clicked && clicked.isResizing) {
 
-	  if (clicked && clicked.isResizing) {
+      if (clicked.onRightEdge) pane.style.width = Math.max(x, minWidth) + 'px';
+      if (clicked.onBottomEdge) pane.style.height = Math.max(y, minHeight) + 'px';
 
-	    if (clicked.onRightEdge) pane.style.width = Math.max(x, minWidth) + 'px';
-	    if (clicked.onBottomEdge) pane.style.height = Math.max(y, minHeight) + 'px';
+      if (clicked.onLeftEdge) {
+        var currentWidth = Math.max(clicked.cx - e.clientX  + clicked.w, minWidth);
+        if (currentWidth > minWidth) {
+          pane.style.width = currentWidth + 'px';
+          pane.style.left = e.clientX + 'px';
+        }
+      }
 
-	    if (clicked.onLeftEdge) {
-	      var currentWidth = Math.max(clicked.cx - e.clientX  + clicked.w, minWidth);
-	      if (currentWidth > minWidth) {
-	        pane.style.width = currentWidth + 'px';
-	        pane.style.left = e.clientX + 'px';
-	      }
-	    }
+      if (clicked.onTopEdge) {
+        var currentHeight = Math.max(clicked.cy - e.clientY  + clicked.h, minHeight);
+        if (currentHeight > minHeight) {
+          pane.style.height = currentHeight + 'px';
+          pane.style.top = e.clientY + 'px';
+        }
+      }
 
-	    if (clicked.onTopEdge) {
-	      var currentHeight = Math.max(clicked.cy - e.clientY  + clicked.h, minHeight);
-	      if (currentHeight > minHeight) {
-	        pane.style.height = currentHeight + 'px';
-	        pane.style.top = e.clientY + 'px';
-	      }
-	    }
+      hintHide();
 
-	    hintHide();
+      return;
+    }
 
-	    return;
-	  }
+    if (clicked && clicked.isMoving) {
+      getApplyBounds(ghostpane, false, null);
 
-	  if (clicked && clicked.isMoving) {
+      /*var compiledWidth = pane.getBoundingClientRect().width > window.innerWidth ? 500 : pane.getBoundingClientRect().width;
 
-	  	var compiledWidth = pane.getBoundingClientRect().width > window.innerWidth ? 500 : pane.getBoundingClientRect().width;
-/*
-	    if (b.top < FULLSCREEN_MARGINS || b.left < FULLSCREEN_MARGINS || b.right > window.innerWidth - FULLSCREEN_MARGINS || b.bottom > window.innerHeight - FULLSCREEN_MARGINS) {
-	      // hintFull();
-	      setBounds(ghostpane, 0, 0, window.innerWidth, window.innerHeight);
-	      ghostpane.style.opacity = 0.2;
-	    } else*/ if (b.top < MARGINS) {
-	      // hintTop();
-	      //setBounds(ghostpane, 0, 0, window.innerWidth, window.innerHeight / 2);
-	      setBounds(ghostpane, 0, 0, window.innerWidth, 500);
-	      ghostpane.style.opacity = 0.2;
-	    } else if (b.left < MARGINS) {
-	      // hintLeft();
-	      //setBounds(ghostpane, 0, 0, window.innerWidth / 2, window.innerHeight);
-	      setBounds(ghostpane, 0, 0, compiledWidth, window.innerHeight);
-	      ghostpane.style.opacity = 0.2;
-	    } else if (b.right > rightScreenEdge) {
-	      // hintRight();
-	      //setBounds(ghostpane, window.innerWidth / 2, 0, window.innerWidth / 2, window.innerHeight);
-	      setBounds(ghostpane, window.innerWidth / 2, 0, compiledWidth, window.innerHeight);
-	      ghostpane.style.opacity = 0.2;
-	    } else if (b.bottom > bottomScreenEdge) {
-	      // hintBottom();
-	      //setBounds(ghostpane, 0, window.innerHeight / 2, window.innerWidth, window.innerWidth / 2);
-	      setBounds(ghostpane, 0, window.innerHeight / 2, window.innerWidth, 500);
-	      ghostpane.style.opacity = 0.2;
-	    } else {
-	      hintHide();
-	    }
+      if (b.top < MARGINS) {
+        // hintTop();
+        setBounds(ghostpane, 0, 0, window.innerWidth, 500);
+        ghostpane.style.opacity = 0.2;
+      } else if (b.left < MARGINS) {
+        // hintLeft();
+        setBounds(ghostpane, 0, 0, compiledWidth, window.innerHeight);
+        ghostpane.style.opacity = 0.2;
+      } else if (b.right > rightScreenEdge) {
+        // hintRight();
+        setBounds(ghostpane, window.innerWidth - compiledWidth, 0, compiledWidth, window.innerHeight);
+        ghostpane.style.opacity = 0.2;
+      } else if (b.bottom > bottomScreenEdge) {
+        // hintBottom();
+        setBounds(ghostpane, 0, window.innerHeight / 2, window.innerWidth, 500);
+        ghostpane.style.opacity = 0.2;
+      } else {
+        hintHide();
+      }*/
 
-	    if (preSnapped) {
-	      setBounds(pane,
-	      	e.clientX - preSnapped.width / 2,
-	      	e.clientY - Math.min(clicked.y, preSnapped.height),
-	      	preSnapped.width,
-	      	preSnapped.height
-	      );
-	      return;
-	    }
+      if (preSnapped) {
+        setBounds(pane,
+          e.clientX - preSnapped.width / 2,
+          e.clientY - Math.min(clicked.y, preSnapped.height),
+          preSnapped.width,
+          preSnapped.height
+        );
+        return;
+      }
 
-	    // moving
-	    pane.style.top = (e.clientY - clicked.y) + 'px';
-	    pane.style.left = (e.clientX - clicked.x) + 'px';
+      // moving
+      pane.style.top = (e.clientY - clicked.y) + 'px';
+      pane.style.left = (e.clientX - clicked.x) + 'px';
 
-	    return;
-	  }
+      return;
+    }
 
-	  // This code executes when mouse moves without clicking
+    // This code executes when mouse moves without clicking
 
-	  // style cursor
-	  if (onRightEdge && onBottomEdge || onLeftEdge && onTopEdge) {
-	    pane.style.cursor = 'nwse-resize';
-	  } else if (onRightEdge && onTopEdge || onBottomEdge && onLeftEdge) {
-	    pane.style.cursor = 'nesw-resize';
-	  } else if (onRightEdge || onLeftEdge) {
-	    pane.style.cursor = 'ew-resize';
-	  } else if (onBottomEdge || onTopEdge) {
-	    pane.style.cursor = 'ns-resize';
-	  } else if (canMove()) {
-	    pane.style.cursor = 'move';
-	  } else {
-	    pane.style.cursor = 'default';
-	  }
-	}
+    // style cursor
+    if (onRightEdge && onBottomEdge || onLeftEdge && onTopEdge) {
+      pane.style.cursor = 'nwse-resize';
+    } else if (onRightEdge && onTopEdge || onBottomEdge && onLeftEdge) {
+      pane.style.cursor = 'nesw-resize';
+    } else if (onRightEdge || onLeftEdge) {
+      pane.style.cursor = 'ew-resize';
+    } else if (onBottomEdge || onTopEdge) {
+      pane.style.cursor = 'ns-resize';
+    } else if (canMove()) {
+      pane.style.cursor = 'move';
+    } else {
+      pane.style.cursor = 'default';
+    }
+  }
 
-	animate();
+  function onUp(e) {
+    calc(e);
 
-	function onUp(e) {
-	  calc(e);
+    if (clicked && clicked.isMoving) {
+      // Snap
+      var snapped = {
+        width: b.width,
+        height: b.height
+      };
 
-	  if (clicked && clicked.isMoving) {
-	    // Snap
-	    var snapped = {
-	      width: b.width,
-	      height: b.height
-	    };
+      preSnapped = getApplyBounds(pane, true, snapped);
+      /*
+      var compiledWidth = pane.getBoundingClientRect().width > window.innerWidth ? 500 : pane.getBoundingClientRect().width;
 
-	  	var compiledWidth = pane.getBoundingClientRect().width > window.innerWidth ? 500 : pane.getBoundingClientRect().width;
+      if (b.top < MARGINS) {
+        // hintTop();
+        setBounds(pane, 0, 0, window.innerWidth, 500);
+        preSnapped = snapped;
+      } else if (b.left < MARGINS) {
+        // hintLeft();
+        setBounds(pane, 0, 0, compiledWidth, window.innerHeight);
+        preSnapped = snapped;
+      } else if (b.right > rightScreenEdge) {
+        // hintRight();
+        setBounds(pane, window.innerWidth - compiledWidth, 0, compiledWidth, window.innerHeight);
+        preSnapped = snapped;
+      } else if (b.bottom > bottomScreenEdge) {
+        // hintBottom();
+        setBounds(pane, 0, window.innerHeight / 2, window.innerWidth, 500);
+        preSnapped = snapped;
+      } else {
+        preSnapped = null;
+      }*/
 
-	    /*if (b.top < FULLSCREEN_MARGINS || b.left < FULLSCREEN_MARGINS || b.right > window.innerWidth - FULLSCREEN_MARGINS || b.bottom > window.innerHeight - FULLSCREEN_MARGINS) {
-	      // hintFull();
-	      setBounds(pane, 0, 0, window.innerWidth, window.innerHeight);
-	      preSnapped = snapped;
-	    } else */if (b.top < MARGINS) {
-	      // hintTop();
-	      setBounds(pane, 0, 0, window.innerWidth, window.innerHeight / 2);
-	      preSnapped = snapped;
-	    } else if (b.left < MARGINS) {
-	      // hintLeft();
-	      setBounds(pane, 0, 0, compiledWidth, window.innerHeight);
-	      preSnapped = snapped;
-	    } else if (b.right > rightScreenEdge) {
-	      // hintRight();
-	      setBounds(pane, window.innerWidth / 2, 0, compiledWidth, window.innerHeight);
-	      preSnapped = snapped;
-	    } else if (b.bottom > bottomScreenEdge) {
-	      // hintBottom();
-	      setBounds(pane, 0, window.innerHeight / 2, window.innerWidth, window.innerWidth / 2);
-	      preSnapped = snapped;
-	    } else {
-	      preSnapped = null;
-	    }
+      hintHide();
 
-	    hintHide();
+    }
 
-	  }
+    clicked = null;
 
-	  clicked = null;
+    ghostpane.style.display = 'none';
+  }
 
-	  ghostpane.style.display = 'none';
-	}
-})();
+  function setEventListeners() {
+    // Mouse events
+    pane.addEventListener('mousedown', onMouseDown);
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+
+    // Touch events
+    pane.addEventListener('touchstart', onTouchDown);
+    document.addEventListener('touchmove', onTouchMove);
+    document.addEventListener('touchend', onTouchEnd);
+  }
+
+  namespace.Start = function Start() {
+  	setEventListeners();
+  	animate();
+  };
+
+})(Goldfish.ResizeSnapin = Goldfish.ResizeSnapin || {}, 'outer-space', 'component-ghostpane');
+
+Goldfish.ResizeSnapin.Start();

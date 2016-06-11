@@ -7,9 +7,11 @@ Goldfish.Create({
   menu: 'alternate-tabs',
   css: {
     primary: '#188efb',
-    overrides: '#component-holder { width:100%; } #outer-space { top:0; height:' + heightOfDemo + 'px; } #component, #component-favourites, #component-layout, #component-settings { width: inherit !important; margin-right: -170px; } #component .input input[type="text"] { background-color: #ffffff; }'
+    overrides: '#component-ghostpane { background-color: #188efb; } #component-holder { width:100%; } #outer-space { top:0; height:' + heightOfDemo + 'px; } #component, #component-favourites, #component-layout, #component-settings { width: inherit !important; margin-right: -170px; } #component .input input[type="text"] { background-color: #ffffff; }'
   }
 });
+
+var clickers = ['dragSnapinGoldfish','dragSnapinGoldfishLayout','dragSnapinGoldfishSettings','dragSnapinGoldfishFavourites'];
 
 /*
  * Resize Snapin - based ont he work done by @author https://twitter.com/blurspline / https://github.com/zz85
@@ -18,7 +20,7 @@ Goldfish.Create({
 
 "use strict";
 
-(function(namespace, el, ghost) {
+(function(namespace, el, ghost, clickers) {
   // Minimum resizable area
   var minWidth = 400;
   var minHeight = 400;
@@ -30,6 +32,7 @@ Goldfish.Create({
   // End of what's configurable.
   var clicked = null;
   var onRightEdge, onBottomEdge, onLeftEdge, onTopEdge;
+  var currentClicker = null;
 
   var rightScreenEdge, bottomScreenEdge;
 
@@ -39,7 +42,9 @@ Goldfish.Create({
 
   var redraw = false;
 
+  // The app
   var pane = document.getElementById(el);
+  // The ghost panel demonstrating the drop point for the move
   var ghostpane = document.getElementById(ghost);
 
   function setBounds(element, x, y, w, h) {
@@ -49,8 +54,12 @@ Goldfish.Create({
     element.style.height = h + 'px';
   }
 
+  function getCurrentClicker(e) {
+    return e.target || e.srcElement;
+  }
+
   function hintHide() {
-    setBounds(ghostpane, b.left, b.top, b.width, b.height);
+    //setBounds(ghostpane, b.left, b.top, b.width, b.height);
     ghostpane.style.opacity = 0;
   }
 
@@ -86,6 +95,7 @@ Goldfish.Create({
       cy: e.clientY,
       w: b.width,
       h: b.height,
+      currentClicker: getCurrentClicker(e),
       isResizing: isResizing,
       isMoving: !isResizing && canMove(),
       onTopEdge: onTopEdge,
@@ -96,8 +106,8 @@ Goldfish.Create({
   }
 
   function canMove() {
-    return x > 0 && x < b.width && y > 0 && y < b.height
-    && y < 30;
+    //return x > 0 && x < b.width && y > 0 && y < b.height && y < 30;
+    return x > 0 && x < b.width && y > 0 && y < b.height;
   }
 
   function calc(e) {
@@ -126,41 +136,55 @@ Goldfish.Create({
 
   function getApplyBounds(el, drop, snapped) {
     var compiledWidth = pane.getBoundingClientRect().width > window.innerWidth ? 500 : pane.getBoundingClientRect().width;
+    var region = null;
 
-  	if (b.top < MARGINS) {
-        // hintTop();
-        setBounds(el, 0, 0, window.innerWidth, 500);
-        if (drop) {
-          return snapped;
-        }
-      } else if (b.left < MARGINS) {
-        // hintLeft();
-        setBounds(el, 0, 0, compiledWidth, window.innerHeight);
-        if (drop) {
-          return snapped;
-        }
-      } else if (b.right > rightScreenEdge) {
-        // hintRight();
-        setBounds(el, window.innerWidth - compiledWidth, 0, compiledWidth, window.innerHeight);
-        if (drop) {
-          return snapped;
-        }
-      } else if (b.bottom > bottomScreenEdge) {
-        // hintBottom();
-        setBounds(el, 0, window.innerHeight / 2, window.innerWidth, 500);
-        if (drop) {
-          return snapped;
-        }
+    if (b.top < MARGINS) {
+      region = 'top';
+      setBounds(el, 0, 0, window.innerWidth, 500);
+    } else if (b.left < MARGINS) {
+      region = 'left';
+      setBounds(el, 0, 0, compiledWidth, window.innerHeight);
+    } else if (b.right > rightScreenEdge) {
+      region = 'right';
+      setBounds(el, window.innerWidth - compiledWidth, 0, compiledWidth, window.innerHeight);
+    } else if (b.bottom > bottomScreenEdge) {
+      region = 'bottom';
+      setBounds(el, 0, window.innerHeight / 2, window.innerWidth, 500);
+    } else {
+      if (drop) {
+        return null;
       } else {
-      	if (drop) {
-          return null;
-        } else {
-          hintHide();
-          return;
-        }
+        hintHide();
+        return;
       }
+    }
+      
+    if (drop) { return { 'region': region, 'snapped': snapped }; }
 
-      el.style.opacity = 0.2;
+    el.style.opacity = 0.2;
+  }
+
+  function getCursorState() {
+    // style cursor
+    if (onRightEdge && onBottomEdge || onLeftEdge && onTopEdge) {
+      return 'nwse-resize';
+    } else if (onRightEdge && onTopEdge || onBottomEdge && onLeftEdge) {
+      return 'nesw-resize';
+    } else if (onRightEdge || onLeftEdge) {
+      return 'ew-resize';
+    } else if (onBottomEdge || onTopEdge) {
+      return 'ns-resize';
+    } else if (canMove()) {
+      return 'move';
+    } else {
+      return 'default';
+    }
+  }
+
+  function setSnappinClass(region) {
+  	const snap = region.charAt(0).toUpperCase() + region.slice(1);
+
+  	pane.className = `animated bounceInRight goldfishSnap${snap}`;
   }
 
   function animate() {
@@ -200,6 +224,7 @@ Goldfish.Create({
       getApplyBounds(ghostpane, false, null);
 
       if (preSnapped) {
+        //getApplyBounds(pane, false, null);
         setBounds(pane,
           e.clientX - preSnapped.width / 2,
           e.clientY - Math.min(clicked.y, preSnapped.height),
@@ -217,21 +242,12 @@ Goldfish.Create({
     }
 
     // This code executes when mouse moves without clicking
+    const curs = getCursorState();
 
-    // style cursor
-    if (onRightEdge && onBottomEdge || onLeftEdge && onTopEdge) {
-      pane.style.cursor = 'nwse-resize';
-    } else if (onRightEdge && onTopEdge || onBottomEdge && onLeftEdge) {
-      pane.style.cursor = 'nesw-resize';
-    } else if (onRightEdge || onLeftEdge) {
-      pane.style.cursor = 'ew-resize';
-    } else if (onBottomEdge || onTopEdge) {
-      pane.style.cursor = 'ns-resize';
-    } else if (canMove()) {
-      pane.style.cursor = 'move';
-    } else {
-      pane.style.cursor = 'default';
-    }
+    clickers.forEach(function(clicker) {
+      // Set the cursor style for the drag to snapin element 
+      document.getElementById(clicker).style.cursor = curs;
+    });
   }
 
   function onUp(e) {
@@ -244,8 +260,10 @@ Goldfish.Create({
         height: b.height
       };
 
-      preSnapped = getApplyBounds(pane, true, snapped);
+      var boundParams = getApplyBounds(pane, true, snapped);
+	  preSnapped = boundParams.snapped;
 
+	  setSnappinClass(boundParams.region);
       hintHide();
     }
 
@@ -255,22 +273,32 @@ Goldfish.Create({
   }
 
   function setEventListeners() {
-    // Mouse events
-    pane.addEventListener('mousedown', onMouseDown);
-    document.addEventListener('mousemove', onMove);
-    document.addEventListener('mouseup', onUp);
+    clickers.forEach(function(clicker) {
+      const clickElement = document.getElementById(clicker);
 
-    // Touch events
-    pane.addEventListener('touchstart', onTouchDown);
-    document.addEventListener('touchmove', onTouchMove);
-    document.addEventListener('touchend', onTouchEnd);
+      if (clickElement !== null) {
+        // Mouse events
+        clickElement.addEventListener('mousedown', onMouseDown);
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+
+        // Touch events
+        clickElement.addEventListener('touchstart', onTouchDown);
+        document.addEventListener('touchmove', onTouchMove);
+        document.addEventListener('touchend', onTouchEnd);	
+      }
+    });
   }
 
   namespace.Start = function Start() {
-  	setEventListeners();
-  	animate();
+  	if (typeof clickers !== 'undefiend') {
+      setEventListeners();
+      animate();
+  	} else {
+  	  console.log('Goldfish.ResizeSnapin Please provide the clickers parameter (array) when calling the ResizeSnappin extension. Exiting...');
+  	}
   };
 
-})(Goldfish.ResizeSnapin = Goldfish.ResizeSnapin || {}, 'outer-space', 'component-ghostpane');
+})(Goldfish.ResizeSnapin = Goldfish.ResizeSnapin || {}, 'outer-space', 'component-ghostpane', clickers);
 
 Goldfish.ResizeSnapin.Start();

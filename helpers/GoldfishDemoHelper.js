@@ -135,12 +135,12 @@ var clickers = ['dragSnapinGoldfish','dragSnapinGoldfishLayout','dragSnapinGoldf
   }
 
   function getApplyBounds(el, drop, snapped) {
-    var compiledWidth = pane.getBoundingClientRect().width > window.innerWidth ? 500 : pane.getBoundingClientRect().width;
+    var compiledWidth = pane.getBoundingClientRect().width > window.innerWidth ? 400 : pane.getBoundingClientRect().width;
     var region = null;
 
     if (b.top < MARGINS) {
       region = 'top';
-      setBounds(el, 0, 0, window.innerWidth, 500);
+      setBounds(el, 0, 0, window.innerWidth, 400);
     } else if (b.left < MARGINS) {
       region = 'left';
       setBounds(el, 0, 0, compiledWidth, window.innerHeight);
@@ -149,7 +149,7 @@ var clickers = ['dragSnapinGoldfish','dragSnapinGoldfishLayout','dragSnapinGoldf
       setBounds(el, window.innerWidth - compiledWidth, 0, compiledWidth, window.innerHeight);
     } else if (b.bottom > bottomScreenEdge) {
       region = 'bottom';
-      setBounds(el, 0, window.innerHeight / 2, window.innerWidth, 500);
+      setBounds(el, 0, window.innerHeight / 2, window.innerWidth, 400);
     } else {
       if (drop) {
         return null;

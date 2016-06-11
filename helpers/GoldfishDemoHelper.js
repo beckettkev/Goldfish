@@ -7,21 +7,21 @@ Goldfish.Create({
   menu: 'alternate-tabs',
   css: {
     primary: '#188efb',
-    overrides: '#component-ghostpane { background-color: #188efb; } #component-holder { width:100%; } #outer-space { top:0; height:' + heightOfDemo + 'px; } #component, #component-favourites, #component-layout, #component-settings { width: inherit !important; margin-right: -170px; } #component .input input[type="text"] { background-color: #ffffff; }'
+    overrides: '#component-ghostpane { background-color: #188efb; } #component-holder { width:100%; } #outer-space { top:0; height:' + heightOfDemo + 'px; } #component, #component-favourites, #component-layout, #component-settings { width: inherit !important; } .goldfishSnapRight #component, .goldfishSnapRight #component-favourites, .goldfishSnapRight #component-layout, .goldfishSnapRight #component-settings { margin-right: -170px; } #component .input input[type="text"] { background-color: #ffffff; }'
   }
 });
 
 var clickers = ['dragSnapinGoldfish','dragSnapinGoldfishLayout','dragSnapinGoldfishSettings','dragSnapinGoldfishFavourites'];
 
 /*
- * Resize Snapin - based ont he work done by @author https://twitter.com/blurspline / https://github.com/zz85
+ * Resize Snapin - based on the work done by @author https://twitter.com/blurspline / https://github.com/zz85
  * See post @ http://www.lab4games.net/zz85/blog/2014/11/15/resizing-moving-snapping-windows-with-js-css/
  */
 
 "use strict";
 
 (function(namespace, el, ghost, clickers) {
-  // Minimum resizable area
+  // Minimum resizable area (width and height)
   var minWidth = 400;
   var minHeight = 400;
 
@@ -31,6 +31,7 @@ var clickers = ['dragSnapinGoldfish','dragSnapinGoldfishLayout','dragSnapinGoldf
 
   // End of what's configurable.
   var clicked = null;
+  // Resizing booleans indicating if we are resizing from one of these points
   var onRightEdge, onBottomEdge, onLeftEdge, onTopEdge;
   var currentClicker = null;
 
@@ -42,7 +43,7 @@ var clickers = ['dragSnapinGoldfish','dragSnapinGoldfishLayout','dragSnapinGoldf
 
   var redraw = false;
 
-  // The app
+  // The app holding div element (that we move to the snappin)
   var pane = document.getElementById(el);
   // The ghost panel demonstrating the drop point for the move
   var ghostpane = document.getElementById(ghost);
@@ -59,7 +60,6 @@ var clickers = ['dragSnapinGoldfish','dragSnapinGoldfishLayout','dragSnapinGoldf
   }
 
   function hintHide() {
-    //setBounds(ghostpane, b.left, b.top, b.width, b.height);
     ghostpane.style.opacity = 0;
   }
 
@@ -183,7 +183,7 @@ var clickers = ['dragSnapinGoldfish','dragSnapinGoldfishLayout','dragSnapinGoldf
 
   function setSnappinClass(region) {
   	const snap = region.charAt(0).toUpperCase() + region.slice(1);
-
+    // We set a spacial class to the containing div so that we can manipulate the css for the snapped layout
   	pane.className = `animated bounceInRight goldfishSnap${snap}`;
   }
 
@@ -261,9 +261,9 @@ var clickers = ['dragSnapinGoldfish','dragSnapinGoldfishLayout','dragSnapinGoldf
       };
 
       var boundParams = getApplyBounds(pane, true, snapped);
-	  preSnapped = boundParams.snapped;
+      preSnapped = boundParams.snapped;
 
-	  setSnappinClass(boundParams.region);
+      setSnappinClass(boundParams.region);
       hintHide();
     }
 

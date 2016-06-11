@@ -13,7 +13,7 @@ class Title extends React.Component {
     title = title + (typeof this.props.suffix !== 'undefined' ? ' ' + this.props.suffix : '');
 
     return (
-      <div styleName="title-container">
+      <div styleName="title-container" id={`dragSnapin$(suffix)`}>
         <span className="o365-NFP-title o365cs-lightFont" styleName="title-font">
           {title}
         </span>

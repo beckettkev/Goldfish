@@ -199,28 +199,6 @@ Goldfish.Create({
     if (clicked && clicked.isMoving) {
       getApplyBounds(ghostpane, false, null);
 
-      /*var compiledWidth = pane.getBoundingClientRect().width > window.innerWidth ? 500 : pane.getBoundingClientRect().width;
-
-      if (b.top < MARGINS) {
-        // hintTop();
-        setBounds(ghostpane, 0, 0, window.innerWidth, 500);
-        ghostpane.style.opacity = 0.2;
-      } else if (b.left < MARGINS) {
-        // hintLeft();
-        setBounds(ghostpane, 0, 0, compiledWidth, window.innerHeight);
-        ghostpane.style.opacity = 0.2;
-      } else if (b.right > rightScreenEdge) {
-        // hintRight();
-        setBounds(ghostpane, window.innerWidth - compiledWidth, 0, compiledWidth, window.innerHeight);
-        ghostpane.style.opacity = 0.2;
-      } else if (b.bottom > bottomScreenEdge) {
-        // hintBottom();
-        setBounds(ghostpane, 0, window.innerHeight / 2, window.innerWidth, 500);
-        ghostpane.style.opacity = 0.2;
-      } else {
-        hintHide();
-      }*/
-
       if (preSnapped) {
         setBounds(pane,
           e.clientX - preSnapped.width / 2,
@@ -267,31 +245,8 @@ Goldfish.Create({
       };
 
       preSnapped = getApplyBounds(pane, true, snapped);
-      /*
-      var compiledWidth = pane.getBoundingClientRect().width > window.innerWidth ? 500 : pane.getBoundingClientRect().width;
-
-      if (b.top < MARGINS) {
-        // hintTop();
-        setBounds(pane, 0, 0, window.innerWidth, 500);
-        preSnapped = snapped;
-      } else if (b.left < MARGINS) {
-        // hintLeft();
-        setBounds(pane, 0, 0, compiledWidth, window.innerHeight);
-        preSnapped = snapped;
-      } else if (b.right > rightScreenEdge) {
-        // hintRight();
-        setBounds(pane, window.innerWidth - compiledWidth, 0, compiledWidth, window.innerHeight);
-        preSnapped = snapped;
-      } else if (b.bottom > bottomScreenEdge) {
-        // hintBottom();
-        setBounds(pane, 0, window.innerHeight / 2, window.innerWidth, 500);
-        preSnapped = snapped;
-      } else {
-        preSnapped = null;
-      }*/
 
       hintHide();
-
     }
 
     clicked = null;

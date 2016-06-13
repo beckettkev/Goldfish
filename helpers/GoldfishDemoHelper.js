@@ -7,7 +7,7 @@ Goldfish.Create({
   menu: 'alternate-tabs',
   css: {
     primary: '#188efb',
-    overrides: '#component-ghostpane { background-color: #188efb; } #component-holder { width:100%; } #outer-space { top:0; height:' + heightOfDemo + 'px; } #component, #component-favourites, #component-layout, #component-settings { width: inherit !important; } .goldfishSnapRight #component, .goldfishSnapRight #component-favourites, .goldfishSnapRight #component-layout, .goldfishSnapRight #component-settings { margin-right: -170px; } .goldfishSnapTop #component-tabs, .goldfishSnapBottom #component-tabs, .goldfishSnapLeft #component-tabs { left: 75px; right:inherit; } #component .input input[type="text"] { background-color: #ffffff; }'
+    overrides: '#outer-space { padding-left:15px; } #component-ghostpane { background-color: #188efb; } #component-holder { width:100%; } #outer-space { top:0; height:' + heightOfDemo + 'px; } #component, #component-favourites, #component-layout, #component-settings { width: inherit !important; } .goldfishSnapTop #component-tabs, .goldfishSnapBottom #component-tabs { left: 75px; right:inherit; } #component .input input[type="text"] { background-color: #ffffff; }'
   }
 });
 
@@ -22,8 +22,8 @@ var clickers = ['dragSnapinGoldfish','dragSnapinGoldfishLayout','dragSnapinGoldf
 
 (function(namespace, el, ghost, clickers) {
   // Minimum resizable area (width and height)
-  var minWidth = 400;
-  var minHeight = 400;
+  var minWidth = 450;
+  var minHeight = 450;
 
   // Thresholds - leave these alone
   var FULLSCREEN_MARGINS = -10;
@@ -135,12 +135,12 @@ var clickers = ['dragSnapinGoldfish','dragSnapinGoldfishLayout','dragSnapinGoldf
   }
 
   function getApplyBounds(el, drop, snapped) {
-    var compiledWidth = pane.getBoundingClientRect().width > window.innerWidth ? 400 : pane.getBoundingClientRect().width;
+    var compiledWidth = pane.getBoundingClientRect().width > (window.innerWidth - 1) ? minWidth : pane.getBoundingClientRect().width;
     var region = null;
 
     if (b.top < MARGINS) {
       region = 'top';
-      setBounds(el, 0, 0, window.innerWidth, 400);
+      setBounds(el, 0, 0, window.innerWidth, minHeight);
     } else if (b.left < MARGINS) {
       region = 'left';
       setBounds(el, 0, 0, compiledWidth, window.innerHeight);
@@ -149,7 +149,7 @@ var clickers = ['dragSnapinGoldfish','dragSnapinGoldfishLayout','dragSnapinGoldf
       setBounds(el, window.innerWidth - compiledWidth, 0, compiledWidth, window.innerHeight);
     } else if (b.bottom > bottomScreenEdge) {
       region = 'bottom';
-      setBounds(el, 0, window.innerHeight / 2, window.innerWidth, 400);
+      setBounds(el, 0, window.innerHeight / 2, window.innerWidth, minHeight);
     } else {
       if (drop) {
         return null;
@@ -224,7 +224,6 @@ var clickers = ['dragSnapinGoldfish','dragSnapinGoldfishLayout','dragSnapinGoldf
       getApplyBounds(ghostpane, false, null);
 
       if (preSnapped) {
-        //getApplyBounds(pane, false, null);
         setBounds(pane,
           e.clientX - preSnapped.width / 2,
           e.clientY - Math.min(clicked.y, preSnapped.height),

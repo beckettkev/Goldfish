@@ -94,7 +94,6 @@ module.exports = {
   // we need some default values for the app settings
   DEFAULT_SETTINGS: [
     { label: 'Show Favourites', internal: 'showFavourites', type: 'switch', value: true },
-    { label: 'Show on Right', internal: 'showOnRight', type: 'switch', value: true },
     { label: 'Suggest Search', internal: 'enableSuperSearch', type: 'switch', value: false },
     { label: 'Constant Results', internal: 'inifiniteScroll', type: 'switch', value: false },
   ],

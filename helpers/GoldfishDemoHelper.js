@@ -7,7 +7,7 @@ Goldfish.Create({
   menu: 'alternate-tabs',
   css: {
     primary: '#188efb',
-    overrides: '#outer-space { padding-left:15px; } #component-ghostpane { background-color: #188efb; } #component-holder { width:100%; } #outer-space { top:0; height:' + heightOfDemo + 'px; } #component, #component-favourites, #component-layout, #component-settings { width: inherit !important; } .goldfishSnapTop #component-tabs, .goldfishSnapBottom #component-tabs { left: 75px; right:inherit; } #component .input input[type="text"] { background-color: #ffffff; }'
+    overrides: '#outer-space { padding-left:15px; } #component-ghostpane { background-color: #188efb; } #component-holder { width:100%; } #outer-space { top:0; height:' + heightOfDemo + 'px; } #component, #component-favourites, #component-layout, #component-settings { width: inherit !important; } #component-tabs { right:inherit; } #component .input input[type="text"] { background-color: #ffffff; }'
   }
 });
 

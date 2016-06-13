@@ -81,6 +81,14 @@ var clickers = ['dragSnapinGoldfish','dragSnapinGoldfishLayout','dragSnapinGoldf
     e.preventDefault();
   }
 
+  function setCurrentClickerHighlight(el, highlight) {
+  	el.style.color = highlight ? Goldfish.GetPrimaryColour() : '';
+
+  	el.className = highlight ? el.className + ' animated pulse' : el.className.replace(/ animated pulse/g, '');
+  
+  	document.getElementById('outer-space').style.border = highlight ? '2px dashed #cccccc' : '';
+  }
+
   function onDown(e) {
     ghostpane.style.display = '';
 
@@ -103,6 +111,8 @@ var clickers = ['dragSnapinGoldfish','dragSnapinGoldfishLayout','dragSnapinGoldf
       onRightEdge: onRightEdge,
       onBottomEdge: onBottomEdge
     };
+
+    setCurrentClickerHighlight(clicked.currentClicker, true);
   }
 
   function canMove() {
@@ -263,6 +273,8 @@ var clickers = ['dragSnapinGoldfish','dragSnapinGoldfishLayout','dragSnapinGoldf
       preSnapped = boundParams.snapped;
 
       setSnappinClass(boundParams.region);
+      setCurrentClickerHighlight(clicked.currentClicker, false);
+    
       hintHide();
     }
 
@@ -290,12 +302,12 @@ var clickers = ['dragSnapinGoldfish','dragSnapinGoldfishLayout','dragSnapinGoldf
   }
 
   namespace.Start = function Start() {
-  	if (typeof clickers !== 'undefiend') {
+    if (typeof clickers !== 'undefiend') {
       setEventListeners();
       animate();
-  	} else {
-  	  console.log('Goldfish.ResizeSnapin Please provide the clickers parameter (array) when calling the ResizeSnappin extension. Exiting...');
-  	}
+    } else {
+      console.log('Goldfish.ResizeSnapin Please provide the clickers parameter (array) when calling the ResizeSnappin extension. Exiting...');
+    }
   };
 
 })(Goldfish.ResizeSnapin = Goldfish.ResizeSnapin || {}, 'outer-space', 'component-ghostpane', clickers);

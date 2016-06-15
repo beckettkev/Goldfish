@@ -30,7 +30,7 @@ class Results extends React.Component {
   createItem(item, i) {
     // This function gets called for every search result and renders a person component
     return (
-      <div styleName="item-container" className="animated flipInX" key={'result-item-' + i}>
+      <div styleName="item-container" className="animated flipInX person-card" key={'result-item-' + i}>
         <div className="item ms-bgc-w ms-bcl-nl o365cs-notifications-message" styleName="results-items">
           <Person
             data={item}
@@ -62,7 +62,7 @@ class Results extends React.Component {
   render() {
     return (
       <div id="component-results" className="o365-NFP-section" styleName="results-container">
-        <div className="o365cs-notifications-notificationsContent" styleName="results">
+        <div className="o365cs-notifications-notificationsContent person-card-holder" styleName="results">
           {this.props.items.map(this.createItem.bind(this))}
         </div>
         {this.progressSpinner()}

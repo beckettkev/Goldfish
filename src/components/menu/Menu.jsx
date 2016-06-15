@@ -40,11 +40,11 @@ class Menu extends React.Component {
     return (
       <div key="menu-items" id="menu-items">
         <div key="component-tabs" id="component-tabs" styleName={'component-tabs ' + this.props.alternate}>
-          <div id="component-tab-favourites" className="tab">
-            <i className="material-icons" onClick={this.itemAction.bind(this, 'Favourites')} title="Goldfish Favourites">star</i>
-          </div>
           <div id="component-tab-search" className="tab active">
             <i className="material-icons" onClick={this.itemAction.bind(this, 'Search')} title="Goldfish Search">search</i>
+          </div>
+          <div id="component-tab-favourites" className="tab">
+            <i className="material-icons" onClick={this.itemAction.bind(this, 'Favourites')} title="Goldfish Favourites">star</i>
           </div>
           <div id="component-tab-layouts" className="tab">
             <i className="material-icons" onClick={this.itemAction.bind(this, 'Layout')} title="Goldfish Layout">view_list</i>

@@ -3,7 +3,8 @@
 */
 var heightOfDemo = document.body.getBoundingClientRect().bottom;
 
-var styles = '#outer-space { padding-left:15px; } div.goldfishSnapTop #component-results, div.goldfishSnapBottom #component-results { position: relative; } div.goldfishSnapTop #component-favourites div.sortable-item, div.goldfishSnapBottom #component-favourites div.sortable-item { float: left; width: 400px; } div.goldfishSnapTop #component-favourites div.sortable-item:first-child,  div.goldfishSnapBottom #component-favourites div.sortable-item:first-child { border-width: 0px; } div.goldfishSnapTop #component-results div.person-card-holder, div.goldfishSnapBottom #component-results div.person-card-holder { width:100% !important; } div.goldfishSnapTop #component-results div.person-card, div.goldfishSnapBottom #component-results div.person-card { margin: 0 0 10px 10px; width: 400px; float:left; } #component-paging { float: none; clear: both; } div.goldfishSnapTop { -webkit-box-shadow: -4px 13px 29px -15px rgba(0,0,0,0.75); -moz-box-shadow: -4px 13px 29px -15px rgba(0,0,0,0.75);  box-shadow: -4px 13px 29px -15px rgba(0,0,0,0.75); } div.goldfishSnapBottom { -webkit-box-shadow: -4px -5px 29px -8px rgba(0,0,0,0.75); -moz-box-shadow: -4px -5px 29px -8px rgba(0,0,0,0.75); box-shadow: -4px -5px 29px -8px rgba(0,0,0,0.75); } div.goldfishSnapLeft { -webkit-box-shadow: 10px 2px 29px -8px rgba(0,0,0,0.75); -moz-box-shadow: 10px 2px 29px -8px rgba(0,0,0,0.75); box-shadow: 10px 2px 29px -8px rgba(0,0,0,0.75); } div.goldfishSnapRight { -webkit-box-shadow: -8px 2px 29px -8px rgba(0,0,0,0.75); -moz-box-shadow: -8px 2px 29px -8px rgba(0,0,0,0.75); box-shadow: -8px 2px 29px -8px rgba(0,0,0,0.75); } #component-ghostpane { background-color: #188efb; } #component-holder { width:100%; } #outer-space { top:0; height:' + heightOfDemo + 'px; } #component, #component-favourites, #component-layout, #component-settings { width: inherit !important; } #component-tabs { right:inherit; } #component .input input[type="text"] { background-color: #ffffff; }';
+//var styles = '#outer-space { padding-left:15px; width:410px; -webkit-perspective: none; } div.goldfishSnapTop #component-results, div.goldfishSnapBottom #component-results { position: relative; } div.goldfishSnapTop #component-favourites div.sortable-item, div.goldfishSnapBottom #component-favourites div.sortable-item { float: left; width: 400px; margin-left: 10px; } div.goldfishSnapTop #component-favourites div.sortable-item:first-child,  div.goldfishSnapBottom #component-favourites div.sortable-item:first-child { border-width: 0px; } div.goldfishSnapTop #component-results div.person-card-holder, div.goldfishSnapBottom #component-results div.person-card-holder { width:100% !important; } div.goldfishSnapTop #component-results div.person-card, div.goldfishSnapBottom #component-results div.person-card { margin: 0 0 10px 10px; width: 400px; float:left; } #component-paging { float: none; clear: both; } div.goldfishSnapTop { -webkit-box-shadow: 15px 13px 29px -15px rgba(0,0,0,0.75); -moz-box-shadow: 15px 13px 29px -15px rgba(0,0,0,0.75);  box-shadow: 15px 13px 29px -15px rgba(0,0,0,0.75); } div.goldfishSnapBottom { -webkit-box-shadow: 3px -11px 21px -10px rgba(0,0,0,0.75); -moz-box-shadow: 3px -11px 21px -10px rgba(0,0,0,0.75); box-shadow: 3px -11px 21px -10px rgba(0,0,0,0.75); } div.goldfishSnapLeft { -webkit-box-shadow: 20px 20px 30px -18px rgba(0,0,0,0.75); -moz-box-shadow: 20px 20px 30px -18px rgba(0,0,0,0.75); box-shadow: 20px 20px 30px -18px rgba(0,0,0,0.75); } div.goldfishSnapRight { -webkit-box-shadow: 0px 10px 24px -20px rgba(0,0,0,0.75); -moz-box-shadow: 0px 10px 24px -20px rgba(0,0,0,0.75); box-shadow: 0px 10px 24px -20px rgba(0,0,0,0.75); } #component-ghostpane { background-color: #188efb; } #component-holder { width:100%; } #outer-space { top:0; height:' + heightOfDemo + 'px; } #component, #component-favourites, #component-layout, #component-settings { width: inherit !important; } #component-tabs { right:inherit; } #component .input input[type="text"] { background-color: #ffffff; }';
+var styles = '#outer-space { padding-left:15px; width:410px; -webkit-perspective: none; } div.goldfishSnapTop #component-results, div.goldfishSnapBottom #component-results { position: relative; } div.goldfishSnapTop #component-favourites div.sortable-item, div.goldfishSnapBottom #component-favourites div.sortable-item { float: left; width: 400px; } div.goldfishSnapTop #component-favourites div.sortable-item:first-child,  div.goldfishSnapBottom #component-favourites div.sortable-item:first-child { border-width: 0px; } div.goldfishSnapTop #component-results div.person-card-holder, div.goldfishSnapBottom #component-results div.person-card-holder { width:100% !important; } div.goldfishSnapTop #component-results div.person-card, div.goldfishSnapBottom #component-results div.person-card { margin: 0 0 10px 10px; width: 400px; float:left; } #component-paging { float: none; clear: both; } div.goldfishSnapTop { -webkit-box-shadow: -4px 13px 29px -15px rgba(0,0,0,0.75); -moz-box-shadow: -4px 13px 29px -15px rgba(0,0,0,0.75);  box-shadow: -4px 13px 29px -15px rgba(0,0,0,0.75); } div.goldfishSnapBottom { -webkit-box-shadow: -4px -5px 29px -8px rgba(0,0,0,0.75); -moz-box-shadow: -4px -5px 29px -8px rgba(0,0,0,0.75); box-shadow: -4px -5px 29px -8px rgba(0,0,0,0.75); } div.goldfishSnapLeft { -webkit-box-shadow: 10px 2px 29px -8px rgba(0,0,0,0.75); -moz-box-shadow: 10px 2px 29px -8px rgba(0,0,0,0.75); box-shadow: 10px 2px 29px -8px rgba(0,0,0,0.75); } div.goldfishSnapRight { -webkit-box-shadow: -8px 2px 29px -8px rgba(0,0,0,0.75); -moz-box-shadow: -8px 2px 29px -8px rgba(0,0,0,0.75); box-shadow: -8px 2px 29px -8px rgba(0,0,0,0.75); } #component-ghostpane { background-color: #188efb; } #component-holder { width:100%; } #outer-space { top:0; height:' + heightOfDemo + 'px; } #component, #component-favourites, #component-layout, #component-settings { width: inherit !important; } #component-tabs { right:inherit; } #component .input input[type="text"] { background-color: #ffffff; }';
 
 Goldfish.Create({
   menu: 'alternate-tabs',
@@ -19,10 +20,9 @@ var clickers = ['dragSnapinGoldfish','dragSnapinGoldfishLayout','dragSnapinGoldf
  * Resize Snapin - based on the work done by @author https://twitter.com/blurspline / https://github.com/zz85
  * See post @ http://www.lab4games.net/zz85/blog/2014/11/15/resizing-moving-snapping-windows-with-js-css/
  */
-
 "use strict";
 
-(function(namespace, el, ghost, clickers) {
+(function(namespace) {
   // Minimum resizable area (width and height)
   var minWidth = 450;
   var minHeight = 450;
@@ -45,10 +45,11 @@ var clickers = ['dragSnapinGoldfish','dragSnapinGoldfishLayout','dragSnapinGoldf
 
   var redraw = false;
 
-  // The app holding div element (that we move to the snappin)
-  var pane = document.getElementById(el);
-  // The ghost panel demonstrating the drop point for the move
-  var ghostpane = document.getElementById(ghost);
+  // The app holding div element (that we move to the snappin) - pane
+  // The ghost panel demonstrating the drop point for the move - ghostpane
+  var pane, ghostpane;
+
+  var clickers;
 
   function setBounds(element, x, y, w, h) {
     element.style.left = x + 'px';
@@ -75,7 +76,7 @@ var clickers = ['dragSnapinGoldfish','dragSnapinGoldfishLayout','dragSnapinGoldf
   }
 
   function onTouchEnd(e) {
-    if (e.touches.length ==0) onUp(e.changedTouches[0]);
+    if (e.touches.length === 0) { onUp(e.changedTouches[0]); }
   }
 
   function onMouseDown(e) {
@@ -155,13 +156,16 @@ var clickers = ['dragSnapinGoldfish','dragSnapinGoldfishLayout','dragSnapinGoldf
       setBounds(el, 0, 0, window.innerWidth, minHeight);
     } else if (b.left < MARGINS) {
       region = 'left';
-      setBounds(el, 0, 0, compiledWidth, window.innerHeight);
+      //setBounds(el, 0, 0, compiledWidth, window.innerHeight);
+      setBounds(el, 0, 0, 410, window.innerHeight);
     } else if (b.right > rightScreenEdge) {
       region = 'right';
-      setBounds(el, window.innerWidth - compiledWidth, 0, compiledWidth, window.innerHeight);
+      //setBounds(el, window.innerWidth - compiledWidth, 0, compiledWidth, window.innerHeight);
+      setBounds(el, window.innerWidth - 410, 0, 410, window.innerHeight);
     } else if (b.bottom > bottomScreenEdge) {
       region = 'bottom';
-      setBounds(el, 0, window.innerHeight / 2, window.innerWidth, minHeight);
+      //setBounds(el, 0, window.innerHeight / 2, window.innerWidth, minHeight);
+      setBounds(el, 0, window.innerHeight - minHeight, window.innerWidth, minHeight);
     } else {
       if (drop) {
         return null;
@@ -196,7 +200,7 @@ var clickers = ['dragSnapinGoldfish','dragSnapinGoldfishLayout','dragSnapinGoldf
   function setSnappinClass(region) {
   	const snap = region.charAt(0).toUpperCase() + region.slice(1);
     // We set a spacial class to the containing div so that we can manipulate the css for the snapped layout
-  	pane.className = `animated bounceInRight goldfishSnap${snap}`;
+  	pane.className = 'animated bounceInRight goldfishSnap' + snap;
   }
 
   function animate() {
@@ -303,8 +307,18 @@ var clickers = ['dragSnapinGoldfish','dragSnapinGoldfishLayout','dragSnapinGoldf
     });
   }
 
-  namespace.Start = function Start() {
-    if (typeof clickers !== 'undefiend') {
+  function setElements(el, ghost) {
+    pane = document.getElementById(el);
+    ghostpane = document.getElementById(ghost);
+
+    clickers = clickers;
+  }
+
+  namespace.Start = function Start(el, ghost, clickerElements) {
+    if (typeof clickerElements !== 'undefiend') {
+      clickers = clickerElements;
+
+      setElements(el, ghost);
       setEventListeners();
       animate();
     } else {
@@ -312,8 +326,8 @@ var clickers = ['dragSnapinGoldfish','dragSnapinGoldfishLayout','dragSnapinGoldf
     }
   };
 
-})(Goldfish.ResizeSnapin = Goldfish.ResizeSnapin || {}, 'outer-space', 'component-ghostpane', clickers);
+})(Goldfish.ResizeSnapin = Goldfish.ResizeSnapin || {});
 
-Goldfish.ResizeSnapin.Start();
+Goldfish.ResizeSnapin.Start('outer-space', 'component-ghostpane', clickers);
 
 document.getElementById('outer-space').className = document.getElementById('outer-space').className + ' goldfishSnapRight';

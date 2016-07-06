@@ -17,6 +17,7 @@
 
 :global(.person-card) {
   border: 1px solid #eaeaea;
+  margin-bottom: 10px;
 }
 
 .results-items {

@@ -22,15 +22,24 @@ class Results extends React.Component {
   createEmptyResultsMessage() {
     if (this.props.items.length === 0 && !this.props.searching && this.props.term !== '') {
       return (
-        <p key={'no-results-message'}>Incorrect item in the bagging area. Try searching with the name of someone who exists in your organisation.</p>
+        <p key={'no-results-message'}>
+          Incorrect item in the bagging area. Try searching with the name of someone who exists in your organisation.
+        </p>
       );
     }
+  }
+
+  getPersonCardHeightFromLayoutCurrent() {
+    // Ensures that all of the person cards are the same height regardless of what data is available for the given person (necessary for horizontal view)
+    const offset = this.props.layout.current.length > 3 ? ((this.props.layout.current.length - 3) * 21) : 0;
+
+    return { height: (134 + offset) + 'px' };
   }
 
   createItem(item, i) {
     // This function gets called for every search result and renders a person component
     return (
-      <div styleName="item-container" className="animated flipInX person-card" key={'result-item-' + i}>
+      <div styleName="item-container" className="animated flipInX person-card" key={'result-item-' + i} style={this.getPersonCardHeightFromLayoutCurrent()}>
         <div className="item ms-bgc-w ms-bcl-nl o365cs-notifications-message" styleName="results-items">
           <Person
             data={item}

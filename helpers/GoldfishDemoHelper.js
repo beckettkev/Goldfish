@@ -329,5 +329,3 @@ var clickers = ['dragSnapinGoldfish','dragSnapinGoldfishLayout','dragSnapinGoldf
 })(Goldfish.ResizeSnapin = Goldfish.ResizeSnapin || {});
 
 Goldfish.ResizeSnapin.Start('outer-space', 'component-ghostpane', clickers);
-
-document.getElementById('outer-space').className = document.getElementById('outer-space').className + ' goldfishSnapRight';

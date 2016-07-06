@@ -73,10 +73,19 @@ class Favourites extends React.Component {
     }
   }
 
+  getPersonCardHeightFromLayoutCurrent() {
+    // Ensures that all of the person cards are the same height regardless of what data is available for the given person (necessary for horizontal view)
+    const offset = this.props.layout.current.length > 3 ? ((this.props.layout.current.length - 3) * 21) : 0;
+
+    return { height: (134 + offset) + 'px' };
+  }
+
   createDraggablePinItem(item, i) {
+    const itemStyles = this.getCommandButtonsAvailable(this.props.layout.current) ? { paddingBottom: '50px', height: this.getPersonCardHeightFromLayoutCurrent().height } : { paddingBottom: '0', height: this.getPersonCardHeightFromLayoutCurrent().height };
+
     return (
       <SortableItem key={item.name}>
-        <div styleName="sortable-item-content" style={this.itemStyles}>
+        <div styleName="sortable-item-content" style={itemStyles}>
           <Favourite
               data={item}
               layout={this.props.layout}
@@ -100,8 +109,6 @@ class Favourites extends React.Component {
       display: 'none !important',
       paddingTop: this.props.paddingTop,
     };
-
-    this.itemStyles = this.getCommandButtonsAvailable(this.props.layout.current) ? { paddingBottom: '50px' } : { paddingBottom: '0' };
 
     return (
       <div key="favourites-manager" id="component-favourites" styleName="component" style={favouritesComponentStyles}>

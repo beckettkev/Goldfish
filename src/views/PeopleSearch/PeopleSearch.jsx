@@ -227,7 +227,7 @@ class PeopleSearch extends React.Component {
     const inlineStyles = alternateMenu !== '' ? { paddingTop: '45px' } : { paddingTop: '0' };
 
     return (
-        <div id="outer-space" key="outer-space" className="animated bounceInRight">
+        <div id="outer-space" key="outer-space" className="goldfishSnapRight animated bounceInRight">
 
           <Menu
             onExport={this.onExport}

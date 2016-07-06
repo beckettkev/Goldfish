@@ -1,36 +1,38 @@
 .results-container {
-    /*display: none;*/
-    margin: 0 20px 0 20px;
-    position: relative;
-    clear:both;
-    z-index:2000;
+  /*display: none;*/
+  margin: 0 20px 0 20px;
+  position: relative;
+  clear:both;
+  z-index:2000;
 }
 
 .results-container .results {
-	width: 355px !important;
+  width: 355px !important;
   box-shadow: 0px 4px 12px #d9d9d9;
 }
 
 .results-container .command-holder .item {
-	padding-bottom: 40px !important;
+  padding-bottom: 40px !important;
+}
+
+:global(.person-card) {
+  border: 1px solid #eaeaea;
 }
 
 .results-items {
-	border-bottom: 1px solid #eaeaea;
   padding: 10px;
-	/*height: 75px;*/
 }
 
 .results-items input[type=button],
 .results-items button {
-	min-width: auto !important;
-	padding: 0 !important;
-	float:right;
-	clear:right;
+  min-width: auto !important;
+  padding: 0 !important;
+  float:right;
+  clear:right;
 }
 
 .item-container {
-	background-color: #ffffff;
+  background-color: #ffffff;
 }
 
 .progress-spinner {

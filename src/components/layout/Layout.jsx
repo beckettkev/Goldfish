@@ -89,34 +89,38 @@ class Layout extends React.Component {
   }
 
   getAvailableLayoutFieldsHolder(available) {
-    if (available.length > 0) {
-      return (
-        <div key="available">
-          <p styleName="info"><strong>Add</strong> additional items to the layout.</p>
-          <Available
-            options={available}
-            onChange={this.onFieldAddClick.bind(this)} />
-        </div>
-      );
+    if (typeof available !== 'undefined') {
+      if (available.length > 0) {
+        return (
+          <div key="available">
+            <p styleName="info"><strong>Add</strong> additional items to the layout.</p>
+            <Available
+              options={available}
+              onChange={this.onFieldAddClick.bind(this)} />
+          </div>
+        );
+      }
     }
   }
 
   getCurrentLayoutFieldsHolder(current) {
-    if (current.length > 0) {
-      return (
-        <div className="content">
-          <p styleName="info"><strong>Re-order</strong> and <strong>remove</strong> items from the layout.</p>
+    if (typeof current !== 'undefined') {
+      if (current.length > 0) {
+        return (
+              <div className="content">
+                <p styleName="info"><strong>Re-order</strong> and <strong>remove</strong> items from the layout.</p>
 
-          <div key="current-layout-fields" styleName="sortable-container">
-            <SortableItems
-              name="sort-current"
-              items={current}
-              onSort={this.handleLayoutSort.bind(this)}>
-              {current.map(this.createLayoutItems.bind(this, 'current'))}
-            </SortableItems>
-          </div>
-        </div>
-      );
+                <div key="current-layout-fields" styleName="sortable-container">
+                  <SortableItems
+                    name="sort-current"
+                    items={current}
+                    onSort={this.handleLayoutSort.bind(this)}>
+                    {current.map(this.createLayoutItems.bind(this, 'current'))}
+                  </SortableItems>
+                </div>
+              </div>
+        );
+      }
     }
   }
 

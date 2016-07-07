@@ -85,13 +85,9 @@ function getPagedQueryUrl(queryUrl, pageNum) {
   return queryUrl + '&startrow=' + startRow;
 }
 
-function getResultPage(results, pageNum, sets, count) {
-  const start = getResultSetIndexStart(pageNum, sets);
-  const end = getResultSetIndexEnd(count, start);
+function updateResultsWithFavourites(results) {
   const favourites = FavouriteStore.getCurrentFavourites();
-
   const favs = [];
-  const cachedResults = results.slice(start, start + end);
 
   /* Find any favourites in the cached payload and then
   update the result set with the cached property
@@ -100,13 +96,22 @@ function getResultPage(results, pageNum, sets, count) {
     favs.push(favourite.name);
   });
 
-  cachedResults.forEach(function(item, i) {
+  results.forEach(function(item, i) {
     if (favs.indexOf(item.Cells.PreferredName) > -1) {
-      cachedResults[i].Cells.Favourite = true;
+      results[i].Cells.Favourite = true;
     }
   });
 
-  return cachedResults;
+  return results;
+}
+
+function getResultPage(results, pageNum, sets, count) {
+  const start = getResultSetIndexStart(pageNum, sets);
+  const end = getResultSetIndexEnd(count, start);
+
+  const cachedResults = results.slice(start, start + end);
+
+  return updateResultsWithFavourites(cachedResults);
 }
 
 function cacheKeySizeExceedsLimit() {
@@ -129,7 +134,7 @@ module.exports = {
       const end = pageNum < 2 ? 10 : pageNum * 10;
 
       // only return the page we need
-      mockPayload.payload = mockPayload.payload.slice(start, end);
+      mockPayload.payload = updateResultsWithFavourites(mockPayload.payload.slice(start, end));
 
       resolve(mockPayload);
 

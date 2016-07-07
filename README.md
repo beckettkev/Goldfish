@@ -6,82 +6,10 @@ Goldfish is a React.JS inline People Search tool for SharePoint 2013 (SPO). This
 
 The aim of this project is to allow you to search and save people anywhere within a SharePoint site without stopping what you are doing (the results are displayed where you are). The results show only the information that **you** the individual choose to see.
 
-## Important - Breaking Changes
-
-With version 1.0.0, we have changed the way layouts and person components work and therefore if you have used Goldfish before you will need to clear down your Goldfish local storage keys before using the latest code. It's a one of thing and it's quick and easy to do using the JavaScript below in your browser developer console:
-
-```javascript
-  // The objects have changed, clear down any ones that may have been created previously
-  Object.keys(localStorage).forEach(function(item) { if (item.indexOf('PeopleSearch-') > -1) { localStorage.removeItem(item); });
-```
-
-## Code Example
-```javascript
-  // include a script link to the Goldfish bundle and then add the following line to load Goldfish
-  Goldfish.Create();
-```
-
-## Code Example - Advanced
-```javascript
-  /*
-   We can override and apply settings by creating an options object which we will pass into the goldfish create function.
-   you can include as many or few of these as you choose.
-   */
-  var options = {
-        // override the default title 'Goldfish'
-        title: 'People Finder',
-        // change the menu look and feel to have a horizontal menu
-        menu: 'alternate-tabs',
-        // allow people to change the position of the tool
-        snappy: true,
-        // pull back some extra custom properties so we can extend the layouts (see the RegisterLayouts code below)
-        properties: 'Interests,Colleagues,PastProjects,Responsibilities',
-        // hookup custom termsets to the tag suggest search (you can add more than one)...
-        termsets: [{
-              // the heading of the grouping
-              title: 'Groups',
-              type: 'Termset',
-              // the managed property
-              property: 'owsPeopleGroup',
-              // the termset id to get the terms back to populate the group
-              id: 'ae53d31c-ef24-4cca-a040-5e065d15bb31'
-        }],
-        // hookup user information fields to the tag suggest tool
-        userInformationFields: [
-            'JobTitle',
-            'Department'
-        ]
-  };
-
-  // this function loads Goldfish with the options you have specified
-  Goldfish.Create(options);
-
-  // If you want to add some custom fields to the layout, you can do that straight after calling the create function
-  Goldfish.RegisterLayouts(
-    [
-      {
-        label: 'Interests',
-        value: 'Interests',
-        key: 9,
-        template: {
-          // Prefix the interests with a label (e.g. Interests: JavaScript, Development)
-          value: 'Interests:{0}|Interests'
-        }
-      },
-      {
-        label: 'Colleagues',
-        value: 'Colleagues',
-        key: 10,
-        template: {
-          value: 'Colleagues'
-        }
-      }
-    ]
-  );
-
-```
 
 ## Installation
+
+To get started you first need to follow the steps below, to configure your environment and install Goldfish ready for use (we will go into detail on how you can use it a little later).
 
 Install webpack via npm (globally):
 ```node
@@ -107,6 +35,110 @@ Alternatively you can split the SPA into two chunks for cache busting:
 ```node
 npm run chunk
 ```
+
+
+## Code Example - Easy
+```javascript
+  // include a script link to the Goldfish bundle and then add the following line to load Goldfish
+  Goldfish.Create();
+```
+
+## Code Example - Simple
+```javascript
+  // include a script link to the Goldfish bundle and then add the following lines to load Goldfish
+  Goldfish.Create({
+    // a different menu
+    menu: 'alternate-tabs',
+    css: {
+      // override the default theme colour
+      primary: '#188efb'
+    }
+  });
+```
+
+## Code Example - More advanced
+```javascript
+  /*
+    In the follow example we will override the default styles and turn on the option to allow people to reposition the app.
+  */
+  var heightOfDemo = document.body.getBoundingClientRect().bottom;
+
+  var styles = '#outer-space { padding-left:15px; width:410px; -webkit-perspective: none; } div.goldfishSnapTop #component-results, div.goldfishSnapBottom #component-results { position: relative; } div.goldfishSnapTop #component-favourites div.sortable-item, div.goldfishSnapBottom #component-favourites div.sortable-item { float: left; width: 400px; } div.goldfishSnapTop #component-favourites div.sortable-item:first-child,  div.goldfishSnapBottom #component-favourites div.sortable-item:first-child { border-width: 0px; } div.goldfishSnapTop #component-results div.person-card-holder, div.goldfishSnapBottom #component-results div.person-card-holder { width:100% !important; } div.goldfishSnapTop #component-results div.person-card, div.goldfishSnapBottom #component-results div.person-card { margin: 0 0 10px 10px; width: 400px; float:left; } #component-paging { float: none; clear: both; } div.goldfishSnapTop { -webkit-box-shadow: -4px 13px 29px -15px rgba(0,0,0,0.75); -moz-box-shadow: -4px 13px 29px -15px rgba(0,0,0,0.75);  box-shadow: -4px 13px 29px -15px rgba(0,0,0,0.75); } div.goldfishSnapBottom { -webkit-box-shadow: -4px -5px 29px -8px rgba(0,0,0,0.75); -moz-box-shadow: -4px -5px 29px -8px rgba(0,0,0,0.75); box-shadow: -4px -5px 29px -8px rgba(0,0,0,0.75); } div.goldfishSnapLeft { -webkit-box-shadow: 10px 2px 29px -8px rgba(0,0,0,0.75); -moz-box-shadow: 10px 2px 29px -8px rgba(0,0,0,0.75); box-shadow: 10px 2px 29px -8px rgba(0,0,0,0.75); } div.goldfishSnapRight { -webkit-box-shadow: -8px 2px 29px -8px rgba(0,0,0,0.75); -moz-box-shadow: -8px 2px 29px -8px rgba(0,0,0,0.75); box-shadow: -8px 2px 29px -8px rgba(0,0,0,0.75); } #component-ghostpane { background-color: ' + Goldfish.GetPrimaryColour() + ' } #component-holder { width:100%; } #outer-space { top:0; height:' + heightOfDemo + 'px; } #component, #component-favourites, #component-layout, #component-settings { width: inherit !important; } #component-tabs { right:inherit; } #component .input input[type="text"] { background-color: #ffffff; }';
+
+  Goldfish.Create({
+    menu: 'alternate-tabs',
+    // this allows people to reposition the app
+    snappy: true,
+    css: {
+      primary: '#188efb',
+      // this is used to override or apply additional CSS styles.
+      overrides: styles
+    }
+  });
+```
+
+## Code Example - Super Advanced
+```javascript
+  /*
+   We can override and apply lots of different settings by creating an options object which we will pass into the goldfish create function.
+   you can include as many or few of these as you choose (as shown in the previous examples).
+
+   In this example we will look at how we can extend the search, add additional fields in the results and change the default title.
+  */
+  var options = {
+        // override the default title 'Goldfish'
+        title: 'People Finder',
+        // change the menu look and feel to have a horizontal menu
+        menu: 'alternate-tabs',
+        // pull back some extra custom properties so we can extend the layouts (see the RegisterLayouts code below)
+        properties: 'Interests,Colleagues,PastProjects,Responsibilities',
+        // hookup custom termsets to the tag suggest search (you can add more than one)...
+        termsets: [{
+              // the heading of the grouping
+              title: 'Groups',
+              type: 'Termset',
+              // the managed property
+              property: 'owsPeopleGroup',
+              // the termset id to get the terms back to populate the group
+              id: 'ae53d31c-ef24-4cca-a040-5e065d15bb31'
+        }],
+        // hookup user information fields to the tag suggest tool
+        userInformationFields: [
+            'JobTitle',
+            'Department'
+        ]
+  };
+
+  // this function loads Goldfish with the options you have specified
+  Goldfish.Create(options);
+
+  /*
+   Now when we can add the additional fields. You just need to make sure the fields you add are included in the properties attribute of your options. If you want to add some custom fields to the layout, you can do that straight after calling the create function
+  */
+  Goldfish.RegisterLayouts(
+    [
+      {
+        label: 'Interests',
+        value: 'Interests',
+        key: 9,
+        template: {
+          // Prefix the interests with a label (e.g. Interests: JavaScript, Development)
+          value: 'Interests:{0}|Interests'
+        }
+      },
+      {
+        label: 'Colleagues',
+        value: 'Colleagues',
+        key: 10,
+        template: {
+          value: 'Colleagues'
+        }
+      }
+    ]
+  );
+
+```
+
 
 ## API Reference
 

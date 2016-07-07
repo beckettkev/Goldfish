@@ -142,49 +142,7 @@ npm run chunk
 
 ## API Reference
 
-The first thing to do is decide if you need to supply some **options**. Options allow you to override the default settings for **Goldfish** and you can do this by taking a look at the full example below.
-
-```javascript
-var options = {
-      // override the default title 'Goldfish'
-        title: 'People Finder',
-        // change the menu look and feel
-        menu: 'alternate-tabs',
-        // allow people to change the position of the tool
-        snappy: true,
-        // pull back some extra custom properties so we can extend the layouts
-        properties: 'Interests,Colleagues,PastProjects,Responsibilities',
-        // hookup custom termsets to the tag suggest search
-        termsets: [
-            {
-              //the heading of the grouping
-              title: 'Groups',
-          type: 'Termset',
-              //the managed property
-              property: 'owsPeopleGroup',
-              //the termset id to get the terms back to populate the group
-              id: 'ae53d31c-ef24-4cca-a040-5e065d15bb31'
-            },
-            {
-              title: 'Regions',
-              property: 'owsPeopleRegion',
-              type: 'Termset',
-              id: 'fdf1d1d0-769c-4b4d-b911-0ff8352a5d15'
-            }
-        ],
-        // hookup user information fields to the tag suggest tool
-        userInformationFields: [
-            'JobTitle',
-            'Department'
-        ],
-        // custom CSS classes
-        css: {
-          //If you want to override the primary color
-          primary: "#00FF00"
-        }
-  };
-```
-Then you can safely load Goldfish applying your parameters.
+The first thing to do is decide if you need to supply some **options**. Options allow you to override the default settings for **Goldfish** (see examples above for more information). Then you can safely load Goldfish applying your parameters.
 
 ```
 Goldfish.Create(options);
@@ -194,11 +152,16 @@ Within the project there are some bundled some helper scripts to help you find t
 
 > https://github.com/beckettkev/Goldfish/blob/master/helpers/GoldfishTaxonomyHelper.js
 
-If you need Goldfish to work on IE as well, you will probably want the relevant pollyfills to be included. We have a script to show how this can be done easily as well:
+Along with this we have some quick starters to get you up and running:
+
+> https://github.com/beckettkev/Goldfish/blob/master/helpers/GoldfishDemoHelper.js
+> https://github.com/beckettkev/Goldfish/blob/master/helpers/GoldfishSideBySide.js
+
+If you need Goldfish to work on IE as well (which you propably do), you will probably want the relevant pollyfills to be included. We have a script to show how this can be done easily as well:
 
 > https://github.com/beckettkev/Goldfish/blob/master/helpers/GoldfishLoadSafelyForIe.js
 
-Once you have sorted that out, you have a few options for using Goldfish...
+Just remember to add your options logic into the mix. Once you have sorted that out, you have a few options for using Goldfish...
 
 ### Custom Action
 

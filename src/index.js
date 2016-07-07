@@ -2,6 +2,7 @@
 import React from 'react';
 import DefaultConstants from './constants/default';
 import PeopleSearch from './views/PeopleSearch/PeopleSearch.jsx';
+import Snappin from './utils/snappin';
 
 // Custom event polyfill for IE9 - IE10
 function CustomEvent(event, params) {
@@ -12,8 +13,11 @@ function CustomEvent(event, params) {
 
   return evt;
 }
+
 CustomEvent.prototype = window.CustomEvent.prototype;
 window.CustomEvent = CustomEvent;
+
+
 
 const Goldfish = {
   options: {
@@ -166,6 +170,17 @@ const Goldfish = {
     Goldfish.LoadStyleSheet('https://fonts.googleapis.com/icon?family=Material+Icons');
     Goldfish.LoadStyleSheet('https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css');
   },
+  Snappy: function Snappy() {
+    if (typeof Goldfish.options.snappy !== 'undefined') {
+      if (Goldfish.options.snappy) {
+        console.log('SNAPPY IS CALLED AND ENABLED');
+
+        var clickers = ['dragSnapinGoldfish','dragSnapinGoldfishLayout','dragSnapinGoldfishSettings','dragSnapinGoldfishFavourites'];
+
+        Snappin.Start('outer-space', 'component-ghostpane', clickers);
+      }
+    }
+  },
   Create: function Create(options) {
     // If options are provided do a cursory check and save them if they are valid
     if (typeof options !== 'undefined') {
@@ -203,8 +218,10 @@ const Goldfish = {
          <PeopleSearch options={Goldfish.options} />,
          document.getElementById('component-holder'),
          function() {
-           // callback functionto apply any override theme CSS
+           // callback function to apply any override theme CSS
            Goldfish.OverrideThemeColours();
+           // callback function to add Snappin functionality when specified in options
+           Goldfish.Snappy();
          });
     }, 'goldfish.min.js');
   },
@@ -261,6 +278,7 @@ const Goldfish = {
       'title',
       'css',
       'layout',
+      'snappy',
       'menu',
       'properties',
       'suggest',
@@ -300,7 +318,8 @@ window.Goldfish = window.Goldfish || Goldfish;
   var options = {
     css: {
       primary: "#00FF00"
-    }
+    },
+    snappy: true
   }
   Goldfish.Create();
   Goldfish.Create(options);

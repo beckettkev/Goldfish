@@ -6,7 +6,7 @@
   	position: absolute;
   	right: 0px;
 	overflow-x: visible;
-  height: 1900px;
+    height: 1900px;
     padding: 0 0 200px 0;
     direction: ltr;
 }
@@ -24,14 +24,15 @@
 	border-left: 0px;
 	border-right: 0px;
 	font-size: 14px;
-	box-shadow: 0px 4px 12px #d9d9d9;
-	background-color: #ffffff;
+/*	box-shadow: 0px 4px 12px #d9d9d9;
+	background-color: #ffffff;*/
 	border-radius: 0 0 2% 2%;
 }
 .sortable-container i {
 	float:left;
 }
-.sortable-container div:hover {
+/*.sortable-container div:hover {*/
+:global(.sortable-item:hover) {
 	background-color: #eeeeee;
 }
 .sortable-container div div {
@@ -117,7 +118,7 @@ p.info {
 :global(.pointer-events-none) {
   	pointer-events: none;
 }
- 
+
 :global(.sortable-item-over) {
   	border: 1px dashed #DDD;
 }

@@ -28,6 +28,13 @@ function getLayoutState() {
   return LayoutStore.getLayout();
 }
 
+function getMenuClass(menu) {
+  const safe = ['alternate-tabs'];
+  const menuClass = typeof menu === 'string' ? menu : 'NO_CLASS';
+
+  return safe.indexOf(menuClass) > -1 ? menuClass : '';
+}
+
 class PeopleSearch extends React.Component {
 
   constructor(props) {
@@ -45,6 +52,19 @@ class PeopleSearch extends React.Component {
       this.setInitialState();
 
       this.applyOptions();
+    }
+  }
+
+  componentDidMount() {
+    if (typeof Sys !== 'undefined' && Sys && Sys.Application) {
+      Sys.Application.notifyScriptLoaded();
+    }
+
+    if (typeof SP !== 'undefined') {
+      if (typeof SP.SOD.notifyScriptLoadedAndExecuteWaitingJobs === 'function') {
+        // Inform the create functionthat Goldfish can now load safely
+        SP.SOD.notifyScriptLoadedAndExecuteWaitingJobs('goldfish.ready.min.js');
+      }
     }
   }
 
@@ -223,7 +243,7 @@ class PeopleSearch extends React.Component {
       return null;
     }
 
-    const alternateMenu = typeof this.props.options.menu === 'string' ? this.props.options.menu : '';
+    const alternateMenu = getMenuClass(this.props.options.menu);
     const inlineStyles = alternateMenu !== '' ? { paddingTop: '45px' } : { paddingTop: '0' };
 
     return (
@@ -293,7 +313,6 @@ class PeopleSearch extends React.Component {
             title={this.props.options.title}
             paddingTop={inlineStyles.paddingTop}
             onSettingChange={this.onSettingChange.bind(this)} />
-
         </div>
     );
   }

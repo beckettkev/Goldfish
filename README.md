@@ -32,6 +32,8 @@ With version 1.0.0, we have changed the way layouts and person components work a
         title: 'People Finder',
         // change the menu look and feel to have a horizontal menu
         menu: 'alternate-tabs',
+        // allow people to change the position of the tool
+        snappy: true,
         // pull back some extra custom properties so we can extend the layouts (see the RegisterLayouts code below)
         properties: 'Interests,Colleagues,PastProjects,Responsibilities',
         // hookup custom termsets to the tag suggest search (you can add more than one)...
@@ -116,6 +118,8 @@ var options = {
         title: 'People Finder',
         // change the menu look and feel
         menu: 'alternate-tabs',
+        // allow people to change the position of the tool
+        snappy: true,
         // pull back some extra custom properties so we can extend the layouts
         properties: 'Interests,Colleagues,PastProjects,Responsibilities',
         // hookup custom termsets to the tag suggest search
@@ -152,11 +156,6 @@ Then you can safely load Goldfish applying your parameters.
 
 ```
 Goldfish.Create(options);
-```
-
-Alternatively you can just run it with the default settings.
-```
-Goldfish.Create();
 ```
 
 Within the project there are some bundled some helper scripts to help you find the option values for when you want to add termsets to the tag suggest search. Simply run the following file on the SharePoint site you which will be using Goldfish and then copy the output and fill in the blank spaces (use this in the options as demonstrated above):

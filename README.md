@@ -36,7 +36,10 @@ Alternatively you can split the SPA into two chunks for cache busting:
 ```node
 npm run chunk
 ```
-Now you are good to go. Checkout the code examples in the following section to see how to use Goldfish...
+
+## Using Goldfish
+
+Now that you have bundled the Goldfish app, you will need to upload and add a JavaScript reference to the file in the normal manner. After you have done this, you can take a look at the code examples in the following section to see how you can implement Goldfish...
 
 ## Code Example - Easy
 ```javascript

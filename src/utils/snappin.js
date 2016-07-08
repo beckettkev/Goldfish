@@ -6,6 +6,7 @@
 // Minimum resizable area (width and height)
 var minWidth = 450;
 var minHeight = 450;
+var leftRightTopOffset = typeof window.fakeAjaxCalls === 'undefined' ? 85 : 0;
 
 // Thresholds - leave these alone
 var FULLSCREEN_MARGINS = -10;
@@ -131,10 +132,10 @@ function getApplyBounds(el, drop, snapped) {
     setBounds(el, 0, 0, window.innerWidth, minHeight);
   } else if (b.left < MARGINS) {
     region = 'left';
-    setBounds(el, 0, 85, 410, window.innerHeight);
+    setBounds(el, 0, leftRightTopOffset, 410, window.innerHeight);
   } else if (b.right > rightScreenEdge) {
     region = 'right';
-    setBounds(el, window.innerWidth - 410, 85, 410, window.innerHeight);
+    setBounds(el, window.innerWidth - 410, leftRightTopOffset, 410, window.innerHeight);
   } else if (b.bottom > bottomScreenEdge) {
     region = 'bottom';
     setBounds(el, 0, window.innerHeight - minHeight, window.innerWidth, minHeight);

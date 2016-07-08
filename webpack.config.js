@@ -56,7 +56,7 @@ module.exports = {
 		      'NODE_ENV': JSON.stringify('production')
 		    }
 		}),
-		new ExtractTextPlugin('Goldfish.min.css',
+		new ExtractTextPlugin('goldfish.min.css',
 			{
 				allChunks: true
 			}

@@ -36,7 +36,7 @@ Alternatively you can split the SPA into two chunks for cache busting:
 ```node
 npm run chunk
 ```
-
+Now you are good to go. Checkout the code examples in the following section to see how to use Goldfish...
 
 ## Code Example - Easy
 ```javascript

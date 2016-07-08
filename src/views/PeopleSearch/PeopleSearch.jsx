@@ -107,9 +107,7 @@ class PeopleSearch extends React.Component {
     // flush any current searches
     this.setInitialState();
 
-    this.setState({
-      settings: collection,
-    });
+    this.state.settings = collection;
 
     this.applyOptions();
   }

@@ -6,7 +6,6 @@
 // Minimum resizable area (width and height)
 var minWidth = 450;
 var minHeight = 450;
-var leftRightTopOffset = typeof window.fakeAjaxCalls === 'undefined' ? 85 : 0;
 
 // Thresholds - leave these alone
 var FULLSCREEN_MARGINS = -10;
@@ -124,6 +123,7 @@ function onMove(ee) {
 }
 
 function getApplyBounds(el, drop, snapped) {
+  var leftRightTopOffset = typeof window.fakeAjaxCalls === 'undefined' ? 85 : 0;
   var compiledWidth = pane.getBoundingClientRect().width > (window.innerWidth - 1) ? minWidth : pane.getBoundingClientRect().width;
   var region = null;
 

@@ -99,9 +99,7 @@ class Favourites extends React.Component {
   }
 
   handleFavouriteSort(favourites) {
-    PeopleSearchActions.updateFavourites(
-      favourites
-    );
+    PeopleSearchActions.updateFavourites(favourites);
   }
 
   render() {

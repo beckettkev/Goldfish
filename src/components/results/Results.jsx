@@ -2,7 +2,8 @@ import React from 'react';
 import styles from './Results.css';
 import cssModules from 'react-css-modules';
 import Person from '../person/Person.jsx';
-import ProgressBar from 'react-toolbox/lib/progress_bar';
+import Button from '../../ui/Button.jsx';
+import ProgressBar from '../../ui/ProgressBar.jsx';
 
 class Results extends React.Component {
   constructor(props) {

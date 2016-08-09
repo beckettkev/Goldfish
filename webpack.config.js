@@ -5,7 +5,7 @@ const development = process.env.NODE_ENV !== 'production' ? true : false;
 const styles = 'style-loader!css-loader?modules!sass';
 
 module.exports = {
-	devtool: development ? 'eval' : 'source-map',
+	devtool: development ? 'eval' : 'cheap-module-source-map',
 	entry: {
 		app: './src/index.js'
 	},
@@ -56,6 +56,7 @@ module.exports = {
 		      'NODE_ENV': JSON.stringify('production')
 		    }
 		}),
+        new webpack.optimize.DedupePlugin(),
 		new ExtractTextPlugin('goldfish.min.css',
 			{
 				allChunks: true

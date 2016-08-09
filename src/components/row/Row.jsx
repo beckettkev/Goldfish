@@ -4,13 +4,6 @@ import cssModules from 'react-css-modules';
 import Utils from '../../utils/utilities';
 
 function getPersonValuesFromArray(person, key) {
-  /*
-  [
-    'Skills: {0}, Past Projects {1},
-    'SPS-Skills'
-    'PastProjects'
-  ];
-  */
   return key.map(function(item) {
     return person[item];
   }).filter(function(n) { return n !== undefined; });

@@ -25,7 +25,7 @@ div.search-container label {
 div.search-container label:focus {
 	color: rgb(244, 244, 244) !important;
 }
-div.search-container div[data-react-toolbox=input] {
+div.search-container div[data-gf=input] {
 	margin-left:0 !important;
 }
 div.search-container :global(.material-icons) {

@@ -5,7 +5,7 @@ import Persona from '../persona/Persona.jsx';
 import Row from '../row/Row.jsx';
 import FavouriteStore from '../../stores/FavouriteStore';
 import PeopleSearchActions from '../../actions/PeopleSearchActions';
-import Button from 'react-toolbox/lib/button';
+import Button from '../../ui/Button.jsx';
 import FileSaver from '../../data/filesaver';
 import Exporter from '../../utils/exporter';
 import Defaults from '../../constants/default';

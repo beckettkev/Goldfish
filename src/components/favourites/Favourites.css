@@ -42,9 +42,6 @@
 .sortable-favourite-container i {
   float:left;
 }
-.sortable-favourite-container div:hover {
-  background-color: #ffffff;
-}
 .sortable-favourite-container :global(.sortable-item) {
   padding: 10px;
 }
@@ -74,6 +71,10 @@
 :global(.sortable-item) {
   border: 1px solid #eeeeee;
   margin:0 10px 10px 0;
+}
+
+:global(.sortable-item:hover) {
+  background: #ffffff;
 }
 
 .sortable-item-content {

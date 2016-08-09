@@ -5,7 +5,7 @@ import cssModules from 'react-css-modules';
 import Utils from '../../utils/utilities';
 import SearchStore from '../../stores/SearchStore';
 import PeopleSearchActions from '../../actions/PeopleSearchActions';
-import IconButton from 'react-toolbox/lib/button';
+import Button from '../../ui/Button.jsx';
 
 function getStoreSearchResultPagingState() {
   return {
@@ -57,7 +57,6 @@ class Paging extends React.Component {
 
   getPageResults(pageNum) {
     const properties = typeof this.props.properties !== 'undefined' ? this.props.properties : '';
-
     const url = Utils.getFullSearchQueryUrl(this.props.term, properties);
 
     this.props.onSearching();
@@ -100,7 +99,7 @@ class Paging extends React.Component {
   getPreviousPageLink() {
     return (
       <div key="prev" styleName={this.prevPageAvailable() ? 'prev-pager' : 'hidden'}>
-        <IconButton
+        <Button
           icon="chevron_left"
           id="prev-page"
           onClick={this.onPreviousPageClick.bind(this)}
@@ -112,7 +111,7 @@ class Paging extends React.Component {
   getNextPageLink() {
     return (
       <div key="next" styleName={this.nextPageAvailable() ? 'next-pager' : 'hidden'}>
-        <IconButton
+        <Button
           icon="chevron_right"
           id="next-page"
           onClick={this.onNextPageClick.bind(this)}

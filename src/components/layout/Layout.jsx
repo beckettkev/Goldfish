@@ -3,7 +3,7 @@ import styles from './Layout.css';
 import cssModules from 'react-css-modules';
 import Title from '../title/Title.jsx';
 import Available from '../available/Available.jsx';
-import Button from 'react-toolbox/lib/button';
+import Button from '../../ui/Button.jsx';
 import {SortableItems, SortableItem} from 'react-sortable-component';
 import LayoutStore from '../../stores/LayoutStore';
 import PeopleSearchActions from '../../actions/PeopleSearchActions';

@@ -56,6 +56,6 @@
   width: 320px !important;
 }
 
-div[data-react-toolbox=snackbar] span {
+div[data-gf=snackbar] span {
   font-size: 14px;
 }

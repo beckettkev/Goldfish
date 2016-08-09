@@ -28,7 +28,7 @@ var redraw = false;
 
 // The app holding div element (that we move to the snappin) - pane
 // The ghost panel demonstrating the drop point for the move - ghostpane
-var pane, ghostpane;
+var pane, ghostpane, ticker;
 
 var clickers;
 
@@ -177,107 +177,117 @@ function setSnappinClass(region) {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
+  if (document.getElementById(clickers[0]) !== null) {
+      requestAnimationFrame(animate);
 
-  if (!redraw) return;
+      if (!redraw) return;
 
-  redraw = false;
+      redraw = false;
 
-  if (clicked && clicked.isResizing) {
+      if (clicked && clicked.isResizing) {
 
-    if (clicked.onRightEdge) pane.style.width = Math.max(x, minWidth) + 'px';
-    if (clicked.onBottomEdge) pane.style.height = Math.max(y, minHeight) + 'px';
+        if (clicked.onRightEdge) pane.style.width = Math.max(x, minWidth) + 'px';
+        if (clicked.onBottomEdge) pane.style.height = Math.max(y, minHeight) + 'px';
 
-    if (clicked.onLeftEdge) {
-      var currentWidth = Math.max(clicked.cx - e.clientX  + clicked.w, minWidth);
+        if (clicked.onLeftEdge) {
+          var currentWidth = Math.max(clicked.cx - e.clientX  + clicked.w, minWidth);
 
-      if (currentWidth > minWidth) {
-        pane.style.width = currentWidth + 'px';
-        pane.style.left = e.clientX + 'px';
+          if (currentWidth > minWidth) {
+            pane.style.width = currentWidth + 'px';
+            pane.style.left = e.clientX + 'px';
+          }
+        }
+
+        if (clicked.onTopEdge) {
+          var currentHeight = Math.max(clicked.cy - e.clientY  + clicked.h, minHeight);
+
+          if (currentHeight > minHeight) {
+            pane.style.height = currentHeight + 'px';
+            pane.style.top = e.clientY + 'px';
+          }
+        }
+
+        hintHide();
+
+        return;
       }
-    }
 
-    if (clicked.onTopEdge) {
-      var currentHeight = Math.max(clicked.cy - e.clientY  + clicked.h, minHeight);
+      if (clicked && clicked.isMoving) {
+        getApplyBounds(ghostpane, false, null);
 
-      if (currentHeight > minHeight) {
-        pane.style.height = currentHeight + 'px';
-        pane.style.top = e.clientY + 'px';
+        if (preSnapped) {
+          setBounds(pane,
+            e.clientX - preSnapped.width / 2,
+            e.clientY - Math.min(clicked.y, preSnapped.height),
+            preSnapped.width,
+            preSnapped.height
+          );
+          return;
+        }
+
+        // moving
+        pane.style.top = (e.clientY - clicked.y) + 'px';
+        pane.style.left = (e.clientX - clicked.x) + 'px';
+        return;
       }
-    }
 
-    hintHide();
+      // This code executes when mouse moves without clicking
+      const curs = getCursorState();
 
-    return;
-  }
-
-  if (clicked && clicked.isMoving) {
-    getApplyBounds(ghostpane, false, null);
-
-    if (preSnapped) {
-      setBounds(pane,
-        e.clientX - preSnapped.width / 2,
-        e.clientY - Math.min(clicked.y, preSnapped.height),
-        preSnapped.width,
-        preSnapped.height
-      );
+      clickers.forEach(function(clicker) {
+        // Set the cursor style for the drag to snapin element
+        document.getElementById(clicker).style.cursor = curs;
+      });
+    } else {
       return;
     }
-
-    // moving
-    pane.style.top = (e.clientY - clicked.y) + 'px';
-    pane.style.left = (e.clientX - clicked.x) + 'px';
-    return;
-  }
-
-  // This code executes when mouse moves without clicking
-  const curs = getCursorState();
-
-  clickers.forEach(function(clicker) {
-    // Set the cursor style for the drag to snapin element
-    document.getElementById(clicker).style.cursor = curs;
-  });
 }
 
 function onUp(e) {
-  calc(e);
+  if (document.getElementById(clickers[0]) !== null) {
+    calc(e);
 
-  if (clicked && clicked.isMoving) {
-    // Snap
-    var snapped = {
-      width: b.width,
-      height: b.height
-    };
+    if (clicked && clicked.isMoving) {
+      // Snap
+      var snapped = {
+        width: b.width,
+        height: b.height
+      };
 
-    var boundParams = getApplyBounds(pane, true, snapped);
-    preSnapped = boundParams.snapped;
+      var boundParams = getApplyBounds(pane, true, snapped);
+      preSnapped = boundParams.snapped;
 
-    setSnappinClass(boundParams.region);
-    setCurrentClickerHighlight(clicked.currentClicker, false);
+      setSnappinClass(boundParams.region);
+      setCurrentClickerHighlight(clicked.currentClicker, false);
 
-    hintHide();
+      hintHide();
+    }
+
+    clicked = null;
+
+    ghostpane.style.display = 'none';
   }
-
-  clicked = null;
-
-  ghostpane.style.display = 'none';
 }
 
-function setEventListeners() {
-  clickers.forEach(function(clicker) {
+function setEventListeners(add) {
+  const documentEventListener = !add ? document.removeEventListener : document.addEventListener;
+  let elementEventListener = null;
 
+  clickers.forEach(function(clicker) {
     const clickElement = document.getElementById(clicker);
+
+    elementEventListener = !add ? clickElement.removeEventListener : clickElement.addEventListener;
 
     if (clickElement !== null) {
       // Mouse events
-      clickElement.addEventListener('mousedown', onMouseDown);
-      document.addEventListener('mousemove', onMove);
-      document.addEventListener('mouseup', onUp);
+      elementEventListener('mousedown', onMouseDown);
+      documentEventListener('mousemove', onMove);
+      documentEventListener('mouseup', onUp);
 
       // Touch events
-      clickElement.addEventListener('touchstart', onTouchDown);
-      document.addEventListener('touchmove', onTouchMove);
-      document.addEventListener('touchend', onTouchEnd);
+      elementEventListener('touchstart', onTouchDown);
+      documentEventListener('touchmove', onTouchMove);
+      documentEventListener('touchend', onTouchEnd);
     }
   });
 }
@@ -296,13 +306,18 @@ module.exports = {
         clickers = clickerElements;
 
         setElements(el, ghost);
-        setEventListeners();
+        setEventListeners(true);
         animate();
       } else {
         console.log('Goldfish.ResizeSnapin Please provide the clickers parameter (array) when calling the ResizeSnappin extension. Exiting...');
       }
     } else {
-      setTimeout(function() { namespace.Start(el, ghost, clickerElements); }, 1000);
+      ticker = setTimeout(function() { namespace.Start(el, ghost, clickerElements); }, 1000);
     }
+  },
+  End: function End() {
+        setEventListeners(false);
+
+        clearTimeout(ticker);
   }
 };

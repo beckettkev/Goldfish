@@ -1,5 +1,6 @@
 /* eslint new-cap: 0 */
 import React from 'react';
+import Snappin from './snappin.js';
 
 function toggleElementVisibility(id, show) {
   const el = document.getElementById(id);
@@ -14,6 +15,14 @@ module.exports = {
 
     holder.className = 'animated bounceOutRight';
 
+    // If snappy is set, we need to turn it off when closing the app
+    if (typeof Goldfish.options.snappy !== 'undefined') {
+      if (Goldfish.options.snappy) {
+         Snappin.End();
+      }
+    }
+
+    // Unmount and remove the React JS App
     window.setTimeout(function() {
       React.unmountComponentAtNode(component);
 

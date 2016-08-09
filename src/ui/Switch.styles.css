@@ -1,0 +1,110 @@
+.field, .disabled {
+  position: relative;
+  display: block;
+  height: 2.4rem;
+  margin-bottom: 1.5rem;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.text {
+  display: inline-block;
+  padding-left: 1rem;
+  font-size: 1.4rem;
+  line-height: 2.4rem;
+  color: black;
+  white-space: nowrap;
+  vertical-align: top;
+}
+
+.on, .off {
+  position: relative;
+  display: inline-block;
+  width: 3.6rem;
+  height: 1.4rem;
+  margin-top: 0.5rem;
+  vertical-align: top;
+  cursor: pointer;
+  border-radius: 1.4rem;
+}
+
+.thumb {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 0.28s;
+  position: absolute;
+  top: -0.3rem;
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+  border-radius: 50%;
+  transition-property: left;
+}
+
+.ripple {
+  background-color: #3f51b5;
+  opacity: .3;
+  transition-duration: 650ms;
+}
+
+.on {
+  background: rgba(63, 81, 181, 0.5);
+}
+.on .thumb {
+  box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 3px 3px -2px rgba(0, 0, 0, 0.2), 0 1px 8px 0 rgba(0, 0, 0, 0.12);
+  left: 1.6rem;
+  background: #3f51b5;
+}
+
+.off {
+  background: rgba(0, 0, 0, 0.26);
+}
+.off .thumb {
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  left: 0;
+  background: #fafafa;
+}
+.off .ripple {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.input:focus:not(:active) + .switch-on > .thumb:before, .input:focus:not(:active) + .switch-off > .thumb:before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  box-sizing: border-box;
+  display: inline-block;
+  width: 0.8rem;
+  height: 0.8rem;
+  content: "";
+  background-color: transparent;
+  border-radius: 50%;
+  transform: translate(-0.4rem, -0.4rem);
+}
+
+.input {
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  opacity: 0;
+}
+.input:focus:not(:active) + .switch-on > .thumb:before {
+  background-color: rgba(63, 81, 181, 0.26);
+  box-shadow: 0 0 0 2rem rgba(63, 81, 181, 0.26);
+}
+.input:focus:not(:active) + .switch-off > .thumb:before {
+  background-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 0 2rem rgba(0, 0, 0, 0.1);
+}
+
+.disabled .text {
+  color: rgba(0, 0, 0, 0.26);
+}
+.disabled .on, .disabled .off {
+  cursor: auto;
+  background: rgba(0, 0, 0, 0.12);
+}
+.disabled .thumb {
+  cursor: auto;
+  background-color: #bdbdbd;
+  border-color: transparent;
+}

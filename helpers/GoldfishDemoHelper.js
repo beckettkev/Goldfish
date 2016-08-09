@@ -9,7 +9,7 @@ Goldfish.Create({
   menu: 'alternate-tabs',
   snappy: true,
   css: {
-    primary: '#188efb',
+    //primary: '#188efb',
     overrides: styles
   }
 });

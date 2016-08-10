@@ -107,6 +107,7 @@ function calc(e) {
   b = pane.getBoundingClientRect();
   x = e.clientX - b.left;
   y = e.clientY - b.top;
+
   onTopEdge = y < MARGINS;
   onLeftEdge = x < MARGINS;
   onRightEdge = x >= b.width - MARGINS;
@@ -270,33 +271,32 @@ function onUp(e) {
 }
 
 function setEventListeners(add) {
-  const documentEventListener = !add ? document.removeEventListener : document.addEventListener;
+  const documentEventListener = add ? document.addEventListener : document.removeEventListener;
   let elementEventListener = null;
 
   clickers.forEach(function(clicker) {
     const clickElement = document.getElementById(clicker);
 
-    elementEventListener = !add ? clickElement.removeEventListener : clickElement.addEventListener;
-
     if (clickElement !== null) {
-      // Mouse events
-      elementEventListener('mousedown', onMouseDown);
-      documentEventListener('mousemove', onMove);
-      documentEventListener('mouseup', onUp);
-
-      // Touch events
-      elementEventListener('touchstart', onTouchDown);
-      documentEventListener('touchmove', onTouchMove);
-      documentEventListener('touchend', onTouchEnd);
+      // Mouse and touch events
+      [{'mousedown':onMouseDown, 'element':clickElement},{'mousemove':onMove, 'element':document},{'mouseup':onUp, 'element':document},{'touchstart':onTouchDown, 'element':clickElement},{'touchmove':onTouchMove, 'element':document},{'touchend':onTouchEnd, 'element':document}].forEach(function(mapping) {
+        bindEventListener(add, mapping.element, Object.keys(mapping)[0], mapping[Object.keys(mapping)[0]]);
+      });
     }
   });
+}
+
+function bindEventListener(add, el, type, func) {
+  if (add) {
+      el.addEventListener(type, func);
+  } else {
+      el.removeEventListener(type, func);
+  }
 }
 
 function setElements(el, ghost) {
   pane = document.getElementById(el);
   ghostpane = document.getElementById(ghost);
-
-  clickers = clickers;
 }
 
 module.exports = {

@@ -271,9 +271,6 @@ function onUp(e) {
 }
 
 function setEventListeners(add) {
-  const documentEventListener = add ? document.addEventListener : document.removeEventListener;
-  let elementEventListener = null;
-
   clickers.forEach(function(clicker) {
     const clickElement = document.getElementById(clicker);
 

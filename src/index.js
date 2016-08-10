@@ -173,8 +173,6 @@ const Goldfish = {
   Snappy: function Snappy() {
     if (typeof Goldfish.options.snappy !== 'undefined') {
       if (Goldfish.options.snappy) {
-        console.log('SNAPPY IS CALLED AND ENABLED');
-
         var clickers = ['dragSnapinGoldfish','dragSnapinGoldfishLayout','dragSnapinGoldfishSettings','dragSnapinGoldfishFavourites'];
 
         Snappin.Start('outer-space', 'component-ghostpane', clickers);

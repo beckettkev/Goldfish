@@ -77,8 +77,6 @@ function onDown(e) {
 
   calc(e);
 
-  var isResizing = onRightEdge || onBottomEdge || onTopEdge || onLeftEdge;
-
   clicked = {
     x: x,
     y: y,
@@ -87,8 +85,7 @@ function onDown(e) {
     w: b.width,
     h: b.height,
     currentClicker: getCurrentClicker(e),
-    isResizing: isResizing,
-    isMoving: !isResizing && canMove(),
+    isMoving: canMove(),
     onTopEdge: onTopEdge,
     onLeftEdge: onLeftEdge,
     onRightEdge: onRightEdge,
@@ -156,15 +153,7 @@ function getApplyBounds(el, drop, snapped) {
 
 function getCursorState() {
   // style cursor
-  if (onRightEdge && onBottomEdge || onLeftEdge && onTopEdge) {
-    return 'nwse-resize';
-  } else if (onRightEdge && onTopEdge || onBottomEdge && onLeftEdge) {
-    return 'nesw-resize';
-  } else if (onRightEdge || onLeftEdge) {
-    return 'ew-resize';
-  } else if (onBottomEdge || onTopEdge) {
-    return 'ns-resize';
-  } else if (canMove()) {
+  if (canMove()) {
     return 'move';
   } else {
     return 'default';
@@ -184,34 +173,6 @@ function animate() {
       if (!redraw) return;
 
       redraw = false;
-
-      if (clicked && clicked.isResizing) {
-
-        if (clicked.onRightEdge) pane.style.width = Math.max(x, minWidth) + 'px';
-        if (clicked.onBottomEdge) pane.style.height = Math.max(y, minHeight) + 'px';
-
-        if (clicked.onLeftEdge) {
-          var currentWidth = Math.max(clicked.cx - e.clientX  + clicked.w, minWidth);
-
-          if (currentWidth > minWidth) {
-            pane.style.width = currentWidth + 'px';
-            pane.style.left = e.clientX + 'px';
-          }
-        }
-
-        if (clicked.onTopEdge) {
-          var currentHeight = Math.max(clicked.cy - e.clientY  + clicked.h, minHeight);
-
-          if (currentHeight > minHeight) {
-            pane.style.height = currentHeight + 'px';
-            pane.style.top = e.clientY + 'px';
-          }
-        }
-
-        hintHide();
-
-        return;
-      }
 
       if (clicked && clicked.isMoving) {
         getApplyBounds(ghostpane, false, null);

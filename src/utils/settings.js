@@ -57,7 +57,7 @@ module.exports = {
     case 'showFavourites':
       // do some stuff
       this.toggleFavourites(value);
-      this.toggleFavouriteButtons(value);
+      //this.toggleFavouriteButtons(value);
       break;
     case 'showOnRight':
       this.setPosition(value ? 'right' : 'left');

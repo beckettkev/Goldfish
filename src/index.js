@@ -2,7 +2,7 @@
 import React from 'react';
 import DefaultConstants from './constants/default';
 import PeopleSearch from './views/PeopleSearch/PeopleSearch.jsx';
-import Snappin from './utils/snappin';
+import Snappin from './utils/snappin-c';
 
 // Custom event polyfill for IE9 - IE10
 function CustomEvent(event, params) {
@@ -175,7 +175,8 @@ const Goldfish = {
       if (Goldfish.options.snappy) {
         var clickers = ['dragSnapinGoldfish','dragSnapinGoldfishLayout','dragSnapinGoldfishSettings','dragSnapinGoldfishFavourites'];
 
-        Snappin.Start('outer-space', 'component-ghostpane', clickers);
+        const snap = new Snappin();
+        snap.start('outer-space', 'component-ghostpane', clickers);
       }
     }
   },

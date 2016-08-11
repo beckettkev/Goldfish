@@ -1,6 +1,6 @@
 /* eslint new-cap: 0 */
 import React from 'react';
-import Snappin from './snappin.js';
+import Snappin from './snappin-c.js';
 
 function toggleElementVisibility(id, show) {
   const el = document.getElementById(id);
@@ -18,7 +18,8 @@ module.exports = {
     // If snappy is set, we need to turn it off when closing the app
     if (typeof Goldfish.options.snappy !== 'undefined') {
       if (Goldfish.options.snappy) {
-         Snappin.End();
+         const snap = new Snappin();
+         snap.end();
       }
     }
 

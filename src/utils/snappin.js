@@ -1,4 +1,3 @@
-
 /*
  * Resize Snapin - based on the work done by @author https://twitter.com/blurspline / https://github.com/zz85
  * See post @ http://www.lab4games.net/zz85/blog/2014/11/15/resizing-moving-snapping-windows-with-js-css/
@@ -31,6 +30,7 @@ var pane, ghostpane, ticker;
 
 var clickers;
 
+// Sets the positioning of the app along with the height and width (during a drag move)
 function setBounds(element, x, y, w, h) {
   element.style.left = x + 'px';
   element.style.top = y + 'px';
@@ -69,6 +69,7 @@ function setCurrentClickerHighlight(el, highlight) {
 
   el.className = highlight ? el.className + ' animated pulse' : el.className.replace(/ animated pulse/g, '');
 
+  // When an action is being carried out, change the border style otherwise don't
   document.getElementById('outer-space').style.border = highlight ? '2px dashed #cccccc' : '';
 }
 
@@ -232,11 +233,12 @@ function onUp(e) {
 }
 
 function setEventListeners(add) {
+  // For every drag element, we need to set or remove the event listener
   clickers.forEach(function(clicker) {
     const clickElement = document.getElementById(clicker);
 
     if (clickElement !== null) {
-      // Mouse and touch events
+      // Mouse and touch events - add or remove drag element events
       [{'mousedown':onMouseDown, 'element':clickElement},{'mousemove':onMove, 'element':document},{'mouseup':onUp, 'element':document},{'touchstart':onTouchDown, 'element':clickElement},{'touchmove':onTouchMove, 'element':document},{'touchend':onTouchEnd, 'element':document}].forEach(function(mapping) {
         bindEventListener(add, mapping.element, Object.keys(mapping)[0], mapping[Object.keys(mapping)[0]]);
       });

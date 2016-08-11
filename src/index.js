@@ -2,7 +2,7 @@
 import React from 'react';
 import DefaultConstants from './constants/default';
 import PeopleSearch from './views/PeopleSearch/PeopleSearch.jsx';
-import Snappin from './utils/snappin-c';
+import Snappin from './utils/snappin';
 
 // Custom event polyfill for IE9 - IE10
 function CustomEvent(event, params) {

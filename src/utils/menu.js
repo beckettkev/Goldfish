@@ -1,6 +1,6 @@
 /* eslint new-cap: 0 */
 import React from 'react';
-import Snappin from './snappin-c.js';
+import Snappin from './snappin.js';
 
 function toggleElementVisibility(id, show) {
   const el = document.getElementById(id);

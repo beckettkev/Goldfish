@@ -1,283 +1,311 @@
+
 /*
  * Resize Snapin - based on the work done by @author https://twitter.com/blurspline / https://github.com/zz85
  * See post @ http://www.lab4games.net/zz85/blog/2014/11/15/resizing-moving-snapping-windows-with-js-css/
  */
-// Minimum resizable area (width and height)
-var minWidth = 450;
-var minHeight = 450;
+export default class Snappin {
+  constructor() {
+    // Minimum resizable area (width and height)
+    this.minWidth = 450;
+    this.minHeight = 450;
 
-// Thresholds - leave these alone
-var FULLSCREEN_MARGINS = -10;
-var MARGINS = 4;
+    // Thresholds - leave these alone
+    this.fullscreenMargins = -10;
+    this.margins = 4;
 
-// End of what's configurable.
-var clicked = null;
-// Resizing booleans indicating if we are resizing from one of these points
-var onRightEdge, onBottomEdge, onLeftEdge, onTopEdge;
-var currentClicker = null;
+    // End of what's configurable.
+    this.clicked = null;
 
-var rightScreenEdge, bottomScreenEdge;
+    // Resizing booleans indicating if we are resizing from one of these points
+    this.onRightEdge = null;
+    this.onBottomEdge = null
+    this.onLeftEdge = null;
+    this.onTopEdge = null;
+    this.currentClicker = null;
 
-var preSnapped;
+    this.rightScreenEdge = null;
+    this.bottomScreenEdge = null;
 
-var b, x, y;
+    this.preSnapped = null;
 
-var redraw = false;
+    this.b = null;
+    this.x = null;
+    this.y = null;
 
-// The app holding div element (that we move to the snappin) - pane
-// The ghost panel demonstrating the drop point for the move - ghostpane
-var pane, ghostpane, ticker;
+    this.redraw = false;
 
-var clickers;
+    this.evt = null;
 
-// Sets the positioning of the app along with the height and width (during a drag move)
-function setBounds(element, x, y, w, h) {
-  element.style.left = x + 'px';
-  element.style.top = y + 'px';
-  element.style.width = w + 'px';
-  element.style.height = h + 'px';
-}
+    // The app holding div element (that we move to the snappin) - pane
+    // The ghost panel demonstrating the drop point for the move - ghostpane
+    this.pane = null;
+    this.ghostpane = null;
+    this.ticker = null;
 
-function getCurrentClicker(e) {
-  return e.target || e.srcElement;
-}
+    // The array of ids for elements that will be the snappin clicking regions
+    this.clickers = null;
 
-function hintHide() {
-  ghostpane.style.opacity = 0;
-}
+    this.primaryColour = Goldfish.GetPrimaryColour();
+  }
 
-function onTouchDown(e) {
-  onDown(e.touches[0]);
-  e.preventDefault();
-}
+  // Sets the positioning of the app along with the height and width (during a drag move)
+  setBounds = (element, x, y, w, h) => {
+    element.style.left = x + 'px';
+    element.style.top = y + 'px';
+    element.style.width = w + 'px';
+    element.style.height = h + 'px';
+  }
 
-function onTouchMove(e) {
-  onMove(e.touches[0]);
-}
+  getCurrentClicker = e => { return e.target || e.srcElement; }
 
-function onTouchEnd(e) {
-  if (e.touches.length === 0) { onUp(e.changedTouches[0]); }
-}
+  hintHide = () => {
+    this.ghostpane.style.opacity = 0;
+  }
 
-function onMouseDown(e) {
-  onDown(e);
-  e.preventDefault();
-}
+  calc = e => {
+    this.b = this.pane.getBoundingClientRect();
+    this.x = e.clientX - this.b.left;
+    this.y = e.clientY - this.b.top;
 
-function setCurrentClickerHighlight(el, highlight) {
-  el.style.color = highlight ? Goldfish.GetPrimaryColour() : '';
+    this.onTopEdge = this.y < this.margins;
+    this.onLeftEdge = this.x < this.margins;
+    this.onRightEdge = this.x >= this.b.width - this.margins;
+    this.onBottomEdge = this.y >= this.b.height - this.margins;
+    this.rightScreenEdge = window.innerWidth - this.margins;
+    this.bottomScreenEdge = window.innerHeight - this.margins;
+  }
 
-  el.className = highlight ? el.className + ' animated pulse' : el.className.replace(/ animated pulse/g, '');
+  onTouchDown = e => {
+    this.onDown(e.touches[0]);
 
-  // When an action is being carried out, change the border style otherwise don't
-  document.getElementById('outer-space').style.border = highlight ? '2px dashed #cccccc' : '';
-}
+    e.preventDefault();
+  }
 
-function onDown(e) {
-  ghostpane.style.display = '';
+  onTouchMove = e => {
+    this.onMove(e.touches[0]);
+  }
 
-  calc(e);
-
-  clicked = {
-    x: x,
-    y: y,
-    cx: e.clientX,
-    cy: e.clientY,
-    w: b.width,
-    h: b.height,
-    currentClicker: getCurrentClicker(e),
-    isMoving: canMove(),
-    onTopEdge: onTopEdge,
-    onLeftEdge: onLeftEdge,
-    onRightEdge: onRightEdge,
-    onBottomEdge: onBottomEdge
-  };
-
-  setCurrentClickerHighlight(clicked.currentClicker, true);
-}
-
-function canMove() {
-  return x > 0 && x < b.width && y > 0 && y < b.height;
-}
-
-function calc(e) {
-  b = pane.getBoundingClientRect();
-  x = e.clientX - b.left;
-  y = e.clientY - b.top;
-
-  onTopEdge = y < MARGINS;
-  onLeftEdge = x < MARGINS;
-  onRightEdge = x >= b.width - MARGINS;
-  onBottomEdge = y >= b.height - MARGINS;
-  rightScreenEdge = window.innerWidth - MARGINS;
-  bottomScreenEdge = window.innerHeight - MARGINS;
-}
-
-var e;
-
-function onMove(ee) {
-  calc(ee);
-  e = ee;
-  redraw = true;
-}
-
-function getApplyBounds(el, drop, snapped) {
-  var leftRightTopOffset = typeof window.fakeAjaxCalls === 'undefined' ? 85 : 0;
-  var compiledWidth = pane.getBoundingClientRect().width > (window.innerWidth - 1) ? minWidth : pane.getBoundingClientRect().width;
-  var region = null;
-
-  if (b.top < MARGINS) {
-    region = 'top';
-    setBounds(el, 0, 0, window.innerWidth, minHeight);
-  } else if (b.left < MARGINS) {
-    region = 'left';
-    setBounds(el, 0, leftRightTopOffset, 410, window.innerHeight);
-  } else if (b.right > rightScreenEdge) {
-    region = 'right';
-    setBounds(el, window.innerWidth - 410, leftRightTopOffset, 410, window.innerHeight);
-  } else if (b.bottom > bottomScreenEdge) {
-    region = 'bottom';
-    setBounds(el, 0, window.innerHeight - minHeight, window.innerWidth, minHeight);
-  } else {
-    if (drop) {
-      return null;
-    } else {
-      hintHide();
-      return;
+  onTouchEnd = e => {
+    if (e.touches.length === 0) {
+      this.onUp(e.changedTouches[0]);
     }
   }
 
-  if (drop) { return { 'region': region, 'snapped': snapped }; }
+  onMouseDown = e => {
+    this.onDown(e);
 
-  el.style.opacity = 0.2;
-}
-
-function getCursorState() {
-  // style cursor
-  if (canMove()) {
-    return 'move';
-  } else {
-    return 'default';
+    e.preventDefault();
   }
-}
 
-function setSnappinClass(region) {
-  const snap = region.charAt(0).toUpperCase() + region.slice(1);
-  // We set a spacial class to the containing div so that we can manipulate the css for the snapped layout
-  pane.className = 'animated bounceInRight goldfishSnap' + snap;
-}
+  setCurrentClickerHighlight = (el, highlight) => {
+    el.style.color = highlight ? this.primaryColour : '';
 
-function animate() {
-  if (document.getElementById(clickers[0]) !== null) {
-      requestAnimationFrame(animate);
+    el.className = highlight ? el.className + ' animated pulse' : el.className.replace(/ animated pulse/g, '');
 
-      if (!redraw) return;
+    // When an action is being carried out, change the border style otherwise don't
+    document.getElementById('outer-space').style.border = highlight ? '2px dashed #cccccc' : '';
+  }
 
-      redraw = false;
+  canMove = () => {
+    return this.x > 0 && this.x < this.b.width && this.y > 0 && this.y < this.b.height;
+  }
 
-      if (clicked && clicked.isMoving) {
-        getApplyBounds(ghostpane, false, null);
+  onDown = (e) => {
+    this.ghostpane.style.display = '';
 
-        if (preSnapped) {
-          setBounds(pane,
-            e.clientX - preSnapped.width / 2,
-            e.clientY - Math.min(clicked.y, preSnapped.height),
-            preSnapped.width,
-            preSnapped.height
-          );
+    this.calc(e);
+
+    this.clicked = {
+      x: this.x,
+      y: this.y,
+      cx: e.clientX,
+      cy: e.clientY,
+      w: this.b.width,
+      h: this.b.height,
+      currentClicker: this.getCurrentClicker(e),
+      isMoving: this.canMove(),
+      onTopEdge: this.onTopEdge,
+      onLeftEdge: this.onLeftEdge,
+      onRightEdge: this.onRightEdge,
+      onBottomEdge: this.onBottomEdge
+    };
+
+    this.setCurrentClickerHighlight(this.clicked.currentClicker, true);
+  }
+
+  onMove = (ee) => {
+    this.calc(ee);
+
+    this.evt = ee;
+    this.redraw = true;
+  }
+
+  getApplyBounds = (el, drop, snapped) => {
+    const leftRightTopOffset = typeof window.fakeAjaxCalls === 'undefined' ? 85 : 0;
+    const compiledWidth = this.pane.getBoundingClientRect().width > (window.innerWidth - 1) ? this.minWidth : this.pane.getBoundingClientRect().width;
+
+    let region = null;
+
+    if (this.b.top < this.margins) {
+      region = 'top';
+      this.setBounds(el, 0, 0, window.innerWidth, this.minHeight);
+    } else if (this.b.left < this.margins) {
+      region = 'left';
+      this.setBounds(el, 0, leftRightTopOffset, 410, window.innerHeight);
+    } else if (this.b.right > this.rightScreenEdge) {
+      region = 'right';
+      this.setBounds(el, window.innerWidth - 410, leftRightTopOffset, 410, window.innerHeight);
+    } else if (this.b.bottom > this.bottomScreenEdge) {
+      region = 'bottom';
+      this.setBounds(el, 0, window.innerHeight - this.minHeight, window.innerWidth, this.minHeight);
+    } else {
+      if (drop) {
+        return null;
+      } else {
+        this.hintHide();
+        return;
+      }
+    }
+
+    if (drop) { return { 'region': region, 'snapped': snapped }; }
+
+    el.style.opacity = 0.2;
+  }
+
+  getCursorState = () => {
+    // style cursor
+    return this.canMove() ? 'move' : 'default';
+  }
+
+  setSnappinClass = region => {
+    const snap = region.charAt(0).toUpperCase() + region.slice(1);
+
+    // We set a spacial class to the containing div so that we can manipulate the css for the snapped layout
+    this.pane.className = `animated bounceInRight goldfishSnap${snap}`;
+  }
+
+  animate = () => {
+    if (document.getElementById(this.clickers[0]) !== null) {
+        requestAnimationFrame(this.animate);
+
+        if (!this.redraw) return;
+
+        this.redraw = false;
+
+        if (this.clicked && this.clicked.isMoving) {
+          this.getApplyBounds(this.ghostpane, false, null);
+
+          if (this.preSnapped) {
+            this.setBounds(this.pane,
+              this.evt.clientX - this.preSnapped.width / 2,
+              this.evt.clientY - Math.min(this.clicked.y, this.preSnapped.height),
+              this.preSnapped.width,
+              this.preSnapped.height
+            );
+
+            return;
+          }
+
+          // moving
+          this.pane.style.top = (this.evt.clientY - this.clicked.y) + 'px';
+          this.pane.style.left = (this.evt.clientX - this.clicked.x) + 'px';
           return;
         }
 
-        // moving
-        pane.style.top = (e.clientY - clicked.y) + 'px';
-        pane.style.left = (e.clientX - clicked.x) + 'px';
+        // This code executes when mouse moves without clicking
+        const curs = this.getCursorState();
+
+        this.clickers.forEach(function(clicker) {
+          // Set the cursor style for the drag to snapin element
+          document.getElementById(clicker).style.cursor = curs;
+        });
+    } else {
         return;
+    }
+  }
+
+  onUp = e => {
+    if (document.getElementById(this.clickers[0]) !== null) {
+      this.calc(e);
+
+      if (this.clicked && this.clicked.isMoving) {
+        // Snap
+        const snapped = {
+          width: this.b.width,
+          height: this.b.height
+        };
+
+        const boundParams = this.getApplyBounds(this.pane, true, snapped);
+        this.preSnapped = boundParams.snapped;
+
+        this.setSnappinClass(boundParams.region);
+        this.setCurrentClickerHighlight(this.clicked.currentClicker, false);
+
+        this.hintHide();
       }
 
-      // This code executes when mouse moves without clicking
-      const curs = getCursorState();
+      this.clicked = null;
 
-      clickers.forEach(function(clicker) {
-        // Set the cursor style for the drag to snapin element
-        document.getElementById(clicker).style.cursor = curs;
-      });
+      this.ghostpane.style.display = 'none';
+    }
+  }
+
+  bindEventListener = (add, el, type, func) => {
+    if (add) {
+        el.addEventListener(type, func);
     } else {
-      return;
+        el.removeEventListener(type, func);
     }
-}
-
-function onUp(e) {
-  if (document.getElementById(clickers[0]) !== null) {
-    calc(e);
-
-    if (clicked && clicked.isMoving) {
-      // Snap
-      var snapped = {
-        width: b.width,
-        height: b.height
-      };
-
-      var boundParams = getApplyBounds(pane, true, snapped);
-      preSnapped = boundParams.snapped;
-
-      setSnappinClass(boundParams.region);
-      setCurrentClickerHighlight(clicked.currentClicker, false);
-
-      hintHide();
-    }
-
-    clicked = null;
-
-    ghostpane.style.display = 'none';
   }
-}
 
-function setEventListeners(add) {
-  // For every drag element, we need to set or remove the event listener
-  clickers.forEach(function(clicker) {
-    const clickElement = document.getElementById(clicker);
+  setEventListeners = add => {
+    const self = this;
+    // For every drag element, we need to set or remove the event listener
+    this.clickers.forEach(function(clicker) {
+      const clickElement = document.getElementById(clicker);
 
-    if (clickElement !== null) {
-      // Mouse and touch events - add or remove drag element events
-      [{'mousedown':onMouseDown, 'element':clickElement},{'mousemove':onMove, 'element':document},{'mouseup':onUp, 'element':document},{'touchstart':onTouchDown, 'element':clickElement},{'touchmove':onTouchMove, 'element':document},{'touchend':onTouchEnd, 'element':document}].forEach(function(mapping) {
-        bindEventListener(add, mapping.element, Object.keys(mapping)[0], mapping[Object.keys(mapping)[0]]);
-      });
-    }
-  });
-}
-
-function bindEventListener(add, el, type, func) {
-  if (add) {
-      el.addEventListener(type, func);
-  } else {
-      el.removeEventListener(type, func);
+      if (clickElement !== null) {
+        // Mouse and touch events - add or remove drag element events
+        [
+          { 'mousedown': self.onMouseDown, 'element': clickElement },
+          { 'mousemove': self.onMove, 'element': document },
+          { 'mouseup': self.onUp, 'element': document },
+          { 'touchstart': self.onTouchDown, 'element': clickElement},
+          { 'touchmove': self.onTouchMove, 'element': document },
+          { 'touchend': self.onTouchEnd, 'element': document }
+        ].forEach(function(mapping) {
+            self.bindEventListener(add, mapping.element, Object.keys(mapping)[0], mapping[Object.keys(mapping)[0]]);
+        });
+      }
+    });
   }
-}
 
-function setElements(el, ghost) {
-  pane = document.getElementById(el);
-  ghostpane = document.getElementById(ghost);
-}
+  setElements = (el, ghost) => {
+    this.pane = document.getElementById(el);
+    this.ghostpane = document.getElementById(ghost);
+  }
 
-module.exports = {
-  Start: function Start(el, ghost, clickerElements) {
+  start = (el, ghost, clickerElements) => {
     if (document.getElementById(el) !== null) {
       if (typeof clickerElements !== 'undefiend') {
-        clickers = clickerElements;
+        this.clickers = clickerElements;
 
-        setElements(el, ghost);
-        setEventListeners(true);
-        animate();
+        this.setElements(el, ghost);
+        this.setEventListeners(true);
+        this.animate();
       } else {
         console.log('Goldfish.ResizeSnapin Please provide the clickers parameter (array) when calling the ResizeSnappin extension. Exiting...');
       }
     } else {
-      ticker = setTimeout(function() { namespace.Start(el, ghost, clickerElements); }, 1000);
+      this.ticker = setTimeout(function() {
+        this.Start(el, ghost, clickerElements);
+      }, 1000);
     }
-  },
-  End: function End() {
-        setEventListeners(false);
-
-        clearTimeout(ticker);
   }
-};
+
+  end = () => {
+    this.setEventListeners(false);
+
+    clearTimeout(this.ticker);
+  }
+}

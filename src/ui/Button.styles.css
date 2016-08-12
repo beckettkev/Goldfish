@@ -66,11 +66,12 @@
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
   background-color: rgba(0, 0, 0, 0.12);
 }
-.raised:active, .floating:active {
-  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-}
-.raised:focus:not(:active), .floating:focus:not(:active) {
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.18), 0 8px 16px rgba(0, 0, 0, 0.36);
+.raised:active span, .floating:active span {
+  background-color: #ffffff;
+  border-radius: 100%;
+  opacity:0.5;
+  transform: scale(0);
+  animation: ripple-in 1s;
 }
 
 .raised {
@@ -170,6 +171,12 @@
 }
 .accent:not([disabled]).flat:hover {
   background: rgba(255, 64, 129, 0.2);
+}
+
+@keyframes ripple-in {
+ 0% {transform: scale(0);}
+ 70%{transform: scale(1);opacity:0.2;}
+ 100%{transform: scale(1);opacity:0;}
 }
 
 /* css for rippling effect */

@@ -53,7 +53,7 @@ export default class Snappin {
     element.style.left = x + 'px';
     element.style.top = y + 'px';
     element.style.width = w + 'px';
-    element.style.height = h + 'px';
+    element.style.height = h === 'auto' ? h : h + 'px';
   }
 
   getCurrentClicker = e => { return e.target || e.srcElement; }
@@ -151,10 +151,10 @@ export default class Snappin {
       this.setBounds(el, 0, 0, window.innerWidth, this.minHeight);
     } else if (this.b.left < this.margins) {
       region = 'left';
-      this.setBounds(el, 0, leftRightTopOffset, 410, window.innerHeight);
+      this.setBounds(el, 0, leftRightTopOffset, 410, 'auto');
     } else if (this.b.right > this.rightScreenEdge) {
       region = 'right';
-      this.setBounds(el, window.innerWidth - 410, leftRightTopOffset, 410, window.innerHeight);
+      this.setBounds(el, window.innerWidth - 410, leftRightTopOffset, 410, 'auto');
     } else if (this.b.bottom > this.bottomScreenEdge) {
       region = 'bottom';
       this.setBounds(el, 0, window.innerHeight - this.minHeight, window.innerWidth, this.minHeight);
@@ -182,6 +182,24 @@ export default class Snappin {
 
     // We set a spacial class to the containing div so that we can manipulate the css for the snapped layout
     this.pane.className = `animated bounceInRight goldfishSnap${snap}`;
+
+    this.registerNewPosition();
+  }
+
+  registerNewPosition = () => {
+    // Tell the default view that we have changed the position of the app
+    const newPosition = new window.CustomEvent(
+      'Goldfish.Snappin',
+      {
+        detail: {
+          time: new Date(),
+        },
+        bubbles: true,
+        cancelable: true,
+      }
+    );
+
+    document.dispatchEvent(newPosition);
   }
 
   animate = () => {

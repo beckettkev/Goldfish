@@ -34,7 +34,7 @@ class Results extends React.Component {
     // Ensures that all of the person cards are the same height regardless of what data is available for the given person (necessary for horizontal view)
     const offset = this.props.layout.current.length > 3 ? ((this.props.layout.current.length - 3) * 21) : 0;
 
-    return { height: (94 + offset) + 'px' };
+    return { height: (124 + offset) + 'px' };
   }
 
   createItem(item, i) {

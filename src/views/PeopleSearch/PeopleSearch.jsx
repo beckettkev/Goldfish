@@ -44,6 +44,9 @@ class PeopleSearch extends React.Component {
     this.setInitialState();
 
     this.applyOptions = this.applyOptions.bind(this);
+
+    // if the app position is moved reset to default state
+    document.addEventListener('Goldfish.Snappin', this.resetWayPointAfterPositioning, false);
   }
 
   componentDidUpdate() {
@@ -65,6 +68,19 @@ class PeopleSearch extends React.Component {
         // Inform the create functionthat Goldfish can now load safely
         SP.SOD.notifyScriptLoadedAndExecuteWaitingJobs('goldfish.ready.min.js');
       }
+    }
+  }
+
+  resetWayPointAfterPositioning = () => {
+    if (this.state.items.length > 0) {
+      // before we whipe the state, we need a record of it
+      const previous = this.state;
+
+      // reset the clocks so our waypoint works nicely
+      this.setInitialState();
+
+      // reset the state to what it was before
+      this.state = previous;
     }
   }
 
@@ -142,7 +158,6 @@ class PeopleSearch extends React.Component {
   applyOptions() {
     if (Object.keys(this.props.options).length > 0) {
       // suggest taxonomy applied from options
-
       if (typeof this.props.options.termsets !== 'undefined') {
         this.setState({ termsets: this.props.options.termsets });
       }
@@ -212,7 +227,7 @@ class PeopleSearch extends React.Component {
                     }
                   }
                 }
-              }} />
+            }} />
           );
         }
 

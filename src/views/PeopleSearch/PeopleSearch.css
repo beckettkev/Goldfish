@@ -44,7 +44,7 @@
   position: absolute;
   right: 0px;
   overflow-x: visible;
-  height: 1900px;
+  height: auto;
   padding: 0 0 200px 0;
   z-index:2000;
   direction: ltr;

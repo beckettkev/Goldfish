@@ -56,6 +56,10 @@
   width: 320px !important;
 }
 
-div[data-gf=snackbar] span {
-  font-size: 14px;
+.wp-holder {
+  height:1px;
+  width:100%;
+  clear:both;
+  float:none;
+  display: block;
 }

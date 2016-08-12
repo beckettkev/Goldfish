@@ -204,30 +204,33 @@ class PeopleSearch extends React.Component {
 
         // only add a scroll waypoint if we do not have all the results already
         if (this.state.count > this.state.items.length) {
+          // we wrap the waypoint to ensure that it never floats along side a result (and sits at the bottom)
           return (
-            <Waypoint
-              onEnter={({ previousPosition, currentPosition, event }) => {
-                // only fetch new results if we are not currently doing so...
-                if (!self.state.searching) {
-                  // if we have some results enable constant result fetching (infinite scroll)
-                  if (self.state.items.length > 0) {
-                    // get the page number for the search
-                    const next = (typeof self.state.pageNum === 'undefined' || self.state.pageNum === 0) ? 2 : (self.state.pageNum + 1);
+            <div styleName="wp-holder">
+              <Waypoint
+                onEnter={({ previousPosition, currentPosition, event }) => {
+                  // only fetch new results if we are not currently doing so...
+                  if (!self.state.searching) {
+                    // if we have some results enable constant result fetching (infinite scroll)
+                    if (self.state.items.length > 0) {
+                      // get the page number for the search
+                      const next = (typeof self.state.pageNum === 'undefined' || self.state.pageNum === 0) ? 2 : (self.state.pageNum + 1);
 
-                    // ensure we haven't already fetched these results
-                    if (Math.ceil(self.state.items.length / 10) < next) {
-                      self.setState({
-                        searching: true,
-                      });
+                      // ensure we haven't already fetched these results
+                      if (Math.ceil(self.state.items.length / 10) < next) {
+                        self.setState({
+                          searching: true,
+                        });
 
-                      const url = Utils.getFullSearchQueryUrl(self.state.term, self.props.options.properties);
+                        const url = Utils.getFullSearchQueryUrl(self.state.term, self.props.options.properties);
 
-                      // load x more search results
-                      PeopleSearchActions.fetchData(url, self.state.term, next, true);
+                        // load x more search results
+                        PeopleSearchActions.fetchData(url, self.state.term, next, true);
+                      }
                     }
                   }
-                }
-            }} />
+              }} />
+            </div>
           );
         }
 

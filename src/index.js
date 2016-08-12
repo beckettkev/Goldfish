@@ -226,6 +226,7 @@ const Goldfish = {
     }, 'goldfish.min.js');
   },
   GetPrimaryColour: function GetPrimaryColour() {
+    // if there has been a primary colour specified in the options - use this
     if (typeof Goldfish.options.css !== 'undefined' && 'primary' in Goldfish.options.css) {
       return Goldfish.options.css.primary;
     }

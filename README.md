@@ -10,7 +10,7 @@ The aim of this project is to allow you to search and save people anywhere withi
 
 ## Windows
 
-If you are working on a windows machine, you will need to install python 2.7 and then run the following command (amending first to add your Python path) as a pre-requisite.
+If you are working on a windows machine, you will need to install python 2.7 and then run the following from a command prompt with elevated privelages (amending first to add your Python path) as a pre-requisite - take care to save any unsaved work as this **will re-start your machine** as part of the installation process.
 
 ```node
 npm config set drive:\PATH TO YOUR PYTHON 2.7 INSTALLATION\

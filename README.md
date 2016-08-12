@@ -8,6 +8,16 @@ The aim of this project is to allow you to search and save people anywhere withi
 
 ![Goldfish Overview](http://sharepointcookies.com/wp-content/uploads/2016/07/gf_demo_080716_a1M9Or.gif)
 
+## Windows
+
+If you are working on a windows machine, you will need to install python 2.7 and then run the following command (amending first to add your Python path) as a pre-requisite.
+
+```node
+npm config set drive:\PATH TO YOUR PYTHON 2.7 INSTALLATION\
+
+npm install --global --production windows-build-tools
+```
+
 ## Installation
 
 To get started you first need to follow the steps below, to configure your environment and install Goldfish ready for use (we will go into detail on how you can use it a little later).

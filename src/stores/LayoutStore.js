@@ -7,10 +7,10 @@ import assign from 'object-assign';
 let _current = DefaultConstants.DEFAULT_CURRENT_LAYOUT;
 let _available = DefaultConstants.DEFAULT_AVAILABLE_LAYOUT;
 
-function setPeopleSearchLayout(layout) {
+const setPeopleSearchLayout = layout => {
   _current = layout.current;
   _available = layout.available;
-}
+};
 
 const LayoutStore = assign({}, EventEmitter.prototype, {
   getLayout() {

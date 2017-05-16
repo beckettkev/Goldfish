@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './PeopleSearch.css';
 import cssModules from 'react-css-modules';
 import Utils from '../../utils/utilities';
+import Selection from '../../utils/selection';
 import Waypoint from 'react-waypoint';
 import Menu from '../../components/menu/Menu.jsx';
 import Search from '../../components/search/Search.jsx';
@@ -16,24 +17,23 @@ import LayoutStore from '../../stores/LayoutStore';
 import PeopleSearchActions from '../../actions/PeopleSearchActions';
 import SettingsManager from '../../utils/settings';
 
-function getFavouritesState() {
+const getFavouritesState = () => {
   PeopleSearchActions.getFavourites();
 
   return FavouriteStore.getCurrentFavourites();
-}
+};
 
-function getLayoutState() {
+const getLayoutState = () => {
   PeopleSearchActions.fetchLayout();
 
   return LayoutStore.getLayout();
-}
+};
 
-function getMenuClass(menu) {
-  const safe = ['alternate-tabs'];
+const getMenuClass = (menu) => {
   const menuClass = typeof menu === 'string' ? menu : 'NO_CLASS';
 
-  return safe.indexOf(menuClass) > -1 ? menuClass : '';
-}
+  return ['alternate-tabs'].indexOf(menuClass) > -1 ? menuClass : '';
+};
 
 class PeopleSearch extends React.Component {
 
@@ -42,11 +42,9 @@ class PeopleSearch extends React.Component {
 
     // the very first thing we do in the app is apply any options present
     this.setInitialState();
+    this.setSnappinListener();
 
     this.applyOptions = this.applyOptions.bind(this);
-
-    // if the app position is moved reset to default state
-    document.addEventListener('Goldfish.Snappin', this.resetWayPointAfterPositioning, false);
   }
 
   componentDidUpdate() {
@@ -69,6 +67,11 @@ class PeopleSearch extends React.Component {
         SP.SOD.notifyScriptLoadedAndExecuteWaitingJobs('goldfish.ready.min.js');
       }
     }
+  }
+
+  setSnappinListener = () => {
+    // if the app position is moved reset to default state
+    document.addEventListener('Goldfish.Snappin', this.resetWayPointAfterPositioning, false);
   }
 
   resetWayPointAfterPositioning = () => {
@@ -140,7 +143,7 @@ class PeopleSearch extends React.Component {
     if (type === 'person') {
       items[index].Cells.Favourite = favourite;
 
-      this.setState({ items: items });
+      this.setState({ items });
     } else {
       // refresh the view now the favourites have changed
       this.setState({ refresh: true });
@@ -148,28 +151,31 @@ class PeopleSearch extends React.Component {
   }
 
   onLayoutChange(view) {
+    // check this is right!
     this.setState(view);
   }
 
   onFavouritesChange(favourites) {
-    this.setState({favourites: favourites});
+    this.setState({favourites});
   }
 
   applyOptions() {
-    if (Object.keys(this.props.options).length > 0) {
+    const {options} = this.props;
+
+    if (Object.keys(options).length > 0) {
       // suggest taxonomy applied from options
-      if (typeof this.props.options.termsets !== 'undefined') {
-        this.setState({ termsets: this.props.options.termsets });
+      if (typeof options.termsets !== 'undefined') {
+        this.setState({ termsets: options.termsets });
       }
 
-      if (typeof this.props.options.userInformationFields !== 'undefined') {
-        this.setState({ userInformationFields: this.props.options.userInformationFields });
+      if (typeof options.userInformationFields !== 'undefined') {
+        this.setState({ userInformationFields: options.userInformationFields });
       }
 
       // css overrides applied from options
-      if (typeof this.props.options.css !== 'undefined') {
-        if (typeof this.props.options.css.overrides !== 'undefined') {
-          SettingsManager.settingRouting('cssOveride', this.props.options.css.overrides);
+      if (typeof options.css !== 'undefined') {
+        if (typeof options.css.overrides !== 'undefined') {
+          SettingsManager.settingRouting('cssOveride', options.css.overrides);
         }
       }
     } else {
@@ -177,15 +183,13 @@ class PeopleSearch extends React.Component {
     }
   }
 
-  isInfiniteScrollActive() {
-    // check to see if the super search is enabled
-    return this.state.settings.some(function(el) {
-      return Object.keys(el)[0] === 'inifiniteScroll' && el[Object.keys(el)[0]];
-    });
+  isSettingEnabled(setting) {
+    // check to see if the setting is enabled...
+    return this.state.settings.some(el => Object.keys(el)[0] === setting && el[Object.keys(el)[0]]);
   }
 
   renderPaging() {
-    if (!this.isInfiniteScrollActive()) {
+    if (!this.isSettingEnabled('inifiniteScroll')) {
       return (<Paging
                 count={this.state.count}
                 onSearching={this.onSearching.bind(this)}
@@ -196,11 +200,23 @@ class PeopleSearch extends React.Component {
     }
   }
 
+  highlightTextForSearch() {
+    if (this.isSettingEnabled('highlightSearch')) {
+      document.mouseup = (e) => {
+        Selection.getSelectedText(e, (text) => {
+          const url = Utils.getFullSearchQueryUrl(text, this.props.options.properties);
+
+          PeopleSearchActions.fetchData(url, self.state.term, 1, false);
+        });
+      };
+    }
+  }
+
   infiniteScroll() {
     // check the settings to see if we have asked for results to be fetch on scroll
-    if (this.isInfiniteScrollActive()) {
+    if (this.isSettingEnabled('inifiniteScroll')) {
 
-        const self = this;
+        let self = this;
 
         // only add a scroll waypoint if we do not have all the results already
         if (this.state.count > this.state.items.length) {
@@ -260,7 +276,7 @@ class PeopleSearch extends React.Component {
     }
 
     const alternateMenu = getMenuClass(this.props.options.menu);
-    const inlineStyles = alternateMenu !== '' ? { paddingTop: '45px' } : { paddingTop: '0' };
+    const inlineStyles = { paddingTop: alternateMenu !== '' ? '45px' : '0' };
 
     return (
         <div id="outer-space" key="outer-space" className="goldfishSnapRight animated bounceInRight">

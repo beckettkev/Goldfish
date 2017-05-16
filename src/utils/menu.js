@@ -2,11 +2,11 @@
 import React from 'react';
 import Snappin from './snappin.js';
 
-function toggleElementVisibility(id, show) {
+const toggleElementVisibility = (id, show) => {
   const el = document.getElementById(id);
 
   el.style.display = !show ? 'none' : '';
-}
+};
 
 module.exports = {
   closePeopleSearch: function closePeopleSearch() {
@@ -15,7 +15,7 @@ module.exports = {
 
     holder.className = 'animated bounceOutRight';
 
-    // If snappy is set, we need to turn it off when closing the app
+    // if snappy is set, we need to turn it off when closing the app
     if (typeof Goldfish.options.snappy !== 'undefined') {
       if (Goldfish.options.snappy) {
          const snap = new Snappin();
@@ -23,7 +23,7 @@ module.exports = {
       }
     }
 
-    // Unmount and remove the React JS App
+    // unmount and remove the React JS App
     window.setTimeout(function() {
       React.unmountComponentAtNode(component);
 
@@ -37,14 +37,17 @@ module.exports = {
       }
     }, 'dragdrop.js');
   },
+
   closeLayoutView: function closeLayoutView() {
     toggleElementVisibility('component-layout', false);
     toggleElementVisibility('component', true);
   },
+
   closeFavouritesView: function closeFavouritesView() {
     toggleElementVisibility('component-favourites', false);
     toggleElementVisibility('component', true);
   },
+
   loadLayoutComponent: function loadLayoutComponent() {
     toggleElementVisibility('component', false);
     toggleElementVisibility('component-favourites', false);
@@ -53,6 +56,7 @@ module.exports = {
 
     this.tabActiveState('component-tab-layouts');
   },
+
   loadFavouritesComponent: function loadFavouritesComponent() {
     toggleElementVisibility('component', false);
     toggleElementVisibility('component-layout', false);
@@ -61,6 +65,7 @@ module.exports = {
 
     this.tabActiveState('component-tab-favourites');
   },
+
   loadSearchComponent: function loadSearchComponent() {
     toggleElementVisibility('component', true);
     toggleElementVisibility('component-layout', false);
@@ -70,6 +75,7 @@ module.exports = {
 
     this.tabActiveState('component-tab-search');
   },
+
   loadSettingsComponent: function loadSettingsComponent() {
     toggleElementVisibility('component', false);
     toggleElementVisibility('component-layout', false);
@@ -78,6 +84,7 @@ module.exports = {
 
     this.tabActiveState('component-tab-settings');
   },
+  // sets the active state of the current tab and makes the other tabs inactive...
   tabActiveState: function tabActiveState(tab) {
     const tabs = [
       'component-tab-favourites',

@@ -1,10 +1,14 @@
 module.exports = {
   MEMBERSHIP_CLAIMS: 'i:0#.f|membership|',
+
   DEFAULT_COLOUR: '#3E5875',
+
   // stores use this to emit a change
   CHANGE_EVENT: 'change',
+
   // default fields to include in the auto suggest drop down within the tag search
   DEFAULT_USERINFORMATION_FIELDS: ['JobTitle', 'Department'],
+
   // we need some default values for the active fields in the search results
   DEFAULT_CURRENT_LAYOUT: [
     {
@@ -94,11 +98,17 @@ module.exports = {
   // we need some default values for the app settings
   DEFAULT_SETTINGS: [
     { label: 'Show Favourites', internal: 'showFavourites', type: 'switch', value: true },
+
     { label: 'Suggest Search', internal: 'enableSuperSearch', type: 'switch', value: false },
+
     { label: 'Constant Results', internal: 'inifiniteScroll', type: 'switch', value: false },
+
+    { label: 'Highlight Search', internal: 'highlightSearch', type: 'switch', value: false },
   ],
+
   // no need for default favourites, but nice to have the option
   DEFAULT_FAVOURITES: [],
+
   // ignored search result fields
   IGNORED_VALUES: ['Rank', 'DocId', 'piSearchResultId', 'RenderTemplateId', 'ProfileQueriesFoundYou', 'ProfileViewsLastWeek', 'ProfileViewsLastMonth', 'EditProfileUrl', 'ResultTypeId', 'Culture', 'UrlZone', 'PartitionId', 'OriginalPath'],
 };

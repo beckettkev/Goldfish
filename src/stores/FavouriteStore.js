@@ -6,9 +6,9 @@ import assign from 'object-assign';
 
 let _favourites = DefaultConstants.DEFAULT_FAVOURITES;
 
-function setPeopleSearchFavourites(favourites) {
+const setPeopleSearchFavourites = favourites => {
   _favourites = favourites;
-}
+};
 
 const FavouriteStore = assign({}, EventEmitter.prototype, {
 

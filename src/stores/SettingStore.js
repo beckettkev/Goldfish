@@ -6,9 +6,9 @@ import assign from 'object-assign';
 
 let _settings = DefaultConstants.DEFAULT_SETTINGS;
 
-function setPeopleSearchSettings(settings) {
+const setPeopleSearchSettings = (settings) => {
   _settings = settings;
-}
+};
 
 const SettingStore = assign({}, EventEmitter.prototype, {
   getSettings() {

@@ -11,11 +11,14 @@ const styles = 'style-loader!css-loader?modules!sass';
 
 module.exports = {
   devtool: development ? 'eval' : 'source-map',
+
   cache: development ? true : false,
+
   entry: {
     vendor: Object.keys(pkg.dependencies),
     app: './src/index.js'
   },
+
   output: {
     chunkFilename: CHUNK_FILE_NAME,
     filename: CHUNK_FILE_NAME,
@@ -23,25 +26,35 @@ module.exports = {
     path: BUILD_DROP,
     publicPath: 'http://localhost:3001/',
   },
+
   externals: {
     'jsdom': 'window',
     'cheerio': 'window',
     'react/lib/ExecutionEnvironment': true,
     'react/lib/ReactContext': true,
   },
+
   resolve: {
-    root: [
-      // allows us to import modules as if /src was the root.
-      // so I can do: import Comment from 'components/Foo'
-      // instead of:  import Comment from '../components/Foo' or whatever relative path would be
-      path.resolve(__dirname)
-    ],
-    extensions: ['','.jsx', '.scss', '.js', '.json'],
-    modulesDirectories: [
-      'node_modules',
-      path.resolve(__dirname, './node_modules')
-    ]
+		//root: [
+			// allows us to import modules as if /src was the root.
+			// so I can do: import Comment from 'components/Foo'
+			// instead of:  import Comment from '../components/Foo' or whatever relative path would be
+		//	path.resolve(__dirname)
+		//],
+
+    modules: [
+			path.resolve(__dirname),
+			'node_modules',
+			path.resolve(__dirname, './node_modules')
+		],
+
+		extensions: ['.jsx', '.scss', '.js', '.json'],
+		//modulesDirectories: [
+		//	'node_modules',
+		//	path.resolve(__dirname, './node_modules')
+		//]
   },
+
   module: {
     loaders: [
       {
@@ -59,6 +72,7 @@ module.exports = {
       }
     ]
   },
+
   plugins: [
     new AssetsPlugin({
       filename: 'webpack.assets.json',

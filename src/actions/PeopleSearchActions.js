@@ -1,7 +1,7 @@
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import PeopleSearchConstants from '../constants/data';
 import Data from '../data/data';
-import Storage from '../data/storage';
+import Fetch from '../data/fetch';
 import Taxonomy from '../data/taxonomy';
 import UserInformationList from '../data/userInformationList';
 
@@ -27,7 +27,7 @@ const PeopleSearchActions = {
   },
 
   fetchLayout() {
-    Storage.getCurrentLayout().then(data => {
+    Fetch.getCurrentLayout().then(data => {
       AppDispatcher.dispatch({
         actionType: PeopleSearchConstants.GOT_LAYOUT,
         results: data,
@@ -36,7 +36,7 @@ const PeopleSearchActions = {
   },
 
   updateLayout(layout) {
-    Storage.updateCurrentLayout(layout).then(data => {
+    Fetch.updateCurrentLayout(layout).then(data => {
       AppDispatcher.dispatch({
         actionType: PeopleSearchConstants.LAYOUT_CHANGED,
         results: data,
@@ -45,7 +45,7 @@ const PeopleSearchActions = {
   },
 
   fetchSettings() {
-    Storage.getSettings().then(data => {
+    Fetch.getSettings().then(data => {
       AppDispatcher.dispatch({
         actionType: PeopleSearchConstants.GOT_SETTINGS,
         results: data,
@@ -54,7 +54,7 @@ const PeopleSearchActions = {
   },
 
   updateSettings(settings) {
-    Storage.updateSettings(settings).then(data => {
+    Fetch.updateSettings(settings).then(data => {
       AppDispatcher.dispatch({
         actionType: PeopleSearchConstants.SETTINGS_CHANGED,
         results: data,
@@ -63,7 +63,7 @@ const PeopleSearchActions = {
   },
 
   getFavourites() {
-    Storage.getFavourites().then(data => {
+    Fetch.getFavourites().then(data => {
       AppDispatcher.dispatch({
         actionType: PeopleSearchConstants.GOT_FAVOURITES,
         results: data,
@@ -72,7 +72,7 @@ const PeopleSearchActions = {
   },
 
   updateFavourites(favourites) {
-    Storage.updateFavourites(favourites).then(data => {
+    Fetch.updateFavourites(favourites).then(data => {
       AppDispatcher.dispatch({
         actionType: PeopleSearchConstants.FAVOURITES_CHANGED,
         results: data,

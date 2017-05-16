@@ -3,45 +3,41 @@
 /* global SP */
 import Cache from 'cache-funk';
 import Utils from '../utils/utilities';
+import StorageConstants from '../constants/storage';
+
+// REPLACE with Core-js if possible...
 require('es6-promise').polyfill();
 
-const TERMS_STORAGE_KEY = 'PeopleSearch-Terms';
+// this function checks to see if there is a valid and up to date terms cache from the local storage (otherwise fetch fresh data).
+const checkCacheForTermSets = (termSets, cache) => typeof cache !== 'undefined' ? cache.payload.some(termSet => termSets.indexOf(termSet.id) === -1) : false;
 
-/*
-  This function checks to see if there is a valid and up to date terms cache from the local storage (otherwise fetch fresh data).
-*/
-function checkCacheForTermSets(termSets, cache) {
-  if (typeof cache !== 'undefined') {
-    return cache.payload.some(function(termSet) {
-      return termSets.indexOf(termSet.id) === -1;
-    });
-  }
+const getTerm = (term) => {
+  return {
+    name: term.get_name(),
+    search: item.property + ':"' + term.get_name() + '"',
+  };
+};
 
-  return false;
-}
-
-function getTermStructure(items, context, terms) {
+const getTermStructure = (items, context, terms) => {
   return new Promise((resolve, reject) => {
     let term;
     let data;
     let item;
     let termsEnumerator;
-    const collection = [];
+    let collection = [];
 
-    context.executeQueryAsync(
-      function() {
+    context.executeQueryAsync(() => {
         Object.keys(terms).forEach(function(key) {
           termsEnumerator = terms[key].getEnumerator();
 
           // How do we get the correct item detail
           // find the correct index of the array
-          item = items.filter(function(element) {
-            return element.id === key; //  Filter out the appropriate one
-          })[0];
+          item = items.filter(element => element.id === key)[0];
 
-          data = {};
-          data.title = item.title;
-          data.terms = [];
+          data = {
+            title: item.title,
+            terms: []
+          };
 
           while (termsEnumerator.moveNext()) {
             term = termsEnumerator.get_current();
@@ -49,12 +45,7 @@ function getTermStructure(items, context, terms) {
             // remove inactive terms
             if (term.get_name().toLowerCase().indexOf('inactive') === -1) {
               // just like with JobTitles (userInformationList.js) - we need to save each term in the correct JSON structure
-              data.terms.push(
-                {
-                  name: term.get_name(),
-                  search: item.property + ':"' + term.get_name() + '"',
-                }
-              );
+              data.terms.push(getTerm(term));
             }
           }
 
@@ -64,14 +55,22 @@ function getTermStructure(items, context, terms) {
         // we now have the collection of Terms grouped by Termset in the structure the auto sugggest tool needs
         resolve(collection);
       },
-      function(sender, args) {
+      (sender, args) => {
         console.log(args.get_message());
 
         reject('Unable to access Managed Metadata Service.');
       }
     );
   });
-}
+};
+
+const isValidTermset = (termset) => {
+  if (typeof item.id !== 'undefined' && typeof item.property !== 'undefined') {
+    return item.id !== '' && item.property !== '';
+  }
+
+  return false;
+};
 
 /*
   This function is the entry point called by the Action. It retrieves a collection of terms, grouped by the termset name (and relevant managed property)
@@ -84,9 +83,9 @@ function getTermStructure(items, context, terms) {
 
   For further information about how you can obtain this information for your tenancy, use the TaxonomyHelper.js file
 */
-const getTermsByTermSets = (termSets) => {
+const getTermsByTermSets = termSets => {
   return new Promise((resolve, reject) => {
-    const cache = Cache.fetch(TERMS_STORAGE_KEY);
+    const cache = Cache.fetch(StorageConstants.TERMS_STORAGE_KEY);
 
     if (checkCacheForTermSets(termSets, cache)) {
       resolve(cache.payload);
@@ -95,25 +94,24 @@ const getTermsByTermSets = (termSets) => {
         const context = new SP.ClientContext.get_current();
         const session = SP.Taxonomy.TaxonomySession.getTaxonomySession(context);
         const termStore = session.getDefaultSiteCollectionTermStore();
-        const termSet = {};
-        const terms = {};
+
+        let termSet = {};
+        let terms = {};
 
         termSets.forEach(function(item) {
-          if (typeof item.id !== 'undefined' && typeof item.property !== 'undefined') {
-            if (item.id !== '' && item.property !== '') {
+          if (isValidTermset(item)) {
               termSet[item.id] = termStore.getTermSet(item.id);
               terms[item.id] = termSet[item.id].getAllTerms();
 
               context.load(terms[item.id]);
-            }
           }
         });
 
         // now we have loaded all of the termsets we need to process, execute the Async Query (getTermStructure)
-        getTermStructure(termSets, context, terms).then(function(collection) {
+        getTermStructure(termSets, context, terms).then(collection => {
           resolve(collection);
 
-          Cache.store(TERMS_STORAGE_KEY, Utils.buildStoragePayload(collection));
+          Cache.store(StorageConstants.TERMS_STORAGE_KEY, Utils.buildStoragePayload(collection));
         });
       });
     }

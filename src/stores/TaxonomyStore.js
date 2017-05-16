@@ -7,13 +7,13 @@ import assign from 'object-assign';
 let _terms = [];
 let _userInfo = [];
 
-function setPeopleSearchTaxonomy(terms) {
+const setPeopleSearchTaxonomy = terms => {
   _terms = terms;
-}
+};
 
-function setPeopleUserInfo(userInfo) {
+const setPeopleUserInfo = userInfo => {
   _userInfo = userInfo;
-}
+};
 
 const TaxonomyStore = assign({}, EventEmitter.prototype, {
 

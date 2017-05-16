@@ -114,13 +114,12 @@ class Settings extends React.Component {
               </p>
 
               <div className="content" styleName="checkbox-holder">
+                <br /><br />
 
-              <br /><br />
-
-              <div className="switches-with-broomsticks">
-                {this.getSettings(this.state)}
+                <div className="switches-with-broomsticks">
+                  {this.getSettings(this.state)}
+                </div>
               </div>
-            </div>
           </div>
           <br /><br />
         </div>

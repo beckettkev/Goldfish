@@ -4,55 +4,58 @@ import PeopleSearchConstants from '../constants/data';
 import DefaultConstants from '../constants/default';
 import assign from 'object-assign';
 
-let _people = [];
-let _count = 0;
-let _pageNum = 0;
-let _term = '';
+// we store the search details in this object and push to the consumers...
+let search = {
+  people: [],
+  count: 0,
+  pageNum: 0,
+  term: ''
+};
 
-function setPeopleSearchData(people, count, pageNum, term) {
-  _people = people;
-  _count = count;
-  _pageNum = pageNum;
-  _term = term;
+const setPeopleSearchData = (people, count, pageNum, term) => {
+  search.people = people;
+  search.count = count;
+  search.pageNum = pageNum;
+  search.term = term;
 }
 
-function appendPeopleSearchData(people, count, pageNum, term) {
-  if (Math.ceil(_people.length / 10) !== pageNum) {
-    _people = _people.concat(people);
-    _count = count;
-    _pageNum = pageNum;
-    _term = term; 
+const appendPeopleSearchData = (people, count, pageNum, term) => {
+  if (Math.ceil(search.people.length / 10) !== pageNum) {
+    search.people = search.people.concat(people);
+    search.count = count;
+    search.pageNum = pageNum;
+    search.term = term; 
   }
-}
+};
 
 const SearchStore = assign({}, EventEmitter.prototype, {
 
   getResult(id) {
-    return _people[id];
+    return search.people[id];
   },
 
   getResults() {
-    return _people;
+    return search.people;
   },
 
   getResultCount() {
-    return _count;
+    return search.count;
   },
 
   getCurrentPage() {
-    return _pageNum;
+    return search.pageNum;
   },
 
   setNextPage() {
-    _pageNum += 1;
+    search.pageNum += 1;
   },
 
   setPrevPage() {
-    _pageNum -= 1;
+    search.pageNum -= 1;
   },
 
   getCurrentSearchTerm() {
-    return _term;
+    return search.term;
   },
 
   emitChange() {

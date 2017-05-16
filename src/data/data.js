@@ -1,14 +1,14 @@
 import AppDispatcher from '../dispatcher/AppDispatcher';
+import StorageConstants from '../constants/storage';
 import PeopleSearchConstants from '../constants/data';
 import PeopleSearchDefaults from '../constants/default';
 import Cache from 'cache-funk';
 import Utils from '../utils/utilities';
 import FavouriteStore from '../stores/FavouriteStore';
 import Mock from '../mock/Mock.js';
-require('es6-promise').polyfill();
 
-const PEOPLE_STORAGE_KEY_PREFIX = 'PeopleSearch-Results-';
-const MAX_CACHE_KEY_SIZE = 10;
+// REPLACE with core-js - older browsers (ie...)
+require('es6-promise').polyfill();
 
 function buildCachePayload(payload, count, term, sets) {
   return {
@@ -20,16 +20,16 @@ function buildCachePayload(payload, count, term, sets) {
   };
 }
 
-// key value pairs make the world go round and simplify the returned data from SP Search REST query(avoiding array lookups)
+// key value pairs make the world go round and simplify the returned data from SP Search REST query (avoiding array lookups)
 function washDataClean(data) {
   const people = [];
-  let pairs = { };
+  let pairs = {};
 
   const favourites = FavouriteStore.getCurrentFavourites();
   const banned = PeopleSearchDefaults.IGNORED_VALUES;
 
-  data.forEach(function(row) {
-    pairs = { };
+  data.forEach(row => {
+    pairs = {};
 
     row.Cells.forEach(function(item) {
        // build a new object and store the key and value as an associated pair
@@ -108,20 +108,15 @@ function updateResultsWithFavourites(results) {
 function getResultPage(results, pageNum, sets, count) {
   const start = getResultSetIndexStart(pageNum, sets);
   const end = getResultSetIndexEnd(count, start);
-
   const cachedResults = results.slice(start, start + end);
 
   return updateResultsWithFavourites(cachedResults);
 }
 
 function cacheKeySizeExceedsLimit() {
-  const keys = Object.keys(localStorage).filter(
-          function(item) {
-            return item.indexOf(PEOPLE_STORAGE_KEY_PREFIX) > -1;
-          }
-        );
+  const keys = Object.keys(localStorage).filter(item => item.indexOf(StorageConstants.PEOPLE_STORAGE_KEY_PREFIX) > -1);
 
-  return keys.length >= MAX_CACHE_KEY_SIZE;
+  return keys.length > StorageConstants.MAX_CACHE_KEY_SIZE;
 }
 
 module.exports = {
@@ -143,27 +138,24 @@ module.exports = {
   },
   getPeopleResults: function getPeopleResults(queryUrl, term, pageNum, append) {
     return new Promise((resolve, reject) => {
-      const key = PEOPLE_STORAGE_KEY_PREFIX + Utils.createStorageKey(term).toLowerCase();
+      const key = StorageConstants.PEOPLE_STORAGE_KEY_PREFIX + Utils.createStorageKey(term).toLowerCase();
+      const cachedResults = Cache.fetch(key);
+      const resolvedQueryUrl = pageNum > 0 ? getPagedQueryUrl(queryUrl, pageNum) : queryUrl;
 
       const operations = {
         fetch: true,
         insert: false,
       };
+
       let sets = [];
-
-      const cachedResults = Cache.fetch(key);
-      const resolvedQueryUrl = pageNum > 0 ? getPagedQueryUrl(queryUrl, pageNum) : queryUrl;
-
       let resolvedPageNum = pageNum;
 
       if (typeof cachedResults !== 'undefined') {
-        /*
-          Check to see if we have a valid cache object(date check)
-          Check to see if the cache object contains the current page
-        */
+        // check to see if we have a valid cache object (date check)  
         if (isPayloadStillValid(cachedResults.birthday)) {
           resolvedPageNum = pageNum === 0 ? 1 : pageNum;
 
+          // check to see if the cache object contains the current page...
           if (cachedResults.sets.indexOf(resolvedPageNum) > -1) {
             // everything looks good - load from cache with the paged results and resist calling the API
             cachedResults.payload = getResultPage(
@@ -171,7 +163,7 @@ module.exports = {
                           resolvedPageNum,
                           cachedResults.sets,
                           cachedResults.count
-                        );
+            );
             cachedResults.pageNum = resolvedPageNum;
 
             resolve(cachedResults);
@@ -197,12 +189,13 @@ module.exports = {
       if (operations.fetch) {
         let items = [];
 
+        // replace me!!
         jQuery.ajax({
           url: resolvedQueryUrl,
           dataType: 'json',
           type: 'GET',
           headers: Utils.getHeaders(),
-          success: function(data) {
+          success: data => {
             if (data.PrimaryQueryResult.RelevantResults.RowCount > 0) {
               // clean the data coming back into a manageble object and store in the cache
               items = buildCachePayload(washDataClean(data.PrimaryQueryResult.RelevantResults.Table.Rows), data.PrimaryQueryResult.RelevantResults.TotalRows, term, sets);

@@ -2,8 +2,12 @@ import React from 'react';
 import ClassNames from 'classnames';
 import style from './Switch.styles.css';
 
-const Thumb = ({children, onMouseDown}) => (
-  <span role='thumb' className={style.thumb} onMouseDown={onMouseDown}>{children}</span>
+const Thumb = ({key, children, onMouseDown}) => (
+  <span 
+    key={key}
+    role='thumb' 
+    className={style.thumb} 
+    onMouseDown={onMouseDown}>{children}</span>
 );
 
 export default class Switch extends React.Component {
@@ -25,7 +29,10 @@ export default class Switch extends React.Component {
   };
 
   handleToggle = (event) => {
-    if (event.pageX !== 0 && event.pageY !== 0) this.blur();
+    if (event.pageX !== 0 && event.pageY !== 0) {
+      this.blur();
+    }
+
     if (!this.props.disabled && this.props.onChange) {
       this.props.onChange(!this.props.checked, event);
     }
@@ -41,12 +48,17 @@ export default class Switch extends React.Component {
 
   render () {
     let className = style[this.props.disabled ? 'disabled' : 'field'];
+
     const switchClassName = style[this.props.checked ? 'on' : 'off'];
     const { onChange, ...others } = this.props;
-    if (this.props.className) className += ` ${this.props.className}`;
+    const key = this.props.label.replace(' ','');
+
+    if (this.props.className) {
+      className += ` ${this.props.className}`;
+    }
 
     return (
-      <label data-gf='switch' className={className}>
+      <label key={`label-${key}`} data-gf='switch' className={className}>
         <input
           {...others}
           checked={this.props.checked}
@@ -57,9 +69,16 @@ export default class Switch extends React.Component {
           type='checkbox'
         />
         <span className={switchClassName}>
-          <Thumb disabled={this.props.disabled} />
+          <Thumb 
+            key={`thumb-${key}`} 
+            disabled={this.props.disabled} />
         </span>
-        {this.props.label ? <span className={style.text}>{this.props.label}</span> : null}
+        {
+          this.props.label ? 
+            <span className={style.text}>
+              {this.props.label}
+            </span> : null
+        }
       </label>
     );
   }

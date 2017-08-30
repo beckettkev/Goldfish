@@ -1,0 +1,119 @@
+.component {
+  	width: 400px !important;
+  	background-color: #f9f9f9;
+  	border-color: #c8c8c8;
+	box-shadow: 0 0 18px #d9d9d9;
+  	position: absolute;
+  	right: 0px;
+	overflow-x: visible;
+    height: 1900px;
+    padding: 0 0 200px 0;
+    direction: ltr;
+}
+.container {
+    width: 320px !important;
+}
+
+.layout-heading {
+	margin: 0 20px 20px 20px;
+}
+/* drag and drop */
+.sortable-container, .available-container {
+	margin: 0 20px 20px 20px;
+	padding: 5px;
+	border-left: 0px;
+	border-right: 0px;
+	font-size: 14px;
+	border-radius: 0 0 2% 2%;
+}
+.sortable-container i {
+	float:left;
+}
+:global(.sortable-item:hover) {
+	background-color: #eeeeee;
+}
+.sortable-container div div {
+	padding: 5px;
+}
+.sortable-container div div:hover {
+	cursor: move;
+	background-color: #f4f4f4;
+}
+
+.sortable-container div div span {
+	display:none;
+}
+.sortable-container div div div span {
+	display: block;
+}
+/* available container */
+.available-container {
+	padding:20px 0 20px 0;
+}
+.sortable-container button,
+.sortable-container input[type=button],
+.available-container button,
+.available-contianer input[type=button] {
+	min-width: auto;
+	padding: 0;
+	margin: -8px 10px 14px 5px;
+	width: 2rem !important;
+	height: 2rem !important;
+	font-size: 1rem;
+	float: left;
+}
+.sortable-container button span,
+.sortable-container input[type=button] span,
+.available-container button span,
+.available-contianer input[type=button] span {
+	line-height: 2rem !important;
+}
+
+.removal-button {
+	float: right;
+	margin-top: -27px;
+}
+
+.sortable-container div div.removal-button:hover {
+  	background: transparent !important;
+}
+
+/* other miscellaneous */
+.left {
+	clear: both;
+	color: #000;
+}
+p.info {
+	font-size: 14px;
+	margin: 0 20px 5px 20px;
+}
+
+.complete button {
+	background-color: rgb(229, 29, 46) !important;
+	margin:0 130px;
+}
+
+[draggable] {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: element;
+}
+
+:global(.sortable-item) {
+  	background-color: #fff;
+  	cursor: move;
+}
+:global(.sortable-item) .current-item {
+	min-height:35px;
+	width:100%;
+	z-index: 2000;
+}
+
+:global(.pointer-events-none) {
+  	pointer-events: none;
+}
+
+:global(.sortable-item-over) {
+  	border: 1px dashed #DDD;
+}

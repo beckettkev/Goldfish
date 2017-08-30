@@ -16,8 +16,8 @@
     // Setup options
     var compressor = kompressor || 1,
       settings = $.extend({
-        'minFontSize' : Number.NEGATIVE_INFINITY,
-        'maxFontSize' : Number.POSITIVE_INFINITY
+        'minFontSize' : number.NEGATIVE_INFINITY,
+        'maxFontSize' : number.POSITIVE_INFINITY
       }, options);
 
     return this.each(function(){

@@ -1,0 +1,32 @@
+{
+  "extends": ["tslint:latest", "tslint-react"],
+  "rules": {
+    "ban": [true,
+      ["Object", "assign", "use TS2.1 object spread { ...a, ...b }"],
+      ["describe", "only"],
+      ["it", "only"]
+    ],
+    "linebreak-style": [true, "CRLF"],
+    "no-invalid-this": [true, "check-function-in-method"],
+    "variable-name": [
+        "ban-keywords",
+        "check-format",
+        "allow-leading-underscore",
+        "allow-pascal-case"
+    ],
+    "trailing-comma": [
+      true
+    ],
+    "max-line-length": [ 180 ],
+    "max-classes-per-file": [true, 5],
+    "object-literal-sort-keys": false,
+    "jsx-no-multiline-js": false,
+    "ordered-imports": [
+      false
+    ]
+  },
+  "jsRules": {
+    "object-literal-shorthand": true,
+    "trailing-comma": [false]
+  }
+}

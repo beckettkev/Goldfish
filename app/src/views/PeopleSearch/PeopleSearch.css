@@ -1,0 +1,65 @@
+:global(#component-ghostpane) {
+  background: #999;
+  opacity: 0.2;
+
+  width: 45%;
+  height: 45%;
+  top: 20%;
+  left: 20%;
+
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  z-index: 1999;
+
+  -webkit-transition: all 0.25s ease-in-out;
+  -moz-transition: all 0.25s ease-in-out;
+  -ms-transition: all 0.25s ease-in-out;
+  -o-transition: all 0.25s ease-in-out;
+  transition: all 0.25s ease-in-out;
+}
+
+:global(.material-icons) {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Now we can start using the component */
+.component {
+  width: 400px !important;
+  background-color: #f9f9f9;
+  border-color: #c8c8c8;
+  box-shadow: 0 0 18px #d9d9d9;
+  position: absolute;
+  right: 0px;
+  overflow-x: visible;
+  height: auto;
+  padding: 0 0 200px 0;
+  z-index:2000;
+  direction: ltr;
+}
+.component .everything-worth-while {
+  margin-bottom: 30px;
+}
+.container {
+  width: 320px !important;
+}
+
+.wp-holder {
+  height:1px;
+  width:100%;
+  clear:both;
+  float:none;
+  display: block;
+}

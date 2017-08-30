@@ -1,0 +1,18 @@
+export interface IButtonProps {
+    accent?: boolean,
+    id?: string,
+    children?: any,
+    label?: string,
+    className?: string,
+    disabled?: boolean,
+    raised?: boolean,
+    flat?: boolean,
+    floating?: boolean,
+    icon?: any,
+    mini?: boolean,
+    primary?: boolean,
+    neutral?: boolean,
+    type?: string,
+    ref?: string,
+    onClick?: Function,
+};

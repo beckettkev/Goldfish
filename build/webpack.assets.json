@@ -1,0 +1,8 @@
+{
+  "app": {
+    "js": "http://localhost:3001/app.51dee617d75f35dfa3e9.js"
+  },
+  "vendor": {
+    "js": "http://localhost:3001/vendor.38eb868e665a9d80c789.js"
+  }
+}

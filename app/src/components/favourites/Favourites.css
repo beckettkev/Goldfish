@@ -1,0 +1,109 @@
+.pins {
+  position: absolute;
+  height:100%;
+  top: 50px;
+  right: 400px;
+  width:400px;
+  margin: 50px 20px !important;
+  background-color:#ffffff;
+}
+
+.component {
+  width: 400px !important;
+  background-color: #f9f9f9;
+  border-color: #c8c8c8;
+  box-shadow: 0 0 18px #d9d9d9;
+  position: absolute;
+  right: 0px;
+  overflow-x: visible;
+  height: 1900px;
+  padding: 0 0 200px 0;
+  z-index:2000;
+  direction: ltr;
+}
+.component p {
+  font-size: 14px;
+  margin: 0 20px 20px 20px;
+}
+.container {
+  width: 320px !important;
+}
+
+.layout-heading {
+  margin: 0 20px 20px 20px;
+}
+/* drag and drop */
+.sortable-favourite-container {
+  margin: 0 20px 20px 20px;
+  border-left: 0px;
+  border-right: 0px;
+  font-size: 14px;
+}
+.sortable-favourite-container i {
+  float:left;
+}
+.sortable-favourite-container :global(.sortable-item) {
+  padding: 10px;
+}
+:global(div.ms-Persona-imageArea),
+:global(div.ms-Persona-presence),
+:global(div.contact) {
+  padding: 0 !important;
+}
+.sortable-favourite-container div div span {
+  display:none;
+}
+.sortable-favourite-container div div div span {
+  display: block;
+}
+.sortable-favourite-container button,
+.sortable-favourite-container input[type=button] {
+  min-width: auto;
+  padding: 0;
+  font-size: 1rem;
+  float:right;
+}
+.sortable-favourite-container button span,
+.sortable-favourite-container input[type=button] span {
+  line-height: 2rem !important;
+}
+
+:global(.sortable-item) {
+  border: 1px solid #eeeeee;
+  margin:0 10px 10px 0;
+}
+
+:global(.sortable-item:hover) {
+  background: #ffffff;
+}
+
+.sortable-item-content {
+  background: #ffffff;
+}
+.sortable-item-content:hover {
+  cursor: move;
+}
+
+.removal-button {
+  float: right;
+  margin-top: -27px;
+}
+
+.sortable-favourite-container div div.removal-button:hover {
+  background: transparent !important;
+}
+
+/* other miscellaneous */
+.left {
+  clear: both;
+  color: #000;
+}
+
+.complete button {
+  background-color: rgb(229, 29, 46) !important;
+  margin:0 130px;
+}
+
+.component :global(div.ms-peopleux-userImgDiv), .component :global(div.ms-tableCell) {
+  padding:0;
+}

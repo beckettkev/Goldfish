@@ -1,3 +1,4 @@
+import Utils from '../utils/utilities';
 
 /*
  * Resize Snapin - based on the work done by @author https://twitter.com/blurspline / https://github.com/zz85
@@ -171,9 +172,15 @@ export default class Snappin {
     this.redraw = true;
   }
 
+<<<<<<< HEAD:app/src/utils/snappin.ts
   getApplyBounds = (el: HTMLElement, drop: boolean, snapped: any): any => {
     const leftRightTopOffset: number = typeof window.fakeAjaxCalls === 'undefined' ? 85 : 0;
     const compiledWidth: number = this.pane.getBoundingClientRect().width > (window.innerWidth - 1) ? this.minWidth : this.pane.getBoundingClientRect().width;
+=======
+  getApplyBounds = (el, drop, snapped) => {
+    const leftRightTopOffset = typeof window.fakeAjaxCalls === 'undefined' ? 85 : 0;
+    //const compiledWidth = this.pane.getBoundingClientRect().width > (window.innerWidth - 1) ? this.minWidth : this.pane.getBoundingClientRect().width;
+>>>>>>> 9461183eed53bd47bae5f4282481402b13e43062:src/utils/snappin.js
 
     let region: string = null;
 
@@ -198,7 +205,12 @@ export default class Snappin {
       }
     }
 
-    if (drop) { return { 'region': region, 'snapped': snapped }; }
+    if (drop) { 
+      return { 
+        region, 
+        snapped 
+      }; 
+    }
 
     el.style.opacity = '0.2';
   }
@@ -208,8 +220,13 @@ export default class Snappin {
     return this.canMove() ? 'move' : 'default';
   }
 
+<<<<<<< HEAD:app/src/utils/snappin.ts
   setSnappinClass = (region: string): void => {
     const snap: string = region.charAt(0).toUpperCase() + region.slice(1);
+=======
+  setSnappinClass = region => {
+    const snap = Utils.capitalizeFirstLetter(region);
+>>>>>>> 9461183eed53bd47bae5f4282481402b13e43062:src/utils/snappin.js
 
     // We set a spacial class to the containing div so that we can manipulate the css for the snapped layout
     this.pane.className = `animated bounceInRight goldfishSnap${snap}`;
@@ -237,7 +254,13 @@ export default class Snappin {
     if (document.getElementById(this.clickers[0]) !== null) {
       requestAnimationFrame(this.animate);
 
+<<<<<<< HEAD:app/src/utils/snappin.ts
       if (!this.redraw) return;
+=======
+        if (!this.redraw) {
+          return;
+        }
+>>>>>>> 9461183eed53bd47bae5f4282481402b13e43062:src/utils/snappin.js
 
       this.redraw = false;
 

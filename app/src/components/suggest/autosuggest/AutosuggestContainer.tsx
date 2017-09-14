@@ -1,13 +1,15 @@
 //https://github.com/reactjs/react-autocomplete/blob/master/LICENSE
-import * as React , { Component, PropTypes } from 'react';
+import * as React from 'react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import reducer from './reducerAndActions';
-import Autosuggest from './Autosuggest';
+import AutoSuggest from './AutoSuggest';
+
+import { IAutosuggestContainerProps, IAutosuggestContainerState} from './IAutosuggestContainer';
 
 function noop() {}
 
-const defaultTheme = {
+const defaultTheme:any = {
 	container: 'react-autosuggest__container',
 	containerOpen: 'react-autosuggest__container--open',
 	input: 'react-autosuggest__input',
@@ -19,8 +21,8 @@ const defaultTheme = {
 	sectionSuggestionsContainer: 'react-autosuggest__section-suggestions-container'
 };
 
-function mapToAutowhateverTheme(theme) {
-	let result = {};
+function mapToAutowhateverTheme(theme:any):any {
+	let result:any = {};
 
 	for (const key in theme) {
 		switch (key) {
@@ -48,36 +50,14 @@ function mapToAutowhateverTheme(theme) {
 	return result;
 }
 
-export default class AutosuggestContainer extends Component {
-	static propTypes = {
-		suggestions: PropTypes.array.isRequired,
-		onSuggestionsUpdateRequested: PropTypes.func,
-		getSuggestionValue: PropTypes.func.isRequired,
-		renderSuggestion: PropTypes.func.isRequired,
-		inputProps: (props, propName) => {
-			const inputProps = props[propName];
+export default class AutosuggestContainer extends React.Component<IAutosuggestContainerProps, IAutosuggestContainerState> {
+	store: any;
 
-			if (!inputProps.hasOwnProperty('value')) {
-				throw new Error('\'inputProps\' must have \'value\'.');
-			}
-
-			if (!inputProps.hasOwnProperty('onChange')) {
-				throw new Error('\'inputProps\' must have \'onChange\'.');
-			}
-		},
-		shouldRenderSuggestions: PropTypes.func,
-		onSuggestionSelected: PropTypes.func,
-		multiSection: PropTypes.bool,
-		renderSectionTitle: PropTypes.func,
-		getSectionSuggestions: PropTypes.func,
-		focusInputOnSuggestionClick: PropTypes.bool,
-		theme: PropTypes.object,
-		id: PropTypes.string
-	};
-
+	input: any;
+	
 	static defaultProps = {
 		onSuggestionsUpdateRequested: noop,
-		shouldRenderSuggestions: value => value.trim().length > 0,
+		shouldRenderSuggestions: (value:string) => value.trim().length > 0,
 		onSuggestionSelected: noop,
 		multiSection: false,
 		renderSectionTitle() {
@@ -94,27 +74,25 @@ export default class AutosuggestContainer extends Component {
 	constructor() {
 		super();
 
-		const initialState = {
+		this.store = createStore(reducer, {
 			isFocused: false,
 			isCollapsed: true,
 			focusedSectionIndex: null,
 			focusedSuggestionIndex: null,
 			valueBeforeUpDown: null,
 			lastAction: null
-		};
-
-		this.store = createStore(reducer, initialState);
+		});
 
 		this.saveInput = this.saveInput.bind(this);
 	}
 
-	saveInput(input) {
+	saveInput(input:any) {
 		this.input = input;
 	}
 
 	render() {
 		const {
-			multiSection, shouldRenderSuggestions, suggestions,
+			multiSection, suggestions,
 			onSuggestionsUpdateRequested, getSuggestionValue, renderSuggestion,
 			renderSectionTitle, getSectionSuggestions, inputProps,
 			onSuggestionSelected, focusInputOnSuggestionClick, theme, id
@@ -122,20 +100,20 @@ export default class AutosuggestContainer extends Component {
 
 		return (
 			<Provider store={this.store}>
-				<Autosuggest multiSection={multiSection}
-										 shouldRenderSuggestions={shouldRenderSuggestions}
-										 suggestions={suggestions}
-										 onSuggestionsUpdateRequested={onSuggestionsUpdateRequested}
-										 getSuggestionValue={getSuggestionValue}
-										 renderSuggestion={renderSuggestion}
-										 renderSectionTitle={renderSectionTitle}
-										 getSectionSuggestions={getSectionSuggestions}
-										 inputProps={inputProps}
-										 onSuggestionSelected={onSuggestionSelected}
-										 focusInputOnSuggestionClick={focusInputOnSuggestionClick}
-										 theme={mapToAutowhateverTheme(theme)}
-										 id={id}
-										 inputRef={this.saveInput} />
+				<AutoSuggest
+					theme={mapToAutowhateverTheme(theme)}
+					id={id}
+					focusInputOnSuggestionClick={focusInputOnSuggestionClick}
+					onSuggestionSelected={onSuggestionSelected}
+					inputProps={inputProps}
+					getSectionSuggestions={getSectionSuggestions}
+					renderSectionTitle={renderSectionTitle}
+					renderSuggestion={renderSuggestion}
+					getSuggestionValue={getSuggestionValue}
+					onSuggestionsUpdateRequested={onSuggestionsUpdateRequested}
+					suggestions={suggestions}
+					multiSection={multiSection}
+					inputRef={this.saveInput} />
 			</Provider>
 		);
 	}

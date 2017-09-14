@@ -1,7 +1,8 @@
 import * as React from 'react';
 import ClassNames from 'classnames';
-import {IProgressBarProps} from './IProgressBar';
 import * as style from './ProgressBar.styles.css';
+
+import {IProgressBarProps} from './IProgressBar';
 
 const WEBKIT:string = 'Webkit';
 const MICROSOFT:string = 'Ms';
@@ -106,9 +107,10 @@ export default class ProgressBar extends React.Component<IProgressBarProps, {}> 
   }
 
   public render () {
-    const className: string = ClassNames(style.circular, {
-      [style.indeterminate]: this.props.mode,
-      [style.multicolor]: this.props.multicolor
+    const styles: any = style;
+    const className: string = ClassNames(styles[this.props.type], {
+      [styles[this.props.mode]]: this.props.mode,
+      [styles.multicolor]: this.props.multicolor
     }, this.props.className);
 
     return (

@@ -50,7 +50,7 @@ class Results extends React.Component<IResultsProps, IResultsState> {
             refresh={this.props.refresh}
             onFavouritesChange={this.onFavourite.bind(this)}
             onItemUpdate={this.onItemUpdate.bind(this)}
-            id={i} />
+            id={`${i}`} />
         </div>
       </div>
     );

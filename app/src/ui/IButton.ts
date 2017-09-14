@@ -1,6 +1,7 @@
 export interface IButtonProps {
     accent?: boolean,
     id?: string,
+    name?: string,
     children?: any,
     label?: string,
     className?: string,

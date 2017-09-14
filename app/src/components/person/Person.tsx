@@ -37,7 +37,7 @@ class Person extends React.Component<IPersonProps, IPersonState> {
     window.location.href = 'https://www.yammer.com/#/Threads/Search?search=' + name;
   }
 
-  onFavouriteClick(person:any, action:string, index:number):void {
+  onFavouriteClick(person:any, action:string, index:string):void {
     let favourites:Array<any> = this.props.favourites;
 
     if (action === 'add') {
@@ -59,7 +59,7 @@ class Person extends React.Component<IPersonProps, IPersonState> {
     this.props.onItemUpdate(index, favourites, action !== 'remove');
   }
 
-  getFavouriteButton(person:any, index:number):JSX.Element {
+  getFavouriteButton(person:any, index:string):JSX.Element {
     const current:any = this.isFavouriteButtonActive(person);
     const icon:string = current.pinned ? styles.remove : styles.add;
     const bindClick:Function = this.onFavouriteClick.bind(this, person.items, icon, index);
@@ -87,14 +87,14 @@ class Person extends React.Component<IPersonProps, IPersonState> {
     );
   }
 
-  getPerson(person:any, index:number):JSX.Element {
+  getPerson(person:any, index:string):JSX.Element {
     // if we have layouts use that, otherwise use the defaults
     const layout:Array<any> = this.props.layout.current.length > 0 ? this.props.layout.current : Defaults.DEFAULT_CURRENT_LAYOUT;
     const card:any = this.information(person, layout);
 
     return (
       <div key={'item-details-' + index}>
-        {this.personaImage(person, `${index}`)}
+        {this.personaImage(person, index)}
         {card}
         <div className={styles.buttons}>
           {this.everything(person, index)}
@@ -120,26 +120,26 @@ class Person extends React.Component<IPersonProps, IPersonState> {
   }
 
   // TODO refactor these common templates into a single method
-  documents(person:any, key:number):JSX.Element {
+  documents(person:any, key:string):JSX.Element {
     const click:Function = this.onSearchByManagedProperty.bind(this, person.items.Cells.PreferredName, 'IsDocument:1 Author:');
 
     return this.getButton(`documents-${key}`, 'insert_drive_file', click);
   }
 
   // TODO refactor these common templates into a single method
-  everything(person:any, key:number):JSX.Element {
+  everything(person:any, key:string):JSX.Element {
     const click:Function = this.onSearchByManagedProperty.bind(this, person.items.Cells.PreferredName, 'Author:');
 
     return this.getButton(`everything-${key}`, 'share', click);
   }
 
-  yammer(person:any, key:number):JSX.Element {
+  yammer(person:any, key:string):JSX.Element {
     const click:Function = this.onYammerSearch.bind(this, person.items.Cells.PreferredName);
 
     return this.getButton(`yammer-${key}`, 'comment', click);
   }
 
-  exportOutlookCard(person:any, key:number):JSX.Element {
+  exportOutlookCard(person:any, key:string):JSX.Element {
     const click:Function = this.onOutlookExportCard.bind(this, person.items.Cells);
 
     return this.getButton(`outlook-${key}`, 'contact_mail', click);
@@ -189,9 +189,9 @@ class Person extends React.Component<IPersonProps, IPersonState> {
 
     return (
       <span key={'person-' + this.props.id} ref="person">
-        {this.getFavouriteButton(person, this.props.id)}
+        {this.getFavouriteButton(person, `${this.props.id}`)}
         <div className={styles.item}>
-          {this.getPerson(person, this.props.id)}
+          {this.getPerson(person, `${this.props.id}`)}
         </div>
       </span>
     );

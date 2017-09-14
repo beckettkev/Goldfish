@@ -1,0 +1,23 @@
+div.ms-Persona-imageArea,
+div.ms-Persona-presence,
+div.contact {
+  padding: 0 !important;
+}
+
+.sortable-item {
+  border: 1px solid #eeeeee;
+  margin:0 10px 10px 0;
+}
+
+.sortable-item:hover {
+  background: #ffffff;
+}
+
+.sortable-favourite-container .sortable-item {
+  padding: 10px;
+}
+
+div.ms-peopleux-userImgDiv, 
+div.ms-tableCell {
+  padding:0;
+}

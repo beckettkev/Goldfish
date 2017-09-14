@@ -1,7 +1,5 @@
 /* eslint no-unused-vars: 0 */
 import * as React from 'react';
-import * as styles from './Tag.css';
-import cssModules from 'react-css-modules';
 
 import { ITagProps, ITagState } from './ITag';
 
@@ -35,4 +33,4 @@ class Tag extends React.Component<ITagProps, ITagState> {
   }
 }
 
-export default cssModules(Tag, styles, { allowMultiple: true });
+export default Tag;

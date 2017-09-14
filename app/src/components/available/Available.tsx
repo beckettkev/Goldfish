@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as ReactSelect from 'react-select';
+import Suggest from '../suggest/Suggest';
 import * as styles from './Available.css';
 
 import { IAvailableProps } from "./IAvailable";
@@ -18,15 +18,11 @@ class Available extends React.Component<IAvailableProps, {}> {
   public render():JSX.Element {
     const transition:string = 'flipInX';
 
+    //need to repupose the auto suggest control here.
+
     return (
       <div key="available-selector">
-        {this.props !== null && typeof this.props.options !== 'undefined' ? 
-            <ReactSelect
-              name="available-fields"
-              className={'selector animated ' + transition}
-              placeholder="Add a field..."
-              options={this.props.options}
-              onChange={this.change.bind(this)} /> : null }
+        
       </div>
     );
   }

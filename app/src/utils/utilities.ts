@@ -25,8 +25,8 @@ export let Utils: any = {
     const msPerDay: any = 8.64e7;
 
     // Copy dates so don't mess them up
-    const x0: Date = new Date(d0);
-    const x1: Date = new Date(d1);
+    const x0: any = new Date(d0);
+    const x1: any = new Date(d1);
 
     // Set to noon - avoid DST errors
     x0.setHours(12, 0, 0);
@@ -60,10 +60,6 @@ export let Utils: any = {
     };
   },
   getBaseUrl: function getBaseUrl(): string {
-    if (!window.location.origin) {
-      window.location.origin = window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
-    }
-
     const path: Array<string> = window.location.pathname.split('/');
 
     if (typeof path[2] === 'undefined' || path[1].toLowerCase() === 'pages') {
@@ -96,7 +92,7 @@ export let Utils: any = {
   },
   renderStaffListLink: function renderStaffListLink(query: string, propertyName: string, locationExportType: string): any {
     const baseUrl: string = this.locationProtocol() + '//' + this.locationHost() + '/sites/search/Pages/peopleresults.aspx';
-    const linkViewStaff: string = baseUrl + '#Default={"k":"","r":[{"n":"' + propertyName + '","t":["\\"' + unescape('%u01C2') + unescape('%u01C2') + this.stringToHex(query) + '\\""],"o":"and","k":false,"m":null}]}';
+    const linkViewStaff: string = baseUrl + '#Default={"k":"","r":[{"n":"' + propertyName + '","t":["\\"' + window.unescape('%u01C2') + window.unescape('%u01C2') + this.stringToHex(query) + '\\""],"o":"and","k":false,"m":null}]}';
 
     return {
       linkViewStaff,
@@ -135,9 +131,9 @@ export let Utils: any = {
     return (bit1 | 0xE0).toString(16) + (bit2 | 0x80).toString(16) + (bit3 | 0x80).toString(16);
   },
   _spPageContextInfo: function _spPageContextInfo(): string {
-    if (!window.location.origin) {
+    /*if (!window.location.origin) {
       window.location.origin = window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
-    }
+    }*/
 
     const path: Array<string> = window.location.pathname.split('/');
 

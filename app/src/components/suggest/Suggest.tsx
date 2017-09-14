@@ -46,8 +46,8 @@ function getSuggestions(value:string):Array<any> {
           .filter((section:any):any => section.terms.length > 0);
 }
 
-function renderSuggestion(suggestion:any, { value:string, valueBeforeUpDown:any }):JSX.Element {
-  const query:string = (valueBeforeUpDown || value).trim();
+function renderSuggestion(suggestion:any, item:any):JSX.Element {
+  const query:string = (item.valueBeforeUpDown || item.value).trim();
   const matches:any = AutosuggestHighlight.match(suggestion.name, query);
   const parts:any = AutosuggestHighlight.parse(suggestion.name, matches);
 
@@ -77,6 +77,15 @@ function getSectionSuggestions(section:any):Array<string> {
 
 class Suggest extends React.Component<ISuggestProps, ISuggestState> {
 
+  static defaultProps:ISuggestProps = {
+    className: 'react-tagsinput',
+    addKeys: [9, 13],
+    removeKeys: [8],
+    onlyUnique: false,
+    maxTags: -1,
+    validationRegex: /.*/,
+  };
+
   constructor(props:ISuggestProps) {
     super(props);
 
@@ -90,7 +99,6 @@ class Suggest extends React.Component<ISuggestProps, ISuggestState> {
     this.onSuggestionsUpdateRequested = this.onSuggestionsUpdateRequested.bind(this);
     this.setTaxonomySearchResults = this.setTaxonomySearchResults.bind(this);
   }
-
   setTaxonomySearchResults():void {
     this.setState({ suggestions: TaxonomyStore.getCurrentSuggestions() });
   }
@@ -238,14 +246,14 @@ class Suggest extends React.Component<ISuggestProps, ISuggestState> {
     }
   }
 
-  onChange(event:any, { newValue }):void {
-    this.setState({ value: newValue });
+  onChange(event:any, item:any):void {
+    this.setState({ value: item.newValue });
 
-    this.props.onChange(newValue);
+    this.props.onChange(item.newValue);
   }
 
-  onSuggestionsUpdateRequested({ value }):void {
-    this.setState({ suggestions: getSuggestions(value) });
+  onSuggestionsUpdateRequested(item:any):void {
+    this.setState({ suggestions: getSuggestions(item.value) });
   }
 
   _maxTags(tags:number):boolean {
@@ -300,14 +308,5 @@ class Suggest extends React.Component<ISuggestProps, ISuggestState> {
     this.componentDidUpdate();
   }
 }
-
-Suggest.defaultProps = {
-  className: 'react-tagsinput',
-  addKeys: [9, 13],
-  removeKeys: [8],
-  onlyUnique: false,
-  maxTags: -1,
-  validationRegex: /.*/,
-};
 
 export default Suggest;

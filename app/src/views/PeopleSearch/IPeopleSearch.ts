@@ -1,12 +1,13 @@
 export interface IPeopleSearchProps {
-    buffer: number,
-    className: string,
-    max: number,
-    min: number,
-    mode: string,
-    multicolor: boolean,
-    type: any,
-    value: number
+    buffer?: number,
+    className?: string,
+    options?: any,
+    max?: number,
+    min?: number,
+    mode?: string,
+    multicolor?: boolean,
+    type?: any,
+    value?: number
 }
 
 export interface IPeopleSearchState {
@@ -19,5 +20,8 @@ export interface IPeopleSearchState {
     term: string,
     text: string,
     favourites: Array<any>,
-    layout: Array<any>
+    suggestions: Array<any>,
+    layout: Array<any>,
+    termsets: Array<any>,
+    userInformationFields: Array<any>
 }

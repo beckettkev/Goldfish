@@ -2,7 +2,7 @@
 /* global _spPageContextInfo */
 import Cache from 'cache-funk';
 import { Utils } from '../utils/utilities';
-import { Profile } from '../data/profile';
+import * as Profile from './profile';
 import { DefaultConstants } from '../constants/default';
 
 // TODO: App keys for localstorage cache - need to move these somewhere central

@@ -3,7 +3,3 @@
 	float:left;
 	padding:2px 3px;
 }
-:global(.floatLeft) {
-	float:left;
-	clear:right;
-}

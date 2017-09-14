@@ -1,55 +1,55 @@
 //https://github.com/reactjs/react-autocomplete/blob/master/LICENSE
-const INPUT_FOCUSED = 'INPUT_FOCUSED';
-const INPUT_BLURRED = 'INPUT_BLURRED';
-const INPUT_CHANGED = 'INPUT_CHANGED';
-const UPDATE_FOCUSED_SUGGESTION = 'UPDATE_FOCUSED_SUGGESTION';
-const REVEAL_SUGGESTIONS = 'REVEAL_SUGGESTIONS';
-const CLOSE_SUGGESTIONS = 'CLOSE_SUGGESTIONS';
+const INPUT_FOCUSED: string = 'INPUT_FOCUSED';
+const INPUT_BLURRED: string = 'INPUT_BLURRED';
+const INPUT_CHANGED: string = 'INPUT_CHANGED';
+const UPDATE_FOCUSED_SUGGESTION: string = 'UPDATE_FOCUSED_SUGGESTION';
+const REVEAL_SUGGESTIONS: string = 'REVEAL_SUGGESTIONS';
+const CLOSE_SUGGESTIONS: string = 'CLOSE_SUGGESTIONS';
 
-export function inputFocused(shouldRenderSuggestions) {
+export function inputFocused(shouldRenderSuggestions: boolean): any {
 	return {
 		type: INPUT_FOCUSED,
 		shouldRenderSuggestions
-	};
+	} as any;
 }
 
-export function inputBlurred() {
+export function inputBlurred(): any {
 	return {
 		type: INPUT_BLURRED
 	};
 }
 
-export function inputChanged(shouldRenderSuggestions, lastAction) {
+export function inputChanged(shouldRenderSuggestions: boolean, lastAction: any): any {
 	return {
 		type: INPUT_CHANGED,
 		shouldRenderSuggestions,
 		lastAction
-	};
+	} as any;
 }
 
-export function updateFocusedSuggestion(sectionIndex, suggestionIndex, value) {
+export function updateFocusedSuggestion(sectionIndex: number, suggestionIndex: number, value: any): any {
 	return {
 		type: UPDATE_FOCUSED_SUGGESTION,
 		sectionIndex,
 		suggestionIndex,
 		value
-	};
+	} as any;
 }
 
-export function revealSuggestions() {
+export function revealSuggestions(): any {
 	return {
 		type: REVEAL_SUGGESTIONS
-	};
+	} as any;
 }
 
-export function closeSuggestions(lastAction) {
+export function closeSuggestions(lastAction: any): any {
 	return {
 		type: CLOSE_SUGGESTIONS,
 		lastAction
-	};
+	} as any;
 }
 
-export default function reducer(state, action) {
+export default function reducer(state: any, action: any): any {
 	switch (action.type) {
 		case INPUT_FOCUSED:
 			return {
@@ -80,7 +80,7 @@ export default function reducer(state, action) {
 
 		case UPDATE_FOCUSED_SUGGESTION: {
 			const { value, sectionIndex, suggestionIndex } = action;
-			const valueBeforeUpDown =
+			const valueBeforeUpDown: any =
 				state.valueBeforeUpDown === null && typeof value !== 'undefined'
 					? value
 					: state.valueBeforeUpDown;

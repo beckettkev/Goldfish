@@ -91,7 +91,7 @@ class Favourites extends React.Component<IFavouritesProps, IFavouritesState> {
               favourites={this.props.favourites}
               onFavouritesChange={this.onFavourite.bind(this)}
               onItemUpdate={this.onItemUpdate.bind(this)}
-              id={'f' + i} />
+              id={`f${i}`} />
         </div>
       </SortableItem>
     );

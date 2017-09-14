@@ -1,9 +1,10 @@
 export interface IRowProps {
-  id: string, 
-  element: any, 
-  person: any
+  id?: number,
+  element?: any,
+  person?: any,
+  key?: string
 }
 
 export interface IRowState {
-  
+
 }

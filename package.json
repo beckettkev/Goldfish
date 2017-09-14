@@ -39,6 +39,7 @@
     "@types/object-assign": "^4.0.30",
     "@types/react": "15.0.35",
     "@types/react-dom": "15.5.1",
+    "@types/react-redux": "^5.0.5",
     "@types/react-select": "^1.0.53",
     "autosuggest-highlight": "^2.1.1",
     "cache-funk": "^0.1.2",

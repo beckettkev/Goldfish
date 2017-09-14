@@ -1,4 +1,4 @@
-import Compression from '../utils/lz-string';
+import * as Compression from '../utils/lz-string';
 require('es6-promise').polyfill();
 
 const PROFILE_SETTINGS_KEY: string = 'GF-Settings';

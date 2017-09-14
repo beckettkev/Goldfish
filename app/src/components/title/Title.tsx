@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as styles from './Title.css';
-import cssModules from 'react-css-modules';
 
 import { ITitleProps, ITitleState } from './ITitle';
 
@@ -15,8 +14,8 @@ class Title extends React.Component<ITitleProps, ITitleState> {
     title = title + (typeof this.props.suffix !== 'undefined' ? ' ' + this.props.suffix : '');
 
     return (
-      <div styleName="title-container" id={`dragSnapin${title.replace(/ /g, '')}`}>
-        <span className="o365-NFP-title o365cs-lightFont" styleName="title-font">
+      <div className={styles.titleContainer} id={`dragSnapin${title.replace(/ /g, '')}`}>
+        <span className={`o365-NFP-title o365cs-lightFont ${styles.titleFont}`}>
           {title}
         </span>
       </div>
@@ -24,4 +23,4 @@ class Title extends React.Component<ITitleProps, ITitleState> {
   }
 }
 
-export default cssModules(Title, styles, { allowMultiple: true });
+export default Title;

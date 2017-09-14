@@ -1,11 +1,12 @@
 //https://github.com/moroshko/react-autosuggest/blob/master/LICENSE
-import * as React , { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
+import * as React from 'react';
 import { inputFocused, inputBlurred, inputChanged, updateFocusedSuggestion,
 				 revealSuggestions, closeSuggestions } from './reducerAndActions';
+import { IAutoSuggestProps } from './IAutoSuggest';
+import connectedComponentHelper from './ReduxConnect';
 import Autowhatever from 'react-autowhatever';
 
-function mapStateToProps(state) {
+function mapStateToProps(state:any):IAutoSuggestProps {
 	return {
 		isFocused: state.isFocused,
 		isCollapsed: state.isCollapsed,
@@ -16,68 +17,46 @@ function mapStateToProps(state) {
 	};
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch:any):any {
 	return {
-		inputFocused: shouldRenderSuggestions => {
+		inputFocused: (shouldRenderSuggestions:boolean):void => {
 			dispatch(inputFocused(shouldRenderSuggestions));
 		},
-		inputBlurred: () => {
+		inputBlurred: ():void => {
 			dispatch(inputBlurred());
 		},
-		inputChanged: (shouldRenderSuggestions, lastAction) => {
+		inputChanged: (shouldRenderSuggestions:boolean, lastAction:any):void => {
 			dispatch(inputChanged(shouldRenderSuggestions, lastAction));
 		},
-		updateFocusedSuggestion: (sectionIndex, suggestionIndex, value) => {
+		updateFocusedSuggestion: (sectionIndex:number, suggestionIndex:number, value:any):void => {
 			dispatch(updateFocusedSuggestion(sectionIndex, suggestionIndex, value));
 		},
-		revealSuggestions: () => {
+		revealSuggestions: ():void => {
 			dispatch(revealSuggestions());
 		},
-		closeSuggestions: lastAction => {
+		closeSuggestions: (lastAction:any):void => {
 			dispatch(closeSuggestions(lastAction));
 		}
 	};
 }
 
-class Autosuggest extends Component {
-	static propTypes = {
-		suggestions: PropTypes.array.isRequired,
-		onSuggestionsUpdateRequested: PropTypes.func.isRequired,
-		getSuggestionValue: PropTypes.func.isRequired,
-		renderSuggestion: PropTypes.func.isRequired,
-		inputProps: PropTypes.object.isRequired,
-		shouldRenderSuggestions: PropTypes.func.isRequired,
-		onSuggestionSelected: PropTypes.func.isRequired,
-		multiSection: PropTypes.bool.isRequired,
-		renderSectionTitle: PropTypes.func.isRequired,
-		getSectionSuggestions: PropTypes.func.isRequired,
-		focusInputOnSuggestionClick: PropTypes.bool.isRequired,
-		theme: PropTypes.object.isRequired,
-		id: PropTypes.string.isRequired,
-		inputRef: PropTypes.func.isRequired,
+const { propsGeneric, connect } = connectedComponentHelper<IAutoSuggestProps>()(mapStateToProps, mapDispatchToProps);
+type ComponentProps = typeof propsGeneric;
 
-		isFocused: PropTypes.bool.isRequired,
-		isCollapsed: PropTypes.bool.isRequired,
-		focusedSectionIndex: PropTypes.number,
-		focusedSuggestionIndex: PropTypes.number,
-		valueBeforeUpDown: PropTypes.string,
-		lastAction: PropTypes.string,
+class AutoSuggest extends React.Component<ComponentProps, any> {
+	input: any;
 
-		inputFocused: PropTypes.func.isRequired,
-		inputBlurred: PropTypes.func.isRequired,
-		inputChanged: PropTypes.func.isRequired,
-		updateFocusedSuggestion: PropTypes.func.isRequired,
-		revealSuggestions: PropTypes.func.isRequired,
-		closeSuggestions: PropTypes.func.isRequired
-	};
+	justClickedOnSuggestion: boolean;
 
-	constructor() {
-		super();
+	onBlurEvent: Function;
+
+	constructor(props:IAutoSuggestProps) {
+		super(props);
 
 		this.saveInput = this.saveInput.bind(this);
 	}
 
-	componentWillReceiveProps(nextProps) {
+	componentWillReceiveProps(nextProps:IAutoSuggestProps) {
 		if (nextProps.suggestions !== this.props.suggestions) {
 			const { suggestions, inputProps, shouldRenderSuggestions,
 							isCollapsed, revealSuggestions, lastAction } = nextProps;
@@ -90,7 +69,7 @@ class Autosuggest extends Component {
 		}
 	}
 
-	getSuggestion(sectionIndex, suggestionIndex) {
+	getSuggestion(sectionIndex:number, suggestionIndex:number):any {
 		const { suggestions, multiSection, getSectionSuggestions } = this.props;
 
 		if (multiSection) {
@@ -100,7 +79,7 @@ class Autosuggest extends Component {
 		return suggestions[suggestionIndex];
 	}
 
-	getFocusedSuggestion() {
+	getFocusedSuggestion():any {
 		const { focusedSectionIndex, focusedSuggestionIndex } = this.props;
 
 		if (focusedSuggestionIndex === null) {
@@ -110,15 +89,15 @@ class Autosuggest extends Component {
 		return this.getSuggestion(focusedSectionIndex, focusedSuggestionIndex);
 	}
 
-	getSuggestionValueByIndex(sectionIndex, suggestionIndex, event) {
+	getSuggestionValueByIndex(sectionIndex:number, suggestionIndex:number, event:any):any {
 		const { getSuggestionValue } = this.props;
 
 		return getSuggestionValue(this.getSuggestion(sectionIndex, suggestionIndex), event);
 	}
 
-	getSuggestionIndices(suggestionElement) {
-		const sectionIndex = suggestionElement.getAttribute('data-section-index');
-		const suggestionIndex = suggestionElement.getAttribute('data-suggestion-index');
+	getSuggestionIndices(suggestionElement:any):any {
+		const sectionIndex:string = suggestionElement.getAttribute('data-section-index');
+		const suggestionIndex:string = suggestionElement.getAttribute('data-suggestion-index');
 
 		return {
 			sectionIndex: (typeof sectionIndex === 'string' ? parseInt(sectionIndex, 10) : null),
@@ -126,8 +105,8 @@ class Autosuggest extends Component {
 		};
 	}
 
-	findSuggestionElement(startNode) {
-		let node = startNode;
+	findSuggestionElement(startNode:any) {
+		let node:any = startNode;
 
 		do {
 			if (node.getAttribute('data-suggestion-index') !== null) {
@@ -141,7 +120,7 @@ class Autosuggest extends Component {
 		throw new Error('Couldn\'t find suggestion element');
 	}
 
-	maybeEmitOnChange(event, newValue, method) {
+	maybeEmitOnChange(event:any, newValue:any, method:any):void {
 		const { value, onChange } = this.props.inputProps;
 
 		if (newValue !== value) {
@@ -149,14 +128,14 @@ class Autosuggest extends Component {
 		}
 	}
 
-	willRenderSuggestions() {
+	willRenderSuggestions():boolean {
 		const { suggestions, inputProps, shouldRenderSuggestions } = this.props;
 		const { value } = inputProps;
 
 		return suggestions.length > 0 && shouldRenderSuggestions(value);
 	}
 
-	saveInput(autowhatever) {
+	saveInput(autowhatever:any):void {
 		if (autowhatever !== null) {
 			const input = autowhatever.refs.input;
 
@@ -175,17 +154,17 @@ class Autosuggest extends Component {
 					updateFocusedSuggestion, revealSuggestions, closeSuggestions
 				} = this.props;
 				const { value, onBlur, onFocus, onKeyDown } = inputProps;
-				const isOpen = isFocused && !isCollapsed && this.willRenderSuggestions();
-				const items = (isOpen ? suggestions : []);
-				const autowhateverInputProps = {
+				const isOpen:boolean = isFocused && !isCollapsed && this.willRenderSuggestions();
+				const items:any = (isOpen ? suggestions : []);
+				const autowhateverInputProps:any = {
 					...inputProps,
-					onFocus: event => {
+					onFocus: (event:any) => {
 						if (!this.justClickedOnSuggestion) {
 							inputFocused(shouldRenderSuggestions(value));
 							onFocus && onFocus(event);
 						}
 					},
-					onBlur: event => {
+					onBlur: (event:any) => {
 						this.onBlurEvent = event;
 
 						if (!this.justClickedOnSuggestion) {
@@ -197,7 +176,7 @@ class Autosuggest extends Component {
 							}
 						}
 					},
-					onChange: event => {
+					onChange: (event:any) => {
 						const { value } = event.target;
 						const { shouldRenderSuggestions, onSuggestionsUpdateRequested } = this.props;
 
@@ -205,7 +184,7 @@ class Autosuggest extends Component {
 						inputChanged(shouldRenderSuggestions(value), 'type');
 						onSuggestionsUpdateRequested({ value, reason: 'type' });
 					},
-					onKeyDown: (event, data) => {
+					onKeyDown: (event:any, data:any) => {
 						switch (event.key) {
 							case 'ArrowDown':
 							case 'ArrowUp':
@@ -265,22 +244,23 @@ class Autosuggest extends Component {
 						onKeyDown && onKeyDown(event);
 					}
 				};
-				const onMouseEnter = (event, { sectionIndex, itemIndex }) => {
-					updateFocusedSuggestion(sectionIndex, itemIndex);
+				const onMouseEnter = (event:any, item:any):void => {
+					updateFocusedSuggestion(item.sectionIndex, item.itemIndex);
 				};
-				const onMouseLeave = () => {
+				const onMouseLeave = ():void => {
 					updateFocusedSuggestion(null, null);
 				};
-				const onMouseDown = () => {
+				const onMouseDown = ():void => {
 					this.justClickedOnSuggestion = true;
 				};
-				const onClick = event => {
+				const onClick = (event:any):void => {
 					const { sectionIndex, suggestionIndex } =
 						this.getSuggestionIndices(this.findSuggestionElement(event.target));
-					const clickedSuggestion = this.getSuggestion(sectionIndex, suggestionIndex);
-					const clickedSuggestionValue = this.props.getSuggestionValue(clickedSuggestion, event);
+					const clickedSuggestion:any = this.getSuggestion(sectionIndex, suggestionIndex);
+					const clickedSuggestionValue:any = this.props.getSuggestionValue(clickedSuggestion, event);
 
 					this.maybeEmitOnChange(event, clickedSuggestionValue, 'click');
+
 					onSuggestionSelected(event, {
 						suggestion: clickedSuggestion,
 						suggestionValue: clickedSuggestionValue,
@@ -299,10 +279,10 @@ class Autosuggest extends Component {
 
 					this.justClickedOnSuggestion = false;
 				};
-				const itemProps = ({ sectionIndex, itemIndex }) => {
+				const itemProps = (item:any):any => {
 					return {
-						'data-section-index': sectionIndex,
-						'data-suggestion-index': itemIndex,
+						'data-section-index': item.sectionIndex,
+						'data-suggestion-index': item.itemIndex,
 						onMouseEnter,
 						onMouseLeave,
 						onMouseDown,
@@ -310,7 +290,7 @@ class Autosuggest extends Component {
 						onClick
 					};
 				};
-				const renderItem = item => renderSuggestion(item, { value, valueBeforeUpDown });
+				const renderItem = (item:any) => renderSuggestion(item, { value, valueBeforeUpDown });
 
 				return (
 					<Autowhatever 
@@ -330,4 +310,5 @@ class Autosuggest extends Component {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Autosuggest);
+//export default connect(mapStateToProps, mapDispatchToProps)(AutoSuggest);
+export default connect(AutoSuggest);

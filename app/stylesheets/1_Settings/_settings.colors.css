@@ -1,0 +1,17 @@
+/*
+ * SETTINGS-COLORS
+ */
+
+/*
+  * Primary colors
+  */
+:root {
+  --primaryBackground: #81d0ae;
+  --secondaryBackground:peachpuff;
+  --tertiaryBackground: beige;
+  --primaryText: black;
+  --white: white;
+  --black: black;
+  --cardBorder: silver;
+  --textBackGround: #f4f4f4;
+}

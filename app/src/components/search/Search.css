@@ -28,11 +28,6 @@ div.search-container label:focus {
 div.search-container div[data-gf=input] {
 	margin-left:0 !important;
 }
-div.search-container :global(.material-icons) {
-	display:block;
-	top: 13px;
-	left: -15px;
-}
 div.search-container span span {
 	line-height: 1 !important;
 	width: auto !important;

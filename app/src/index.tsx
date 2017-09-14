@@ -228,7 +228,8 @@ const Goldfish:Goldfish = {
 
       ReactDOM.render(
         <AppContainer>
-          <PeopleSearch options={Goldfish.options} />
+          <PeopleSearch 
+            options={window.Goldfish.options} />
         </AppContainer>,
         reactContainer,
         Goldfish.ApplyAppSettings()

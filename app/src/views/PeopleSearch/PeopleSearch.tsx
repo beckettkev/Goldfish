@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as styles from './PeopleSearch.css';
-import cssModules from 'react-css-modules';
 import { Utils } from '../../utils/utilities';
 import Waypoint from 'react-waypoint';
 import Menu from '../../components/menu/Menu';
@@ -15,6 +14,7 @@ import FavouriteStore from '../../stores/FavouriteStore';
 import LayoutStore from '../../stores/LayoutStore';
 import PeopleSearchActions from '../../actions/PeopleSearchActions';
 import SettingsManager from '../../utils/settings';
+import Exporter from '../../utils/exporter';
 
 import { IPeopleSearchProps, IPeopleSearchState } from "./IPeopleSearch";
 
@@ -61,14 +61,14 @@ class PeopleSearch extends React.Component<IPeopleSearchProps, IPeopleSearchStat
   }
 
   componentDidMount():void {
-    if (typeof Sys !== 'undefined' && Sys && Sys.Application) {
-      Sys.Application.notifyScriptLoaded();
+    if (typeof window.Sys !== 'undefined' && window.Sys && window.Sys.Application) {
+      window.Sys.Application.notifyScriptLoaded();
     }
 
-    if (typeof SP !== 'undefined') {
-      if (typeof SP.SOD.notifyScriptLoadedAndExecuteWaitingJobs === 'function') {
+    if (typeof window.SP !== 'undefined') {
+      if (typeof window.SP.SOD.notifyScriptLoadedAndExecuteWaitingJobs === 'function') {
         // Inform the create functionthat Goldfish can now load safely
-        SP.SOD.notifyScriptLoadedAndExecuteWaitingJobs('goldfish.ready.min.js');
+        window.SP.SOD.notifyScriptLoadedAndExecuteWaitingJobs('goldfish.ready.min.js');
       }
     }
   }
@@ -121,9 +121,19 @@ class PeopleSearch extends React.Component<IPeopleSearchProps, IPeopleSearchStat
 
   onSettingChange(collection:Array<any>):void {
     // flush any current searches
-    this.setInitialState();
-
-    this.state.settings = collection;
+    //this.setInitialState();
+    this.state = {
+      items: [],
+      searching: false,
+      refresh: false,
+      settings: collection,
+      count: 0,
+      pageNum: 0,
+      term: '',
+      text: '',
+      favourites: getFavouritesState(),
+      layout: getLayoutState(),
+    } as IPeopleSearchState;
 
     this.applyOptions();
   }
@@ -134,7 +144,7 @@ class PeopleSearch extends React.Component<IPeopleSearchProps, IPeopleSearchStat
     });
   }
 
-  onItemUpdate(index:integer, favourite:any, type:string):void {
+  onItemUpdate(index: number, favourite:any, type:string):void {
     let items:Array<any> = this.state.items;
 
     if (type === 'person') {
@@ -205,15 +215,17 @@ class PeopleSearch extends React.Component<IPeopleSearchProps, IPeopleSearchStat
         if (this.state.count > this.state.items.length) {
           // we wrap the waypoint to ensure that it never floats along side a result (and sits at the bottom)
           return (
-            <div styleName="wp-holder">
+            <div className={styles.wpHolder}>
               <Waypoint
-                onEnter={({ previousPosition, currentPosition, event }) => {
+                onEnter={(item:any) => {
+                  let { previousPosition, currentPosition, event } = item;
+
                   // only fetch new results if we are not currently doing so...
                   if (!self.state.searching) {
                     // if we have some results enable constant result fetching (infinite scroll)
                     if (self.state.items.length > 0) {
                       // get the page number for the search
-                      const next:integer = (typeof self.state.pageNum === 'undefined' || self.state.pageNum === 0) ? 2 : (self.state.pageNum + 1);
+                      const next: number = (typeof self.state.pageNum === 'undefined' || self.state.pageNum === 0) ? 2 : (self.state.pageNum + 1);
 
                       // ensure we haven't already fetched these results
                       if (Math.ceil(self.state.items.length / 10) < next) {
@@ -268,15 +280,15 @@ class PeopleSearch extends React.Component<IPeopleSearchProps, IPeopleSearchStat
             onExport={this.onExport}
             alternate={alternateMenu} />
 
-          <div id="component" styleName="component" style={inlineStyles}>
-            <div styleName="container">
+          <div id="component" className={styles.component} style={inlineStyles}>
+            <div className={styles.container}>
 
               <Title
                 text={this.props.options.title} />
 
             </div>
             <div className="content">
-              <div className="ui center aligned" styleName="container">
+              <div className={`ui center aligned ${styles.container}`}>
 
                 <Search
                   onSearchChanged={this.onSearch.bind(this)}
@@ -288,7 +300,7 @@ class PeopleSearch extends React.Component<IPeopleSearchProps, IPeopleSearchStat
 
               </div>
             </div>
-            <div className="content" id="component-vision" styleName="everything-worth-while">
+            <div className={`content ${styles.everythingWorthWhile}`} id="component-vision">
 
               {this.renderPaging()}
 
@@ -333,11 +345,4 @@ class PeopleSearch extends React.Component<IPeopleSearchProps, IPeopleSearchStat
   }
 }
 
-PeopleSearch.defaultProps = {
-  options: {
-    title: 'Goldfish',
-    properties: '',
-  },
-};
-
-export default cssModules(PeopleSearch, styles);
+export default PeopleSearch;

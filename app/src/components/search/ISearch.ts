@@ -1,11 +1,11 @@
 export interface ISearchProps {
-  termsets: Array<any>,
-  userInformationFields: Array<any>,
-  properties: any,
-  settings: Array<any>,
-  suggestions: Array<any>,
-  onSearchChanged: Function,
-  onSearching: Function,
+  termsets?: Array<any>,
+  userInformationFields?: Array<any>,
+  properties?: any,
+  settings?: Array<any>,
+  suggestions?: Array<any>,
+  onSearchChanged?: Function,
+  onSearching?: Function,
 }
 
 export interface ISearchState {

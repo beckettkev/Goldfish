@@ -1,6 +1,5 @@
 import * as React from 'react';
-import * as styles from './persona.css';
-require('./lync');
+import './lync';
 
 import { IPersonaProps, IPersonaState } from './IPersona';
 

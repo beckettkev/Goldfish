@@ -1,7 +1,7 @@
 export interface IMenuProps {
-  view: string,
-  onExport: Function,
-  alternate: string,
+  view?: string,
+  onExport?: Function,
+  alternate?: string,
 }
 
 export interface IMenuState {

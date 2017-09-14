@@ -1,15 +1,19 @@
 export interface ISuggestProps {
-  onChange: Function,
-  addKeys: Array<Number>,
-  addOnBlur: boolean,
-  onTagsChange: Function,
-  removeKeys: Array<Number>,
-  onlyUnique: boolean,
-  tags: Array<any>,
-  maxTags: number,
-  validationRegex: RegExp,
-  termsets: Array<any>,
-  fields: Array<any>,
+  onChange?: any,
+  addKeys?: Array<Number>,
+  addOnBlur?: boolean,
+  onTagsChange?: any,
+  removeKeys?: Array<Number>,
+  userInformationFields?: Array<any>,
+  onlyUnique?: boolean,
+  tags?: Array<any>,
+  maxTags?: number,
+  validationRegex?: RegExp,
+  termsets?: Array<any>,
+  fields?: Array<any>,
+  value?: any,
+  floating?: boolean,
+  className?: string
 }
 
 export interface ISuggestState {

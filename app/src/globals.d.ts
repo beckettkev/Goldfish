@@ -77,10 +77,12 @@ interface Window {
 	encodeURIComponent: any,
 	ExecuteOrDelayUntilScriptLoaded: Function,
 	CustomEvent: any,
+	Event: any,
 	fakeAjaxCalls: boolean,
 	Goldfish: Goldfish,
 	goldfishLayoutEventRegistered: boolean,
 	houseKeeping?: boolean,
+	unescape: Function,
 	IMNRC: any,
 	jQuery: any,
 	keyWatcher?: any,
@@ -101,11 +103,35 @@ declare module 'react-sortable-component' {
 		SortableItem
 	};
 }
+/*
+declare type ClassValue = string | number | ClassDictionary | ClassArray;
 
-declare module 'AutosuggestContainer' {
-	var Autosuggest: any;
+interface ClassDictionary {
+	[id: string]: boolean;
+}
 
-	export default Autosuggest;
+interface ClassArray extends Array<ClassValue> { }
+
+interface ClassNamesFn {
+	(...classes: ClassValue[]): string;
+}
+
+declare module 'classnames' {
+	var classNames: ClassNamesFn;
+
+	export default classNames;
+}*/
+
+declare module 'classnames' {
+	var classNames: any;
+
+	export default classNames;
+}
+
+declare module 'react-waypoint' {
+	var Waypoint: any;
+
+	export default Waypoint;
 }
 
 declare module 'autosuggest-highlight' {
@@ -114,8 +140,14 @@ declare module 'autosuggest-highlight' {
 	export default AutosuggestHighlight;
 }
 
-declare module 'classnames' {
-	var ClassNames: any;
+declare module 'react-autowhatever' {
+	var Autowhatever: any;
 
-	export default ClassNames;
+	export default Autowhatever;
+}
+
+declare module 'cache-funk' {
+	var Cache: any;
+
+	export default Cache;
 }

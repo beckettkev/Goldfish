@@ -1,10 +1,9 @@
-/* awesome */
-:global(.react-tagsinput) {
+.react-tagsinput {
   overflow: hidden;
   width: 360px;
 }
 
-:global(.react-tagsinput-tag) {
+.react-tagsinput-tag {
   background-color: #666666;
   color: #ffffff;
   display: inline-block;
@@ -15,18 +14,18 @@
   padding: 10px !important; 
 }
 
-:global(.react-tagsinput-remove) {
+.react-tagsinput-remove {
   cursor: pointer;
   font-weight: bold;
 }
-:global(.react-tagsinput-tag) a,
-:global(.react-tagsinput-tag) a:link {
+.react-tagsinput-tag a,
+.react-tagsinput-tag a:link {
   text-decoration: none;
   color: #ffffff;
 }
-:global(.react-tagsinput-tag) a:hover {
+.react-tagsinput-tag a:hover {
   cursor:pointer;
 }
-:global(.react-tagsinput-tag) a::before {
+.react-tagsinput-tag a::before {
   content: " ×";
 }

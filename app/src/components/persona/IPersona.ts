@@ -1,6 +1,6 @@
 export interface IPersonaProps {
-  names: boolean,
-  member: any
+  names?: boolean,
+  member?: any
 }
 
 export interface IPersonaState {

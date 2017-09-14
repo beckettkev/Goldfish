@@ -7,6 +7,8 @@ export interface IFavouritesProps {
   onChange?: Function,
   onFavouritesChange?: Function,
   onItemUpdate?: Function,
+  data?: any,
+  id?: string
 }
 
 export interface IFavouritesState {

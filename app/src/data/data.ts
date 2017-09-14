@@ -4,7 +4,7 @@ import { DefaultConstants as PeopleSearchDefaults } from '../constants/default';
 import Cache from 'cache-funk';
 import { Utils } from '../utils/utilities';
 import FavouriteStore from '../stores/FavouriteStore';
-import { Mock } from '../mock/Mock.js';
+import { Mock } from '../mock/Mock';
 require('es6-promise').polyfill();
 
 const PEOPLE_STORAGE_KEY_PREFIX: string = 'PeopleSearch-Results-';
@@ -234,7 +234,7 @@ export let Data = {
 
             initAppDispatcher(items, append);
           },
-          fail: (xhr: any, status: string, err: any) => reject(this.props.url + ', ' + status + ', ' + err.toString()),
+          fail: (xhr: any, status: string, err: any) => reject(status + ', ' + err.toString()),
         });
       }
     });

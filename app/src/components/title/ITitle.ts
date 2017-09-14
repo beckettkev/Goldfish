@@ -1,5 +1,5 @@
 export interface ITitleProps {
-  suffix: string,
+  suffix?: string,
   text: string,
 }
 

@@ -1,10 +1,15 @@
 import * as React from 'react';
 import ClassNames from 'classnames';
-import {ISwitchProps} from './ISwitch';
 import * as style from './Switch.styles.css';
 
-const Thumb = (children:any, onMouseDown:any) => (
+import { ISwitchProps } from './ISwitch';
+
+/*const Thumb = (children:any, onMouseDown:any) => (
   <span role='thumb' className={style.thumb} onMouseDown={onMouseDown}>{children}</span>
+);*/
+
+const Thumb = (disabled:any) => (
+  <span role='thumb' className={style.thumb} disabled={disabled}></span>
 );
 
 export default class Switch extends React.Component<ISwitchProps, {}> {

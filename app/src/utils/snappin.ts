@@ -4,6 +4,37 @@
  * See post @ http://www.lab4games.net/zz85/blog/2014/11/15/resizing-moving-snapping-windows-with-js-css/
  */
 export default class Snappin {
+
+  minWidth: number;
+  minHeight: number;
+  fullscreenMargins: number;
+  margins: number;
+  clicked?: any;
+
+  onRightEdge?: boolean;
+  onBottomEdge?: boolean;
+  onLeftEdge?: boolean;
+  onTopEdge?: boolean;
+  currentClicker?: boolean;
+  rightScreenEdge?: number;
+  bottomScreenEdge?: number;
+  preSnapped?: any;
+
+  Start: Function;
+  b: any;
+  x: number;
+  y: number;
+
+  redraw?: boolean;
+  evt?: any;
+
+  pane?: any;
+  ghostpane?: any;
+  ticker?: any;
+  clickers?: any;
+
+  primaryColour?: string;
+
   constructor() {
     // Minimum resizable area (width and height)
     this.minWidth = 450;
@@ -45,11 +76,11 @@ export default class Snappin {
     // The array of ids for elements that will be the snappin clicking regions
     this.clickers = null;
 
-    this.primaryColour = Goldfish.GetPrimaryColour();
+    this.primaryColour = window.Goldfish.GetPrimaryColour();
   }
 
   // Sets the positioning of the app along with the height and width (during a drag move)
-  setBounds = (element: HTMLElement, x: integer, y: integer, w: integer, h: any): void => {
+  setBounds = (element: HTMLElement, x: number, y: number, w: number, h: any): void => {
     element.style.left = x + 'px';
     element.style.top = y + 'px';
     element.style.width = w + 'px';
@@ -141,8 +172,8 @@ export default class Snappin {
   }
 
   getApplyBounds = (el: HTMLElement, drop: boolean, snapped: any): any => {
-    const leftRightTopOffset: integer = typeof window.fakeAjaxCalls === 'undefined' ? 85 : 0;
-    const compiledWidth: integer = this.pane.getBoundingClientRect().width > (window.innerWidth - 1) ? this.minWidth : this.pane.getBoundingClientRect().width;
+    const leftRightTopOffset: number = typeof window.fakeAjaxCalls === 'undefined' ? 85 : 0;
+    const compiledWidth: number = this.pane.getBoundingClientRect().width > (window.innerWidth - 1) ? this.minWidth : this.pane.getBoundingClientRect().width;
 
     let region: string = null;
 
@@ -169,7 +200,7 @@ export default class Snappin {
 
     if (drop) { return { 'region': region, 'snapped': snapped }; }
 
-    el.style.opacity = 0.2;
+    el.style.opacity = '0.2';
   }
 
   getCursorState = (): string => {
@@ -233,7 +264,7 @@ export default class Snappin {
       // This code executes when mouse moves without clicking
       const curs = this.getCursorState();
 
-      this.clickers.forEach(function (clicker) {
+      this.clickers.forEach((clicker: string) => {
         // Set the cursor style for the drag to snapin element
         document.getElementById(clicker).style.cursor = curs;
       });
@@ -267,7 +298,7 @@ export default class Snappin {
     }
   }
 
-  bindEventListener = (add: boolean, el: HTMLElement, type: any, func: Function): void => {
+  bindEventListener = (add: boolean, el: HTMLElement, type: any, func: any): void => {
     if (add) {
       el.addEventListener(type, func);
     } else {
@@ -303,7 +334,7 @@ export default class Snappin {
 
   start = (el: string, ghost: string, clickerElements: Array<any>): void => {
     if (document.getElementById(el) !== null) {
-      if (typeof clickerElements !== 'undefiend') {
+      if (typeof clickerElements !== 'undefined') {
         this.clickers = clickerElements;
 
         this.setElements(el, ghost);

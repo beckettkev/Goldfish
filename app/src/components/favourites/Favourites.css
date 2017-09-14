@@ -42,14 +42,7 @@
 .sortable-favourite-container i {
   float:left;
 }
-.sortable-favourite-container :global(.sortable-item) {
-  padding: 10px;
-}
-:global(div.ms-Persona-imageArea),
-:global(div.ms-Persona-presence),
-:global(div.contact) {
-  padding: 0 !important;
-}
+
 .sortable-favourite-container div div span {
   display:none;
 }
@@ -66,15 +59,6 @@
 .sortable-favourite-container button span,
 .sortable-favourite-container input[type=button] span {
   line-height: 2rem !important;
-}
-
-:global(.sortable-item) {
-  border: 1px solid #eeeeee;
-  margin:0 10px 10px 0;
-}
-
-:global(.sortable-item:hover) {
-  background: #ffffff;
 }
 
 .sortable-item-content {
@@ -102,8 +86,4 @@
 .complete button {
   background-color: rgb(229, 29, 46) !important;
   margin:0 130px;
-}
-
-.component :global(div.ms-peopleux-userImgDiv), .component :global(div.ms-tableCell) {
-  padding:0;
 }

@@ -109,7 +109,7 @@ class Row extends React.Component<IRowProps, IRowState> {
 
     return (
       <div key={`item-row-${id}`}>
-        {this.getRowFromLayout(id, element.template, person)}
+        {this.getRowFromLayout(`${id}`, element.template, person)}
       </div>
     );
   }

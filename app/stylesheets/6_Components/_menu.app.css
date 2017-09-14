@@ -1,0 +1,47 @@
+.tab {
+	padding: 10px;
+	border: 1px solid #eeeeee;
+	border-width: 0 0 1px 1px;
+	background: #ffffff;
+  }
+  
+  .tab i:hover {
+	cursor:pointer;
+  }
+  
+  .active {
+	box-shadow: 0px 0px #ffffff;
+	background-color: #f9f9f9;
+  }
+  
+  .last {
+	border-radius: 0 0 0 15%;
+	box-shadow: 0 5px 5px #d9d9d9;
+  }
+  
+  #close-control {
+	top: 0;
+	right: 0;
+	z-index: 2001;
+	position: absolute;
+	border-radius: 0 0 0 15%;
+	background: none;
+	border-width: 0px;
+  }
+  .alternate-tabs .tab {
+	float:left;
+	height: 25px;
+	width: 51px;
+	padding: 10px 0 10px 26px;
+  }
+  
+  .alternate-tabs .active {
+	border-bottom-width: 0px;
+	box-shadow:0 0 #fff;
+  }
+  
+  .alternate-tabs .last {
+	border-radius: 0;
+	box-shadow: none;
+	border-right-width: 1px;
+  }

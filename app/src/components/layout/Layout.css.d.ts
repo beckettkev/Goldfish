@@ -8,3 +8,4 @@ export const removalButton: string;
 export const left: string;
 export const info: string;
 export const complete: string;
+export const currentItem: string;

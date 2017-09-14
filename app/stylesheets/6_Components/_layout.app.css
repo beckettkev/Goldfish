@@ -5,11 +5,6 @@
   	background-color: #fff;
   	cursor: move;
 }
-.sortable-item .current-item {
-	min-height:35px;
-	width:100%;
-	z-index: 2000;
-}
 .pointer-events-none {
   	pointer-events: none;
 }

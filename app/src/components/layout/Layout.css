@@ -90,6 +90,12 @@ p.info {
 	margin:0 130px;
 }
 
+.current-item {
+	min-height:35px;
+	width:100%;
+	z-index: 2000;
+}
+
 [draggable] {
   -moz-user-select: none;
   -webkit-user-select: none;

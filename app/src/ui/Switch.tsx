@@ -1,15 +1,13 @@
+/// <reference path="./../globals.d.ts"/>
+
 import * as React from 'react';
 import ClassNames from 'classnames';
 import * as style from './Switch.styles.css';
 
 import { ISwitchProps } from './ISwitch';
 
-/*const Thumb = (children:any, onMouseDown:any) => (
-  <span role='thumb' className={style.thumb} onMouseDown={onMouseDown}>{children}</span>
-);*/
-
-const Thumb = (disabled:any) => (
-  <span role='thumb' className={style.thumb} disabled={disabled}></span>
+const Thumb = (disabled:any):any => (
+  <span role='thumb' className={style.thumb}></span>
 );
 
 export default class Switch extends React.Component<ISwitchProps, {}> {

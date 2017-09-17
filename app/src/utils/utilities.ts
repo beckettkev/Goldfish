@@ -77,6 +77,9 @@ export let Utils: any = {
     return str.replace('amp;', '');
   },
   getTrimmedString: function getTrimmedString(s: string, limit: number): string {
+    if (typeof s === 'undefined') {
+      return '';
+    }
     // check for null and undefined with a double equals
     let timmed = s === null ? '' : s;
 

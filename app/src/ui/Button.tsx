@@ -40,12 +40,5 @@ export default class Button extends React.Component<IButtonProps, {}> {
         { children }
       </button>
     );
-
-    /*return React.createElement(
-      child,
-      props,
-      icon ? <span className="material-icons">{icon}</span> : null,
-      children
-    );*/
   }
 }

@@ -14,7 +14,7 @@ export default {
     let component: any = document.getElementById('component-holder');
     let holder: any = document.getElementById('outer-space');
 
-    holder.className = 'animated bounceOutRight';
+    holder.className = 'slideRightOut10';
 
     // If snappy is set, we need to turn it off when closing the app
     if (typeof window.Goldfish.options.snappy !== 'undefined') {

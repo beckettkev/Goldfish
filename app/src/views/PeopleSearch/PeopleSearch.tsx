@@ -1,3 +1,5 @@
+/// <reference path="./../../globals.d.ts"/>
+
 import * as React from 'react';
 import * as styles from './PeopleSearch.css';
 import { Utils } from '../../utils/utilities';
@@ -15,6 +17,8 @@ import LayoutStore from '../../stores/LayoutStore';
 import PeopleSearchActions from '../../actions/PeopleSearchActions';
 import SettingsManager from '../../utils/settings';
 import Exporter from '../../utils/exporter';
+import { Nav, INavProps } from 'office-ui-fabric-react/lib/Nav';
+import { Layer } from 'office-ui-fabric-react/lib/Layer';
 
 import { IPeopleSearchProps, IPeopleSearchState } from "./IPeopleSearch";
 
@@ -263,6 +267,10 @@ class PeopleSearch extends React.Component<IPeopleSearchProps, IPeopleSearchStat
     } as IPeopleSearchState;
   }
 
+  private _onClosePanel = () => {
+    this.setState({ showPanel: false });
+  }
+
   public render():JSX.Element {
     if (this.state === null) {
       this.componentDidUpdate();
@@ -274,73 +282,76 @@ class PeopleSearch extends React.Component<IPeopleSearchProps, IPeopleSearchStat
     const inlineStyles:any = alternateMenu !== '' ? { paddingTop: '45px' } : { paddingTop: '0' };
 
     return (
-        <div id="outer-space" key="outer-space" className="goldfishSnapRight animated bounceInRight">
+      <div id="outer-space" className="outer-space">
+          <div
+            className="goldfishSnapRight animated bounceInRight"
+          >
+              <Menu
+                onExport={this.onExport}
+                alternate={alternateMenu} />
 
-          <Menu
-            onExport={this.onExport}
-            alternate={alternateMenu} />
+              <div id="component" style={inlineStyles} className="gf-component ms-Grid">
+                <div className="ms-Grid-row">
 
-          <div id="component" className={styles.component} style={inlineStyles}>
-            <div className={styles.container}>
+                  <Title
+                    text={this.props.options.title} />
 
-              <Title
-                text={this.props.options.title} />
+                </div>
+                <div className="content ms-Grid-row">
+                  <div className="ms-Grid-col ms-sm10 ms-md10 ms-lg10">
 
-            </div>
-            <div className="content">
-              <div className={`ui center aligned ${styles.container}`}>
+                    <Search
+                      onSearchChanged={this.onSearch.bind(this)}
+                      onSearching={this.onSearching.bind(this)}
+                      properties={this.props.options.properties}
+                      settings={this.state.settings}
+                      termsets={this.state.termsets}
+                      userInformationFields={this.state.userInformationFields} />
 
-                <Search
-                  onSearchChanged={this.onSearch.bind(this)}
-                  onSearching={this.onSearching.bind(this)}
-                  properties={this.props.options.properties}
-                  settings={this.state.settings}
-                  termsets={this.state.termsets}
-                  userInformationFields={this.state.userInformationFields} />
+                  </div>
+                </div>
+                <div className="content ms-Grid-row" id="component-vision">
 
+                  {this.renderPaging()}
+
+                  <Results
+                    items={this.state.items}
+                    term={this.state.term}
+                    refresh={this.state.refresh}
+                    onRefreshFinish={this.onRefreshFinish.bind(this)}
+                    searching={this.state.searching}
+                    favourites={this.state.favourites}
+                    layout={this.state.layout}
+                    onLayoutChange={this.onLayoutChange.bind(this)}
+                    onFavouritesChange={this.onFavouritesChange.bind(this)}
+                    onItemUpdate={this.onItemUpdate.bind(this)} />
+
+                  {this.infiniteScroll()}
+
+                  {this.renderPaging()}
+
+                </div>
               </div>
-            </div>
-            <div className={`content ${styles.everythingWorthWhile}`} id="component-vision">
 
-              {this.renderPaging()}
-
-              <Results
-                items={this.state.items}
-                term={this.state.term}
-                refresh={this.state.refresh}
-                onRefreshFinish={this.onRefreshFinish.bind(this)}
-                searching={this.state.searching}
-                favourites={this.state.favourites}
+              <Favourites
                 layout={this.state.layout}
-                onLayoutChange={this.onLayoutChange.bind(this)}
+                title={this.props.options.title}
+                paddingTop={inlineStyles.paddingTop}
+                favourites={this.state.favourites}
                 onFavouritesChange={this.onFavouritesChange.bind(this)}
                 onItemUpdate={this.onItemUpdate.bind(this)} />
 
-              {this.infiniteScroll()}
+              <Layout
+                title={this.props.options.title}
+                paddingTop={inlineStyles.paddingTop}
+                onLayoutChange={this.onLayoutChange.bind(this)} />
 
-              {this.renderPaging()}
-
-            </div>
-          </div>
-
-          <Favourites
-            layout={this.state.layout}
-            title={this.props.options.title}
-            paddingTop={inlineStyles.paddingTop}
-            favourites={this.state.favourites}
-            onFavouritesChange={this.onFavouritesChange.bind(this)}
-            onItemUpdate={this.onItemUpdate.bind(this)} />
-
-          <Layout
-            title={this.props.options.title}
-            paddingTop={inlineStyles.paddingTop}
-            onLayoutChange={this.onLayoutChange.bind(this)} />
-
-          <Settings
-            title={this.props.options.title}
-            paddingTop={inlineStyles.paddingTop}
-            onSettingChange={this.onSettingChange.bind(this)} />
-        </div>
+              <Settings
+                title={this.props.options.title}
+                paddingTop={inlineStyles.paddingTop}
+                onSettingChange={this.onSettingChange.bind(this)} />
+          </div>   
+      </div>
     );
   }
 }

@@ -1,3 +1,5 @@
+/// <reference path="./../../globals.d.ts"/>
+
 import * as React from 'react';
 import * as styles from './Settings.css';
 import Title from '../title/Title';
@@ -99,17 +101,17 @@ class Settings extends React.Component<ISettingsProps, ISettingsState> {
     if (this.state !== null) {
       return (
         <div id="component-settings" className={styles.component} style={settingComponentStyles}>
-          <div className={styles.container}>
+          <div className={`${styles.container} ms-Grid`}>
               <Title
                 text={this.props.title}
                 suffix="Settings" />
 
-              <p className={styles.info}>
+              <p className={`${styles.info} ms-Grid-row` }>
                 <br /><br />
                 Settings can be controlled from this page - they will be <strong>applied automatically</strong>.
               </p>
 
-              <div className={styles.checkboxHolder + ' content'}>
+              <div className={styles.checkboxHolder + ' content ms-Grid-row'}>
                 <br /><br />
 
                 <div className="switches-with-broomsticks">

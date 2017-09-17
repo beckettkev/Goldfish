@@ -1,3 +1,5 @@
+/// <reference path="./../../globals.d.ts"/>
+
 import * as React  from 'react';
 import * as styles from './Favourites.css';
 import Favourite from '../person/Person';
@@ -50,9 +52,10 @@ class Favourites extends React.Component<IFavouritesProps, IFavouritesState> {
   getFavouritesHolder():JSX.Element {
     if (this.props.favourites.length > 0) {
       return (
-        <div key="sortable-favourite-container" className={styles.sortableFavouriteContainer}>
+        <div key="sortable-favourite-container" className={`${styles.sortableFavouriteContainer} ms-Grid`}>
           <SortableItems
             name="sort-favourites"
+            className="ms-Grid-row"
             items={this.props.favourites}
             onSort={this.handleFavouriteSort}>
                 {this.props.favourites.map(this.createDraggablePinItem.bind(this))}
@@ -108,13 +111,13 @@ class Favourites extends React.Component<IFavouritesProps, IFavouritesState> {
     };
 
     return (
-      <div key="favourites-manager" id="component-favourites" className={styles.component} style={favouritesComponentStyles}>
-        <div className={styles.container}>
+      <div key="favourites-manager" id="component-favourites" className={`${styles.component} ms-Grid`} style={favouritesComponentStyles}>
+        <div className={`${styles.container} ms-Grid-row`}>
           <Title
             text={this.props.title}
             suffix="Favourites" />
         </div>
-        <div className="content">
+        <div className="content ms-Grid-row">
             {this.getFavouritesHolder()}
 
             {this.createEmptyResultsMessage(this.props.favourites.length)}

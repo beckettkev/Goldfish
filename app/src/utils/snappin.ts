@@ -182,10 +182,10 @@ export default class Snappin {
       this.setBounds(el, 0, 0, window.innerWidth, this.minHeight);
     } else if (this.b.left < this.margins) {
       region = 'left';
-      this.setBounds(el, 0, leftRightTopOffset, 410, 'auto');
+      this.setBounds(el, 0, leftRightTopOffset, 450, window.innerHeight);
     } else if (this.b.right > this.rightScreenEdge) {
       region = 'right';
-      this.setBounds(el, window.innerWidth - 410, leftRightTopOffset, 410, 'auto');
+      this.setBounds(el, window.innerWidth - 450, leftRightTopOffset, 450, window.innerHeight);
     } else if (this.b.bottom > this.bottomScreenEdge) {
       region = 'bottom';
       this.setBounds(el, 0, window.innerHeight - this.minHeight, window.innerWidth, this.minHeight);
@@ -344,8 +344,10 @@ export default class Snappin {
         console.log('Goldfish.ResizeSnapin Please provide the clickers parameter (array) when calling the ResizeSnappin extension. Exiting...');
       }
     } else {
+      let that: any = this;
+
       this.ticker = window.setTimeout(() => {
-        this.Start(el, ghost, clickerElements);
+        that.start(el, ghost, clickerElements);
       }, 1000);
     }
   }

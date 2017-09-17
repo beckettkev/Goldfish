@@ -1,9 +1,13 @@
+/// <reference path="./../../globals.d.ts"/>
+
 import * as React  from 'react';
 import * as styles from './Layout.css';
 import Title from '../title/Title';
 import Available from '../available/Available';
-import Button from '../../ui/Button';
-import {SortableItems, SortableItem} from 'react-sortable-component';
+import { SortableItems, SortableItem } from 'react-sortable-component';
+import { IconButton } from 'office-ui-fabric-react/lib/Button';
+import { IDropdownOption } from 'office-ui-fabric-react/lib/Dropdown';
+import { Icon } from 'office-ui-fabric-react/lib/icon';
 import LayoutStore from '../../stores/LayoutStore';
 import PeopleSearchActions from '../../actions/PeopleSearchActions';
 
@@ -19,14 +23,14 @@ function getLayoutState():any {
 function filterFromCurrentLayout(newLayouts:Array<any>, current:Array<any>, available:Array<any>):Array<any> {
   const joined:Array<any> = current.concat(available);
 
-  return newLayouts.filter((item:any) => joined.every((existing:any) => existing.label !== item.label ));
+  return newLayouts.filter((item:any) => joined.every((existing:any) => existing.text !== item.text ));
 }
 
 function joinAndSortLayoutArray(source:Array<any>, target:Array<any>):Array<any> {
   return source.concat(target).sort((a:any, b:any) => {
-    if (b.label < a.label) {
+    if (b.text < a.text) {
       return 1;
-    } else if (b.label > a.label) {
+    } else if (b.text > a.text) {
       return -1;
     }
 
@@ -37,6 +41,8 @@ function joinAndSortLayoutArray(source:Array<any>, target:Array<any>):Array<any>
 class Layout extends React.Component<ILayoutProps, ILayoutState> {
   constructor(props:ILayoutProps) {
     super(props);
+
+    this.onFieldAddClick = this.onFieldAddClick.bind(this);
 
     PeopleSearchActions.fetchLayout();
 
@@ -61,8 +67,8 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
     }
   }
 
-  onFieldAddClick(option:string):void {
-    const field:any = this.state.layout.available.filter((el:any) => el.label === option)[0];
+  onFieldAddClick(option:IDropdownOption):void {
+    const field:IDropdownOption = this.state.layout.available.filter((f:any) => f === option)[0];
 
     this.state.layout.current.push(field);
 
@@ -91,13 +97,13 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
     if (typeof available !== 'undefined') {
       if (available.length > 0) {
         return (
-          <div key="available">
-            <p className={styles.info}>
+          <div key="available" className="ms-Grid">
+            <p className={`${styles.info} ms-Grid-row`}>
               <strong>Add</strong> additional items to the layout.
             </p>
             <Available
               options={available}
-              onChange={this.onFieldAddClick.bind(this)} />
+              onChange={this.onFieldAddClick} />
           </div>
         );
       }
@@ -111,10 +117,11 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
               <div className="content">
                 <p className={styles.info}><strong>Re-order</strong> and <strong>remove</strong> items from the layout.</p>
 
-                <div key="current-layout-fields" className={styles.sortableContainer}>
+                <div key="current-layout-fields" className={`${styles.sortableContainer} ms-Grid`}>
                   <SortableItems
                     name="sort-current"
                     items={current}
+                    className="ms-Grid-row"
                     onSort={this.handleLayoutSort.bind(this)}>
                     {current.map(this.createLayoutItems.bind(this, 'current'))}
                   </SortableItems>
@@ -125,19 +132,29 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
     }
   }
 
-  createLayoutItems(type:string, field:any, i:number):JSX.Element {
+  createLayoutItems(type:string, field:IDropdownOption, i:number):JSX.Element {
     return (
-      <SortableItem key={'layout-' + i} className="animated flipInX">
+      <SortableItem key={'layout-' + i} className="ms-Grid-row slideDownIn10">
         <div className={styles.currentItem}>
+          <Icon
+            style={ { marginRight: '8px' } }
+            iconName={ field.data.icon }
+            aria-hidden='true'
+            title={ field.data.icon }
+          />
           <div key={i}>
-            {field.label}
+            {field.text}
           </div>
           <div className={styles.removalButton}>
-            <Button
-              icon="remove"
-              key={i}
+            <IconButton
+              key={`layout-item-${i}`}
               onClick={this.onFieldRemoveClick.bind(this, i)}
-              floating accent mini />
+              iconProps={
+                { 
+                  iconName: 'Remove' 
+                } 
+              }
+              title="Remove item" />
           </div>
         </div>
       </SortableItem>
@@ -183,8 +200,8 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
       };
 
       return (
-        <div id="component-layout" className={styles.component} style={layoutComponentStyles}>
-          <div className={styles.container}>
+        <div id="component-layout" className={`${styles.component}`} style={layoutComponentStyles}>
+          <div className={`${styles.container} ms-Grid`}>
             <Title
               text={this.props.title}
               suffix="Layout" />

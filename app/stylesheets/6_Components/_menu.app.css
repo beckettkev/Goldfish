@@ -1,32 +1,32 @@
-.tab {
-	padding: 10px;
-	border: 1px solid #eeeeee;
-	border-width: 0 0 1px 1px;
-	background: #ffffff;
+	.tab {
+		padding: 10px;
+		border: 1px solid #eeeeee;
+		border-width: 0 0 1px 1px;
+		background: #ffffff;
   }
   
   .tab i:hover {
-	cursor:pointer;
+		cursor:pointer;
   }
   
   .active {
-	box-shadow: 0px 0px #ffffff;
-	background-color: #f9f9f9;
+		box-shadow: 0px 0px #ffffff;
+		background-color: #f9f9f9;
   }
   
   .last {
-	border-radius: 0 0 0 15%;
-	box-shadow: 0 5px 5px #d9d9d9;
+		border-radius: 0 0 0 15%;
+		box-shadow: 0 5px 5px #d9d9d9;
   }
   
   #close-control {
-	top: 0;
-	right: 0;
-	z-index: 2001;
-	position: absolute;
-	border-radius: 0 0 0 15%;
-	background: none;
-	border-width: 0px;
+		top: 0;
+		right: 0;
+		z-index: 2001;
+		position: absolute;
+		border-radius: 0 0 0 15%;
+		background: none;
+		border-width: 0px;
   }
   .alternate-tabs .tab {
 	float:left;

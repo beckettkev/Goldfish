@@ -1,22 +1,6 @@
-#component-ghostpane {
-  background: #999;
-  opacity: 0.2;
+/*
 
-  width: 45%;
-  height: 45%;
-  top: 20%;
-  left: 20%;
-
-  position: absolute;
-  margin: 0;
-  padding: 0;
-  z-index: 1999;
-
-  -webkit-transition: all 0.25s ease-in-out;
-  transition: all 0.25s ease-in-out;
-}
-
-.material-icons {
+:global(.material-icons) {
   font-family: 'Material Icons';
   font-weight: normal;
   font-style: normal;
@@ -30,16 +14,14 @@
   direction: ltr;
   -webkit-font-feature-settings: 'liga';
   -webkit-font-smoothing: antialiased;
-}
+}*/
 
-/* Now we can start using the component */
-
-.PeopleSearch_component_3NdFi {
+/* Now we can start using the component 
+.component {
   width: 400px !important;
   background-color: #f9f9f9;
   border-color: #c8c8c8;
-  -webkit-box-shadow: 0 0 18px #d9d9d9;
-          box-shadow: 0 0 18px #d9d9d9;
+  box-shadow: 0 0 18px #d9d9d9;
   position: absolute;
   right: 0px;
   overflow-x: visible;
@@ -48,14 +30,12 @@
   z-index:2000;
   direction: ltr;
 }
-
-.PeopleSearch_component_3NdFi .PeopleSearch_everything-worth-while_211d_ {
+.component .everything-worth-while {
   margin-bottom: 30px;
 }
-
-.PeopleSearch_container_3meBN {
+.container {
   width: 320px !important;
-}
+}*/
 
 .PeopleSearch_wp-holder_2hvCZ {
   height:1px;
@@ -63,28 +43,9 @@
   clear:both;
   float:none;
   display: block;
-}.Menu_component-tabs_-wGQq {
-  position: absolute;
-  height: 210px;
-  z-index: 2001;
-  width: 45px;
-  padding: 20px 0 20px 5px;
-  top: -20px;
-  right: 400px;
-}
-
-.Menu_alternate-tabs_VO0NY {
-  padding: 20px 0 20px 5px;
-  right:51px;
-  width:350px;
-  height:50px;
-}
-
-.Menu_alternate-tabs_VO0NY + div {
-  right:20px !important;
-  top:1px !important;
-}
-div.search_search-container_3GzFF {
+}.Menu_menu_eNvQL {
+  float: right;
+}div.search_search-container_3GzFF {
 	margin: 0 0 0 20px;
 	width: 360px;
 	border-top: 1px solid #cccccc;

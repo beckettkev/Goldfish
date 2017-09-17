@@ -1,21 +1,6 @@
-.component-tabs {
+.menu {
   position: absolute;
-  height: 210px;
-  z-index: 2001;
-  width: 45px;
-  padding: 20px 0 20px 5px;
-  top: -20px;
-  right: 400px;
-}
-
-.alternate-tabs {
-  padding: 20px 0 20px 5px;
-  right:51px;
-  width:350px;
-  height:50px;
-}
-
-.alternate-tabs + div {
-  right:20px !important;
-  top:1px !important;
+  top: 0;
+  right: 0;
+  z-index: 50000;
 }

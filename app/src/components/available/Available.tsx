@@ -1,28 +1,67 @@
+/// <reference path="./../../globals.d.ts"/>
+
 import * as React from 'react';
+import { Dropdown, DropdownMenuItemType, IDropdownOption, IDropdownProps } from 'office-ui-fabric-react/lib/Dropdown';
+import { Icon } from 'office-ui-fabric-react/lib/icon';
 import Suggest from '../suggest/Suggest';
 import * as styles from './Available.css';
-
 import { IAvailableProps } from "./IAvailable";
 
 class Available extends React.Component<IAvailableProps, {}> {
   constructor(props:IAvailableProps) {
     super(props);
+  
+    this._change = this._change.bind(this);
   }
 
-  change(option:any):void {
-    if (option.label !== 'Add a field...') {
+  _change(option: IDropdownOption, index?: number):void {
+    if (option.text !== 'Add a field...') {
       this.props.onChange(option);
     }
   }
 
   public render():JSX.Element {
-    const transition:string = 'flipInX';
-
-    //need to repupose the auto suggest control here.
-
     return (
-      <div key="available-selector">
-        
+      <div key="available-selector" className="ms-Grid-row">
+        <Dropdown
+          placeHolder='Select an Option'
+          id='available-properties'
+          ariaLabel='Available properties'
+          onChanged={this._change}
+          onRenderPlaceHolder={ this._onRenderPlaceHolder }
+          onRenderTitle={ this._onRenderOption }
+          onRenderOption={ this._onRenderOption }
+          options={this.props.options}
+        />
+      </div>
+    );
+  }
+
+  private _onRenderOption = (option: IDropdownOption): JSX.Element => {
+    return (
+      <div className='available-property-option'>
+        { option.data && option.data.icon &&
+          <Icon
+            style={ { marginRight: '8px' } }
+            iconName={ option.data.icon }
+            aria-hidden='true'
+            title={ option.data.icon }
+          />
+        }
+        <span>{ option.text }</span>
+      </div>
+    );
+  }
+
+  private _onRenderPlaceHolder = (props: IDropdownProps): JSX.Element => {
+    return (
+      <div className='dropdownExample-placeholder'>
+        <Icon
+          style={ { marginRight: '8px' } }
+          iconName={ 'MessageFill' }
+          aria-hidden='true'
+        />
+        <span>{ props.placeHolder }</span>
       </div>
     );
   }

@@ -1,3 +1,5 @@
+/// <reference path="./../../globals.d.ts"/>
+
 import * as React from 'react';
 import * as styles from './Title.css';
 
@@ -14,8 +16,8 @@ class Title extends React.Component<ITitleProps, ITitleState> {
     title = title + (typeof this.props.suffix !== 'undefined' ? ' ' + this.props.suffix : '');
 
     return (
-      <div className={styles.titleContainer} id={`dragSnapin${title.replace(/ /g, '')}`}>
-        <span className={`o365-NFP-title o365cs-lightFont ${styles.titleFont}`}>
+      <div className={`${styles.titleContainer} ms-Grid-row`} id={`dragSnapin${title.replace(/ /g, '')}`}>
+        <span className={`ms-font-xxl ${styles.titleFont}`}>
           {title}
         </span>
       </div>

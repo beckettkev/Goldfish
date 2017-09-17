@@ -1,2 +1,1 @@
-export const componentTabs: string;
-export const alternateTabs: string;
+export const menu: string;

@@ -1,3 +1,5 @@
+/// <reference path="./../../globals.d.ts"/>
+
 /* eslint no-unused-vars: 0 */
 import * as React from 'react';
 

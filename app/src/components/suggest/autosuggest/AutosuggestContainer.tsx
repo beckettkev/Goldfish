@@ -1,4 +1,6 @@
 //https://github.com/reactjs/react-autocomplete/blob/master/LICENSE
+/// <reference path="./../../../globals.d.ts"/>
+
 import * as React from 'react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';

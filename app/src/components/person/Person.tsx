@@ -1,10 +1,12 @@
+/// <reference path="./../../globals.d.ts"/>
+
 import * as React  from 'react';
 import * as styles from './Person.css';
 import Persona from '../persona/Persona';
 import Row from '../row/Row';
 import FavouriteStore from '../../stores/FavouriteStore';
 import PeopleSearchActions from '../../actions/PeopleSearchActions';
-import Button from '../../ui/Button';
+import { IconButton } from 'office-ui-fabric-react/lib/Button';
 import * as FileSaver from '../../data/filesaver';
 import Exporter from '../../utils/exporter';
 import { DefaultConstants as Defaults } from '../../constants/default';
@@ -62,27 +64,38 @@ class Person extends React.Component<IPersonProps, IPersonState> {
   getFavouriteButton(person:any, index:string):JSX.Element {
     const current:any = this.isFavouriteButtonActive(person);
     const icon:string = current.pinned ? styles.remove : styles.add;
-    const bindClick:Function = this.onFavouriteClick.bind(this, person.items, icon, index);
+    const bindClick:any = this.onFavouriteClick.bind(this, person.items, icon, index);
 
     // otherwise show the favourite pin button
     return (
       <div key={'item-favourite-button'} className={icon}>
-        <Button
-          icon={icon}
-          onClick={bindClick}
-          floating accent mini
-          disabled={current.disabled} />
+        <IconButton
+            onClick={bindClick}
+            iconProps={
+              { 
+                iconName: current.pinned ? 'Remove' : 'Add' 
+              } 
+            }
+            title={current.pinned ? 'Remove' : 'Add'}
+            disabled={current.disabled} />
       </div>
     );
   }
 
-  getButton(key:string, icon:string, callback: Function):JSX.Element {
+  getButton(key:string, icon:string, callback: any):JSX.Element {
     return (
       <span key={'command-' + key} className={styles.command + ' commandor'}>
-        <Button
-          icon={icon}
-          floating accent mini
-          onClick={callback} />
+        <IconButton
+          onClick={callback}
+          iconProps={
+            { 
+              iconName: icon 
+            } 
+          }
+          style={{
+            backgroundColor: '#ffffff !important',
+            border: 0
+          }} />
       </span>
     );
   }
@@ -93,17 +106,31 @@ class Person extends React.Component<IPersonProps, IPersonState> {
     const card:any = this.information(person, layout);
 
     return (
-      <div key={'item-details-' + index}>
-        {this.personaImage(person, index)}
-        {card}
-        <div className={styles.buttons}>
-          {this.everything(person, index)}
-          {this.documents(person, index)}
-          {this.yammer(person, index)}
-          {this.exportOutlookCard(person, index)}
+      <div className="ms-PersonaCard ms-PersonaCard--busy" style={{float:'left'}}>
+        <div className="ms-PersonaCard-persona">
+          <div className="ms-Persona">
+              {this.personaImage(person, index)}
+          </div>
+          <div className="ms-Persona-details">
+            {card}
+          </div>
         </div>
-      </div>
-    );
+        <ul className={`ms-PersonaCard-actions ${styles.personaAction}`}>
+          <li id="search-everything" className="ms-PersonaCard-action" style={{padding:0}}>
+            {this.everything(person, index)}
+          </li>
+          <li id="search-documents" className="ms-PersonaCard-action" style={{padding:0}}>
+            {this.documents(person, index)}
+          </li>
+          <li id="search-yammer" className="ms-PersonaCard-action" style={{padding:0}}>
+            {this.yammer(person, index)}
+          </li>
+          <li id="export-contact" className="ms-PersonaCard-action" style={{padding:0}}>
+            {this.exportOutlookCard(person, index)}
+          </li>
+        </ul>
+       </div>
+      );
   }
 
   information(person:any, layout:Array<any>):Array<JSX.Element> {
@@ -123,26 +150,26 @@ class Person extends React.Component<IPersonProps, IPersonState> {
   documents(person:any, key:string):JSX.Element {
     const click:Function = this.onSearchByManagedProperty.bind(this, person.items.Cells.PreferredName, 'IsDocument:1 Author:');
 
-    return this.getButton(`documents-${key}`, 'insert_drive_file', click);
+    return this.getButton(`documents-${key}`, 'DocumentSearch', click);
   }
 
   // TODO refactor these common templates into a single method
   everything(person:any, key:string):JSX.Element {
     const click:Function = this.onSearchByManagedProperty.bind(this, person.items.Cells.PreferredName, 'Author:');
 
-    return this.getButton(`everything-${key}`, 'share', click);
+    return this.getButton(`everything-${key}`, 'Search', click);
   }
 
   yammer(person:any, key:string):JSX.Element {
     const click:Function = this.onYammerSearch.bind(this, person.items.Cells.PreferredName);
 
-    return this.getButton(`yammer-${key}`, 'comment', click);
+    return this.getButton(`yammer-${key}`, 'YammerLogo', click);
   }
 
   exportOutlookCard(person:any, key:string):JSX.Element {
     const click:Function = this.onOutlookExportCard.bind(this, person.items.Cells);
 
-    return this.getButton(`outlook-${key}`, 'contact_mail', click);
+    return this.getButton(`outlook-${key}`, 'OutlookLogo', click);
   }
 
   personaImage(person:any, key:string):JSX.Element {
@@ -189,7 +216,6 @@ class Person extends React.Component<IPersonProps, IPersonState> {
 
     return (
       <span key={'person-' + this.props.id} ref="person">
-        {this.getFavouriteButton(person, `${this.props.id}`)}
         <div className={styles.item}>
           {this.getPerson(person, `${this.props.id}`)}
         </div>

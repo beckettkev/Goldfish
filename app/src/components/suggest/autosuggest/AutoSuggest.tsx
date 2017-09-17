@@ -1,4 +1,6 @@
 //https://github.com/moroshko/react-autosuggest/blob/master/LICENSE
+/// <reference path="./../../../globals.d.ts"/>
+
 import * as React from 'react';
 import { inputFocused, inputBlurred, inputChanged, updateFocusedSuggestion,
 				 revealSuggestions, closeSuggestions } from './reducerAndActions';

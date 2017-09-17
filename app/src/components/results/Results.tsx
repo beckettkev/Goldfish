@@ -1,3 +1,5 @@
+/// <reference path="./../../globals.d.ts"/>
+
 import * as React from 'react';
 import * as styles from './Results.css';
 import Person from '../person/Person';
@@ -41,7 +43,7 @@ class Results extends React.Component<IResultsProps, IResultsState> {
   createItem(item:any, i:number):JSX.Element {
     // This function gets called for every search result and renders a person component
     return (
-      <div className={styles.itemContainer + ' animated flipInX person-card'} key={'result-item-' + i} style={this.getPersonCardHeightFromLayoutCurrent()}>
+      <div className={`${styles.itemContainer} slideDownIn10 person-card ms-Grid-row`} key={'result-item-' + i}>
         <div className={styles.resultsItems + ' item ms-bgc-w ms-bcl-nl o365cs-notifications-message'}>
           <Person
             data={item}
@@ -72,8 +74,8 @@ class Results extends React.Component<IResultsProps, IResultsState> {
 
   public render():JSX.Element {
     return (
-      <div id="component-results" className={styles.resultsContainer + ' o365-NFP-section'}>
-        <div className={styles.results + ' o365cs-notifications-notificationsContent person-card-holder'}>
+      <div id="component-results" className={`${styles.resultsContainer} o365-NFP-section`}>
+        <div className={styles.results + ' ms-Grid person-card-holder'}>
           {this.props.items.map(this.createItem.bind(this))}
         </div>
         {this.progressSpinner()}

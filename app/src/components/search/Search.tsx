@@ -1,3 +1,5 @@
+/// <reference path="./../../globals.d.ts"/>
+
 import * as React from 'react';
 import * as styles from './search.css';
 import Suggest from '../suggest/Suggest';
@@ -68,7 +70,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
     return (
       <input
         key="search-input-basic"
-        className="animated flipInX"
+        className="slideDownIn10"
         type="text"
         placeholder="Search for a colleague..."
         onKeyDown={this.onkeyDown.bind(this)} />

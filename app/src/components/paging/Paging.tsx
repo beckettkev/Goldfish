@@ -1,10 +1,12 @@
+/// <reference path="./../../globals.d.ts"/>
+
 /* eslint no-script-url: 0 */
 import * as React  from 'react';
 import * as styles from './Paging.css';
 import { Utils } from '../../utils/utilities';
 import SearchStore from '../../stores/SearchStore';
 import PeopleSearchActions from '../../actions/PeopleSearchActions';
-import Button from '../../ui/Button';
+import { IconButton } from 'office-ui-fabric-react/lib/Button';
 
 import { IPagingProps, IPagingState } from './IPaging';
 
@@ -95,24 +97,30 @@ class Paging extends React.Component<IPagingProps, IPagingState> {
 
   getPreviousPageLink():JSX.Element {
     return (
-      <div key="prev" className={this.prevPageAvailable() ? styles.prevPager : styles.hidden}>
-        <Button
-          icon="chevron_left"
-          id="prev-page"
+      <div key="prev" className={this.prevPageAvailable() ? `${styles.prevPager} ms-font-s` : styles.hidden}>
+        <IconButton
           onClick={this.onPreviousPageClick.bind(this)}
-          accent raised mini />
+          iconProps={
+            { 
+              iconName: 'TriangleSolidLeft12' 
+            } 
+          }
+          title="Previous page" />
       </div>
     );
   }
 
   getNextPageLink():JSX.Element {
     return (
-      <div key="next" className={this.nextPageAvailable() ? styles.nextPager : styles.hidden}>
-        <Button
-          icon="chevron_right"
-          id="next-page"
+      <div key="next" className={this.nextPageAvailable() ? `${styles.nextPager} ms-font-s` : styles.hidden}>
+        <IconButton
           onClick={this.onNextPageClick.bind(this)}
-          accent raised mini />
+          iconProps={
+            { 
+              iconName: 'TriangleSolidRight12' 
+            } 
+          }
+          title="next page" />
       </div>
     );
   }
@@ -167,7 +175,7 @@ class Paging extends React.Component<IPagingProps, IPagingState> {
 
   render():JSX.Element {
     return (
-      <div id="component-paging" className={this.getPagingNodeCount() < 2 ? styles.pagingHidden : styles.paging}>
+      <div id="component-paging" className={this.getPagingNodeCount() < 2 ? styles.pagingHidden : `${styles.paging} ms-font-s`}>
         <span>
           {this.getPreviousPageLink()}
           {this.getPagingNodes()}

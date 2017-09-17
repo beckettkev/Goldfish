@@ -1,3 +1,5 @@
+/// <reference path="./../../globals.d.ts"/>
+
 import * as React from 'react';
 import Autosuggest from './autosuggest/AutosuggestContainer';
 import AutosuggestHighlight from 'autosuggest-highlight';
@@ -52,7 +54,7 @@ function renderSuggestion(suggestion:any, item:any):JSX.Element {
   const parts:any = AutosuggestHighlight.parse(suggestion.name, matches);
 
   return (
-    <span className="animated">
+    <span key="suggestion">
       {
         parts.map((part:any, index:number):JSX.Element => 
             <span className={part.highlight ? 'highlight' : null} key={index}>
@@ -288,7 +290,7 @@ class Suggest extends React.Component<ISuggestProps, ISuggestState> {
         <div key="autosuggest-region">
           <Autosuggest
             key="goldfish-autosuggest"
-            className="animated flipInX"
+            className="slideDownIn10"
             multiSection={true}
             suggestions={suggestions}
             onSuggestionsUpdateRequested={this.onSuggestionsUpdateRequested.bind(this)}

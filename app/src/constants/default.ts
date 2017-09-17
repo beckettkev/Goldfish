@@ -1,3 +1,5 @@
+import { DropdownMenuItemType } from 'office-ui-fabric-react/lib/Dropdown';
+
 export let DefaultConstants: any = {
   MEMBERSHIP_CLAIMS: 'i:0#.f|membership|',
   DEFAULT_COLOUR: '#3E5875',
@@ -8,6 +10,40 @@ export let DefaultConstants: any = {
   // we need some default values for the active fields in the search results
   DEFAULT_CURRENT_LAYOUT: [
     {
+      key: 'A',
+      text: 'Name (with profile link)',
+      data: { icon: 'People' },
+      template: {
+        value: 'PreferredName',
+        href: 'Path',
+        target: '_self',
+      }
+    },
+    {
+      key: 'B',
+      text: 'Job Title',
+      data: { icon: 'Work' },
+      template: {
+        value: 'JobTitle'
+      }
+    },
+    {
+      key: 'C',
+      text: 'Department',
+      data: { icon: 'LocationCircle' },
+      template: {
+        value: 'Department'
+      }
+    },
+    {
+      key: 'D',
+      text: 'Telephone Number',
+      data: { icon: 'AddPhone' },
+      template: {
+        value: 'WorkPhone'
+      }
+    }
+    /*{
       label: 'Name (with profile link)',
       value: 'Name (with profile link)',
       key: 0,
@@ -41,12 +77,57 @@ export let DefaultConstants: any = {
         value: 'WorkPhone',
         icon: 'call',
       },
-    },
+    },*/
   ],
   // we need some default values for the available but unused fields for the search results
   DEFAULT_AVAILABLE_LAYOUT: [
+    { key: 'Header', text: 'People Fields', itemType: DropdownMenuItemType.Header },
     {
-      label: 'Name (with email link)',
+      key: 'E',
+      text: 'Name (with email link)',
+      data: { icon: 'OutlookLogo' },
+      template: {
+        value: 'PreferredName',
+        href: 'WorkEmail',
+        target: '_blank',
+      }
+    },
+    {
+      key: 'F',
+      text: 'Name',
+      data: { icon: 'PeopleAdd' },
+      template: {
+        value: 'PreferredName'
+      }
+    },
+    {
+      key: 'G',
+      text: 'Office',
+      data: { icon: 'Room' },
+      template: {
+        value: 'BaseOfficeLocation'
+      }
+    },
+    {
+      key: 'H',
+      text: 'Mobile Number',
+      data: { icon: 'CellPhone' },
+      template: {
+        value: 'MobileNumber'
+      }
+    },
+    {
+      key: 'I',
+      text: 'Email',
+      data: { icon: 'OutlookLogo' },
+      template: {
+        value: 'WorkEmail',
+        href: 'WorkEmail',
+        target: '_blank',
+      }
+    }
+    /*{
+      label: '',
       value: 'Name (with email link)',
       key: 4,
       template: {
@@ -89,7 +170,7 @@ export let DefaultConstants: any = {
         href: 'WorkEmail',
         target: '_blank',
       },
-    },
+    },*/
   ],
   // we need some default values for the app settings
   DEFAULT_SETTINGS: [

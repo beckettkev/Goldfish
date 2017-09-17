@@ -1,3 +1,5 @@
+/// <reference path="./../../globals.d.ts"/>
+
 import * as React  from 'react';
 import * as styles from './Row.css';
 import { Utils } from '../../utils/utilities';

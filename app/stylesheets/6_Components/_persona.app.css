@@ -73,9 +73,9 @@
   overflow: hidden;
 }
 
-.ms-Persona-primaryText),
-.ms-Persona-secondaryText),
-.ms-Persona-tertiaryText),
+.ms-Persona-primaryText,
+.ms-Persona-secondaryText,
+.ms-Persona-tertiaryText,
 .ms-Persona-optionalText {
   display: block;
   white-space: nowrap;
@@ -92,8 +92,8 @@
   line-height: 1.4;
 }
 
-.ms-Persona-secondaryText),
-.ms-Persona-tertiaryText),
+.ms-Persona-secondaryText,
+.ms-Persona-tertiaryText,
 .ms-Persona-optionalText {
   color: #666666;
   font-family: 'Segoe UI Regular WestEuropean', 'Segoe UI', 'Segoe WP', Tahoma, Arial, sans-serif;
@@ -106,7 +106,7 @@
   padding-top: 3px;
 }
 
-.ms-Persona-tertiaryText),
+.ms-Persona-tertiaryText,
 .ms-Persona-optionalText {
   padding-top: 5px;
   display: none;
@@ -175,7 +175,7 @@
   top: 10px;
 }
 
-.ms-Persona.ms-Persona--xs .ms-Persona-imageArea),
+.ms-Persona.ms-Persona--xs .ms-Persona-imageArea,
 .ms-Persona.ms-Persona--xs .ms-Persona-image {
   width: 70px;
   height: 70px;
@@ -209,7 +209,7 @@
   left: 0;
 }
 
-.ms-Persona.ms-Persona--sm .ms-Persona-imageArea),
+.ms-Persona.ms-Persona--sm .ms-Persona-imageArea,
 .ms-Persona.ms-Persona--sm .ms-Persona-image {
   width: 40px;
   height: 40px;
@@ -232,7 +232,7 @@
   font-size: 14px;
 }
 
-.ms-Persona.ms-Persona--sm .ms-Persona-primaryText),
+.ms-Persona.ms-Persona--sm .ms-Persona-primaryText,
 .ms-Persona.ms-Persona--sm .ms-Persona-secondaryText {
   padding-top: 1px;
 }
@@ -243,7 +243,7 @@
   left: 0;
 }
 
-.ms-Persona.ms-Persona--lg .ms-Persona-imageArea),
+.ms-Persona.ms-Persona--lg .ms-Persona-imageArea,
 .ms-Persona.ms-Persona--lg .ms-Persona-image {
   width: 72px;
   height: 72px;
@@ -276,7 +276,7 @@
   left: 0;
 }
 
-.ms-Persona.ms-Persona--xl .ms-Persona-imageArea),
+.ms-Persona.ms-Persona--xl .ms-Persona-imageArea,
 .ms-Persona.ms-Persona--xl .ms-Persona-image {
   width: 100px;
   height: 100px;
@@ -307,7 +307,7 @@
   padding-top: 2px;
 }
 
-.ms-Persona.ms-Persona--xl .ms-Persona-tertiaryText),
+.ms-Persona.ms-Persona--xl .ms-Persona-tertiaryText,
 .ms-Persona.ms-Persona--xl .ms-Persona-optionalText {
   padding-top: 5px;
   display: block;
@@ -323,8 +323,8 @@
   color: #212121;
 }
 
-.ms-Persona.ms-Persona--darkText .ms-Persona-secondaryText),
-.ms-Persona.ms-Persona--darkText .ms-Persona-tertiaryText),
+.ms-Persona.ms-Persona--darkText .ms-Persona-secondaryText,
+.ms-Persona.ms-Persona--darkText .ms-Persona-tertiaryText,
 .ms-Persona.ms-Persona--darkText .ms-Persona-optionalText {
   color: #333333;
 }
@@ -334,7 +334,7 @@
   padding: 0 10px;
 }
 
-.ms-Persona.ms-Persona--selectable:not(.ms-Persona--xl):hover),
+.ms-Persona.ms-Persona--selectable:not(.ms-Persona--xl):hover,
 .ms-Persona.ms-Persona--selectable:not(.ms-Persona--xl):focus {
   background-color: #deecf9;
   outline: 1px solid transparent;

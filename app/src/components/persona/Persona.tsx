@@ -1,3 +1,5 @@
+/// <reference path="./../../globals.d.ts"/>
+
 import * as React from 'react';
 import './lync';
 
@@ -63,8 +65,8 @@ class Persona extends React.Component<IPersonaProps, IPersonaState> {
 
       return (
         <div className="contact" title={this.state.name}>
-          <div className={`ms-Persona ms-Persona--square ${presence} ms-Persona--xs`}>
-            <div className="ms-Persona-imageArea">
+          <div className={`ms-Persona ms-Persona--square ${presence} ms-Persona--xs`} style={{marginLeft:'10px'}}>
+            <div className="ms-Persona-imageArea" style={{ marginTop:0, marginLeft:0 }}>
               <i className="ms-Persona-placeholder ms-Icon ms-Icon--person"></i>
                 <img className="ms-Persona-image" src={img} />
             </div>

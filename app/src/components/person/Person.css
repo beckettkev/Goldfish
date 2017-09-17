@@ -2,7 +2,8 @@
 	font-size: 14px;
 	background-color: #ffffff;
 	min-height: 105px;
-	z-index:2000;
+	z-index: 2000;
+	box-shadow: 0px 4px 12px #d9d9d9;
 }
 
 .item span {
@@ -87,4 +88,10 @@ div.buttons {
 .command button span {
 	line-height: 1 !important;
 	margin-right: 0px !important;
+}
+.persona-action {
+	width: 100%;
+    float: left;
+	border-top: 1px solid #dedede;
+	padding-left: 10px;
 }

@@ -3,7 +3,7 @@
 import * as React  from 'react';
 import * as styles from './Menu.css';
 import MenuManager from '../../utils/menu';
-import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
+import { DefaultButton, IconButton } from 'office-ui-fabric-react/lib/Button';
 import { ContextualMenu, ContextualMenuItemType, DirectionalHint } from 'office-ui-fabric-react/lib/ContextualMenu';
 import { getRTL } from 'office-ui-fabric-react/lib/Utilities';
 
@@ -57,6 +57,15 @@ class Menu extends React.Component<IMenuProps, IMenuState> {
   public render():JSX.Element {
     return (
       <div key="menu-items" className={styles.menu} id="menu-items">
+          <IconButton 
+            id='move'
+            className={styles.mover}
+            iconProps={
+              { 
+                iconName: 'Move' 
+              } 
+            }
+            onClick={()=>{}} /> 
         { this.state.isContextMenuVisible ? (
           <ContextualMenu
             shouldFocusOnMount={ true }

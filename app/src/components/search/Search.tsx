@@ -70,7 +70,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
     return (
       <input
         key="search-input-basic"
-        className="slideDownIn10"
+        className="ms-slideDownIn10"
         type="text"
         placeholder="Search for a colleague..."
         onKeyDown={this.onkeyDown.bind(this)} />

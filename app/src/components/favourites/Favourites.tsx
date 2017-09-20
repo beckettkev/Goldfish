@@ -111,13 +111,13 @@ class Favourites extends React.Component<IFavouritesProps, IFavouritesState> {
     };
 
     return (
-      <div key="favourites-manager" id="component-favourites" className={`${styles.component} ms-Grid`} style={favouritesComponentStyles}>
+      <div key="favourites-manager" id="component-favourites" className={`gf-component ms-Grid`} style={favouritesComponentStyles}>
         <div className={`${styles.container} ms-Grid-row`}>
           <Title
             text={this.props.title}
             suffix="Favourites" />
         </div>
-        <div className="content ms-Grid-row">
+        <div className="content ms-font-s">
             {this.getFavouritesHolder()}
 
             {this.createEmptyResultsMessage(this.props.favourites.length)}

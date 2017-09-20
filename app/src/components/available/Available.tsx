@@ -22,9 +22,9 @@ class Available extends React.Component<IAvailableProps, {}> {
 
   public render():JSX.Element {
     return (
-      <div key="available-selector" className="ms-Grid-row">
+      <div key="available-selector" className="ms-Grid-row ms-font-s" style={{margin: '0 5px 0 5px'}}>
         <Dropdown
-          placeHolder='Select an Option'
+          placeHolder='Add additional items to the layout.'
           id='available-properties'
           ariaLabel='Available properties'
           onChanged={this._change}

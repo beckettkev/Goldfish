@@ -98,9 +98,6 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
       if (available.length > 0) {
         return (
           <div key="available" className="ms-Grid">
-            <p className={`${styles.info} ms-Grid-row`}>
-              <strong>Add</strong> additional items to the layout.
-            </p>
             <Available
               options={available}
               onChange={this.onFieldAddClick} />
@@ -114,14 +111,13 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
     if (typeof current !== 'undefined') {
       if (current.length > 0) {
         return (
-              <div className="content">
+              <div className="content ms-font-s">
                 <p className={styles.info}><strong>Re-order</strong> and <strong>remove</strong> items from the layout.</p>
 
                 <div key="current-layout-fields" className={`${styles.sortableContainer} ms-Grid`}>
                   <SortableItems
                     name="sort-current"
                     items={current}
-                    className="ms-Grid-row"
                     onSort={this.handleLayoutSort.bind(this)}>
                     {current.map(this.createLayoutItems.bind(this, 'current'))}
                   </SortableItems>
@@ -200,7 +196,7 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
       };
 
       return (
-        <div id="component-layout" className={`${styles.component}`} style={layoutComponentStyles}>
+        <div id="component-layout" className="gf-component" style={layoutComponentStyles}>
           <div className={`${styles.container} ms-Grid`}>
             <Title
               text={this.props.title}

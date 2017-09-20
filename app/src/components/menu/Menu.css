@@ -4,3 +4,8 @@
   right: 0;
   z-index: 50000;
 }
+
+.mover {
+  border-right: 1px solid #ffffff;
+  background-color: #808080 !important;
+}

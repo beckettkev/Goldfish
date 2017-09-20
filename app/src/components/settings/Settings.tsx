@@ -100,18 +100,18 @@ class Settings extends React.Component<ISettingsProps, ISettingsState> {
 
     if (this.state !== null) {
       return (
-        <div id="component-settings" className={styles.component} style={settingComponentStyles}>
-          <div className={`${styles.container} ms-Grid`}>
+        <div id="component-settings" className="gf-component" style={settingComponentStyles}>
+          <div className={`${styles.container}`}>
               <Title
                 text={this.props.title}
                 suffix="Settings" />
 
-              <p className={`${styles.info} ms-Grid-row` }>
+              <p className={`${styles.info} ms-font-s` }>
                 <br /><br />
                 Settings can be controlled from this page - they will be <strong>applied automatically</strong>.
               </p>
 
-              <div className={styles.checkboxHolder + ' content ms-Grid-row'}>
+              <div className={styles.checkboxHolder + ' content ms-font-s'}>
                 <br /><br />
 
                 <div className="switches-with-broomsticks">

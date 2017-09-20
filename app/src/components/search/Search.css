@@ -4,9 +4,9 @@ div.search-container {
 	border-top: 1px solid #cccccc;
 }
 div.search-container input[type=text] {
-	/*width: 318px;*/
+	padding-left: 5px;
 	width: 347px;
-  font-size: 1.3em;
+  font-size: 1.1em;
 	height: 30px;
   box-sizing: inherit;
   margin-top:15px;

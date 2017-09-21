@@ -55,7 +55,6 @@ class Favourites extends React.Component<IFavouritesProps, IFavouritesState> {
         <div key="sortable-favourite-container" className={`${styles.sortableFavouriteContainer} ms-Grid`}>
           <SortableItems
             name="sort-favourites"
-            className="ms-Grid-row"
             items={this.props.favourites}
             onSort={this.handleFavouriteSort}>
                 {this.props.favourites.map(this.createDraggablePinItem.bind(this))}
@@ -86,7 +85,7 @@ class Favourites extends React.Component<IFavouritesProps, IFavouritesState> {
   const itemStyles:any = this.getCommandButtonsAvailable(this.props.layout.current) ? { paddingBottom: '50px'/*, height: this.getPersonCardHeightFromLayoutCurrent().height*/ } : { paddingBottom: '0'/*, height: this.getPersonCardHeightFromLayoutCurrent().height*/ };
 
     return (
-      <SortableItem key={item.name}>
+      <SortableItem key={item.name} style={{float:'left'}}>
         <div className={styles.sortableItemContent} style={itemStyles}>
           <Favourite
               data={item}

@@ -36,12 +36,7 @@
 
 .remove button,
 .remove input[type=button] {
-	background-color: #666666 !important;
-}
-
-.add button,
-.add input[type=button] {
-	background-color: #e51d2e !important;
+	background-color: #f9272f !important;
 }
 
 .add button,
@@ -53,6 +48,9 @@
 	width: 2rem !important;
 	height: 2rem !important;
 	font-size: 1rem;
+    position: absolute;
+    right: 0;
+    border-radius: 5px;
 }
 
 .add button span,
@@ -84,6 +82,10 @@ div.buttons {
 	width: 2.2rem !important;
 	line-height: 0.8;
 	border-radius: 10%;
+	border-width: 0px !important;
+    box-shadow: none !important;
+    background-color: #fff !important;
+    color: #000 !important;
 }
 .command button span {
 	line-height: 1 !important;

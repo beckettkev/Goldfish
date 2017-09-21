@@ -64,7 +64,8 @@ class Person extends React.Component<IPersonProps, IPersonState> {
   getFavouriteButton(person:any, index:string):JSX.Element {
     const current:any = this.isFavouriteButtonActive(person);
     const icon:string = current.pinned ? styles.remove : styles.add;
-    const bindClick:any = this.onFavouriteClick.bind(this, person.items, icon, index);
+    const action:string = current.pinned ? 'remove' : 'add';
+    const bindClick:any = this.onFavouriteClick.bind(this, person.items, action, index);
 
     // otherwise show the favourite pin button
     return (
@@ -73,10 +74,10 @@ class Person extends React.Component<IPersonProps, IPersonState> {
             onClick={bindClick}
             iconProps={
               { 
-                iconName: current.pinned ? 'Remove' : 'Add' 
+                iconName: current.pinned ? 'Unfavorite' : 'AddFavorite' 
               } 
             }
-            title={current.pinned ? 'Remove' : 'Add'}
+            title={action}
             disabled={current.disabled} />
       </div>
     );
@@ -84,7 +85,7 @@ class Person extends React.Component<IPersonProps, IPersonState> {
 
   getButton(key:string, icon:string, callback: any):JSX.Element {
     return (
-      <span key={'command-' + key} className={styles.command + ' commandor'}>
+      <span key={'command-' + key} className={`${styles.command} commandor`}>
         <IconButton
           onClick={callback}
           iconProps={
@@ -112,6 +113,7 @@ class Person extends React.Component<IPersonProps, IPersonState> {
               {this.personaImage(person, index)}
           </div>
           <div className="ms-Persona-details">
+            {this.getFavouriteButton(person, index)}
             {card}
           </div>
         </div>

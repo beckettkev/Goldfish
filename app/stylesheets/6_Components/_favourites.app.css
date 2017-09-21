@@ -6,7 +6,7 @@ div.contact {
 
 .sortable-item {
   border: 1px solid #eeeeee;
-  margin:0 10px 10px 0;
+  margin: 0 10px 10px 0;
 }
 
 .sortable-item:hover {
@@ -19,5 +19,5 @@ div.contact {
 
 div.ms-peopleux-userImgDiv, 
 div.ms-tableCell {
-  padding:0;
+  padding: 0;
 }

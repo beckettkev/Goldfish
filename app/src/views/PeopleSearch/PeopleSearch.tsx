@@ -314,8 +314,6 @@ class PeopleSearch extends React.Component<IPeopleSearchProps, IPeopleSearchStat
               </div>
               <div className="content ms-Grid-row" id="component-vision">
 
-                {this.renderPaging()}
-
                 <Results
                   items={this.state.items}
                   term={this.state.term}

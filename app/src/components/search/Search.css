@@ -9,10 +9,11 @@ div.search-container input[type=text] {
   font-size: 1.1em;
 	height: 30px;
   box-sizing: inherit;
-  margin-top:15px;
+	margin-top:15px;
 }
 div.search-container input[type=text]:focus,
 div.search-container input[type=text]:hover {
+	border-width: 1px;
 	border-color: rgb(229, 29, 46) !important;
 }
 div.search-container label {

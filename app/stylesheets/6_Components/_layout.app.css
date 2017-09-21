@@ -5,10 +5,14 @@
   	background-color: #fff;
 	cursor: move;
 	margin: 10px 0;
+	box-shadow: -1px 4px 8px 0px #f9f9f9;
 }
 .pointer-events-none {
   	pointer-events: none;
 }
 .sortable-item-over {
   	border: 1px dashed #DDD;
+}
+.ms-Dropdown-title {
+	min-height: 35px;
 }

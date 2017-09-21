@@ -27,6 +27,7 @@ class Available extends React.Component<IAvailableProps, {}> {
           placeHolder='Add additional items to the layout.'
           id='available-properties'
           ariaLabel='Available properties'
+          style={{boxShadow: '-1px 4px 8px 0px #f9f9f9'}}
           onChanged={this._change}
           onRenderPlaceHolder={ this._onRenderPlaceHolder }
           onRenderTitle={ this._onRenderOption }

@@ -83,7 +83,7 @@ class Favourites extends React.Component<IFavouritesProps, IFavouritesState> {
   }
 
   createDraggablePinItem(item:any, i:number):JSX.Element {
-    const itemStyles:any = this.getCommandButtonsAvailable(this.props.layout.current) ? { paddingBottom: '50px', height: this.getPersonCardHeightFromLayoutCurrent().height } : { paddingBottom: '0', height: this.getPersonCardHeightFromLayoutCurrent().height };
+  const itemStyles:any = this.getCommandButtonsAvailable(this.props.layout.current) ? { paddingBottom: '50px'/*, height: this.getPersonCardHeightFromLayoutCurrent().height*/ } : { paddingBottom: '0'/*, height: this.getPersonCardHeightFromLayoutCurrent().height*/ };
 
     return (
       <SortableItem key={item.name}>

@@ -55,6 +55,7 @@
 	height: 2rem !important;
 	font-size: 1rem;
 	float: left;
+	border-radius: 50%;
 }
 .sortable-container button span,
 .sortable-container input[type=button] span,
@@ -91,6 +92,7 @@ p.info {
 	min-height:35px;
 	width:100%;
 	z-index: 2000;
+	padding: 10px 0;
 }
 
 .layout-item {

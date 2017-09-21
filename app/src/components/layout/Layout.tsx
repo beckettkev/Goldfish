@@ -131,7 +131,7 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
   createLayoutItems(type:string, field:IDropdownOption, i:number):JSX.Element {
     return (
       <SortableItem key={'layout-' + i} className="ms-slideDownIn10">
-        <div className={`${styles.currentItem}`}>
+        <div className={styles.currentItem}>
           <Icon
             style={ { marginRight: '8px' } }
             iconName={ field.data.icon }

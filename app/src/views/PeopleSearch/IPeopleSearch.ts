@@ -7,7 +7,8 @@ export interface IPeopleSearchProps {
     mode?: string,
     multicolor?: boolean,
     type?: any,
-    value?: number
+    value?: number,
+    router?: any
 }
 
 export interface IPeopleSearchState {
@@ -24,5 +25,7 @@ export interface IPeopleSearchState {
     layout?: Array<any>,
     termsets?: Array<any>,
     userInformationFields?: Array<any>,
-    showPanel?: boolean
+    showPanel?: boolean,
+    navigate?: boolean,
+    route?: string
 }

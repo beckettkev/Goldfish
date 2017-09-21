@@ -18,8 +18,12 @@ import PeopleSearchActions from '../../actions/PeopleSearchActions';
 import SettingsManager from '../../utils/settings';
 import Exporter from '../../utils/exporter';
 import { Nav, INavProps } from 'office-ui-fabric-react/lib/Nav';
-import { Layer } from 'office-ui-fabric-react/lib/Layer';
-
+import {
+  BrowserRouter as Router,
+  Route,
+  Redirect,
+  Link
+} from 'react-router-dom';
 import { IPeopleSearchProps, IPeopleSearchState } from "./IPeopleSearch";
 
 function getFavouritesState():Array<any> {
@@ -50,6 +54,12 @@ class PeopleSearch extends React.Component<IPeopleSearchProps, IPeopleSearchStat
     this.setInitialState();
 
     this.applyOptions = this.applyOptions.bind(this);
+    this.onNavigationRoute = this.onNavigationRoute.bind(this);
+
+    this.searchView = this.searchView.bind(this);
+    this.favouritesView = this.favouritesView.bind(this);
+    this.settingsView = this.settingsView.bind(this);
+    this.layoutsView = this.layoutsView.bind(this);
 
     // if the app position is moved reset to default state
     document.addEventListener('Goldfish.Snappin', this.resetWayPointAfterPositioning, false);
@@ -61,6 +71,8 @@ class PeopleSearch extends React.Component<IPeopleSearchProps, IPeopleSearchStat
       this.setInitialState();
 
       this.applyOptions();
+    } else if (this.state.navigate) {
+      this.setState({navigate:false});
     }
   }
 
@@ -88,6 +100,13 @@ class PeopleSearch extends React.Component<IPeopleSearchProps, IPeopleSearchStat
       // reset the state to what it was before
       this.state = previous;
     }
+  }
+
+  onNavigationRoute(route:string):any {
+    this.setState({
+      navigate: true,
+      route: route === 'Search' ? '/' : `/${route}`
+    });
   }
 
   onSearch(items:IPeopleSearchState):void {
@@ -262,6 +281,7 @@ class PeopleSearch extends React.Component<IPeopleSearchProps, IPeopleSearchStat
       pageNum: 0,
       term: '',
       text: '',
+      navigate: false,
       favourites: getFavouritesState(),
       layout: getLayoutState(),
     } as IPeopleSearchState;
@@ -270,6 +290,69 @@ class PeopleSearch extends React.Component<IPeopleSearchProps, IPeopleSearchStat
   private _onClosePanel = () => {
     this.setState({ showPanel: false });
   }
+
+  private searchView = (): JSX.Element => {
+    return <div id="component" className="gf-component ms-Grid">
+              <div>
+
+                <Title
+                  text={this.props.options.title} />
+
+              </div>
+              <div className="content ms-Grid-row">
+                <div className="ms-Grid-col ms-sm10 ms-md10 ms-lg10">
+
+                  <Search
+                    onSearchChanged={this.onSearch.bind(this)}
+                    onSearching={this.onSearching.bind(this)}
+                    properties={this.props.options.properties}
+                    settings={this.state.settings}
+                    termsets={this.state.termsets}
+                    userInformationFields={this.state.userInformationFields} />
+
+                </div>
+              </div>
+              <div className="content ms-Grid-row" id="component-vision">
+
+                {this.renderPaging()}
+
+                <Results
+                  items={this.state.items}
+                  term={this.state.term}
+                  refresh={this.state.refresh}
+                  onRefreshFinish={this.onRefreshFinish.bind(this)}
+                  searching={this.state.searching}
+                  favourites={this.state.favourites}
+                  layout={this.state.layout}
+                  onLayoutChange={this.onLayoutChange.bind(this)}
+                  onFavouritesChange={this.onFavouritesChange.bind(this)}
+                  onItemUpdate={this.onItemUpdate.bind(this)} />
+
+                {this.infiniteScroll()}
+
+                {this.renderPaging()}
+
+              </div>
+            </div>;
+  }
+
+  private favouritesView = (): JSX.Element => 
+            <Favourites
+              layout={this.state.layout}
+              title={this.props.options.title}
+              favourites={this.state.favourites}
+              onFavouritesChange={this.onFavouritesChange.bind(this)}
+              onItemUpdate={this.onItemUpdate.bind(this)} />;
+
+  private layoutsView = (): JSX.Element => 
+            <Layout
+              title={this.props.options.title}
+              onLayoutChange={this.onLayoutChange.bind(this)} />;
+
+  private settingsView = (): JSX.Element => 
+            <Settings
+              title={this.props.options.title}
+              onSettingChange={this.onSettingChange.bind(this)} />;
 
   public render():JSX.Element {
     if (this.state === null) {
@@ -283,74 +366,25 @@ class PeopleSearch extends React.Component<IPeopleSearchProps, IPeopleSearchStat
 
     return (
       <div id="outer-space" className="outer-space">
-          <div
-            className="goldfishSnapRight animated bounceInRight"
-          >
+          <Router>
+            <div className="goldfishSnapRight animated bounceInRight">
+
               <Menu
+                onNavigationRoute={this.onNavigationRoute}
                 onExport={this.onExport}
                 alternate={alternateMenu} />
 
-              <div id="component" style={inlineStyles} className="gf-component ms-Grid">
-                <div className="ms-Grid-row">
-
-                  <Title
-                    text={this.props.options.title} />
-
-                </div>
-                <div className="content ms-Grid-row">
-                  <div className="ms-Grid-col ms-sm10 ms-md10 ms-lg10">
-
-                    <Search
-                      onSearchChanged={this.onSearch.bind(this)}
-                      onSearching={this.onSearching.bind(this)}
-                      properties={this.props.options.properties}
-                      settings={this.state.settings}
-                      termsets={this.state.termsets}
-                      userInformationFields={this.state.userInformationFields} />
-
-                  </div>
-                </div>
-                <div className="content ms-Grid-row" id="component-vision">
-
-                  {this.renderPaging()}
-
-                  <Results
-                    items={this.state.items}
-                    term={this.state.term}
-                    refresh={this.state.refresh}
-                    onRefreshFinish={this.onRefreshFinish.bind(this)}
-                    searching={this.state.searching}
-                    favourites={this.state.favourites}
-                    layout={this.state.layout}
-                    onLayoutChange={this.onLayoutChange.bind(this)}
-                    onFavouritesChange={this.onFavouritesChange.bind(this)}
-                    onItemUpdate={this.onItemUpdate.bind(this)} />
-
-                  {this.infiniteScroll()}
-
-                  {this.renderPaging()}
-
-                </div>
-              </div>
-
-              <Favourites
-                layout={this.state.layout}
-                title={this.props.options.title}
-                paddingTop={inlineStyles.paddingTop}
-                favourites={this.state.favourites}
-                onFavouritesChange={this.onFavouritesChange.bind(this)}
-                onItemUpdate={this.onItemUpdate.bind(this)} />
-
-              <Layout
-                title={this.props.options.title}
-                paddingTop={inlineStyles.paddingTop}
-                onLayoutChange={this.onLayoutChange.bind(this)} />
-
-              <Settings
-                title={this.props.options.title}
-                paddingTop={inlineStyles.paddingTop}
-                onSettingChange={this.onSettingChange.bind(this)} />
-          </div>   
+              { this.state.navigate ? 
+                <Redirect 
+                  to={`${this.state.route}`} 
+                  push={true} /> : null }
+                              
+              <Route exact path="/" component={this.searchView}/>
+              <Route path="/favourites" component={this.favouritesView}/>
+              <Route path="/layout" component={this.layoutsView}/>
+              <Route path="/settings" component={this.settingsView}/>              
+            </div>   
+          </Router>
       </div>
     );
   }

@@ -130,18 +130,19 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
 
   createLayoutItems(type:string, field:IDropdownOption, i:number):JSX.Element {
     return (
-      <SortableItem key={'layout-' + i} className="ms-Grid-row slideDownIn10">
-        <div className={styles.currentItem}>
+      <SortableItem key={'layout-' + i} className="ms-slideDownIn10">
+        <div className={`${styles.currentItem}`}>
           <Icon
             style={ { marginRight: '8px' } }
             iconName={ field.data.icon }
+            className={`ms-font-xl ${styles.layoutIcon}`}
             aria-hidden='true'
             title={ field.data.icon }
           />
-          <div key={i}>
+          <div className={`${styles.layoutItem} ms-font-s`}>
             {field.text}
           </div>
-          <div className={styles.removalButton}>
+          <div className={`${styles.removalButton}`}>
             <IconButton
               key={`layout-item-${i}`}
               onClick={this.onFieldRemoveClick.bind(this, i)}
@@ -196,8 +197,8 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
       };
 
       return (
-        <div id="component-layout" className="gf-component" style={layoutComponentStyles}>
-          <div className={`${styles.container} ms-Grid`}>
+        <div id="component-layout" className="gf-component ms-Grid" style={layoutComponentStyles}>
+          <div className={`${styles.container}`}>
             <Title
               text={this.props.title}
               suffix="Layout" />

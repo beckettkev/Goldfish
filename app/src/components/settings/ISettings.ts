@@ -1,6 +1,6 @@
 export interface ISettingsProps {
   title: string,
-  paddingTop: string,
+  paddingTop?: string,
   onSettingChange: Function,
 }
 

@@ -14,18 +14,25 @@
   padding: 10px !important; 
 }
 
+.search-term {
+  display: none;
+}
+
 .react-tagsinput-remove {
   cursor: pointer;
   font-weight: bold;
 }
+
 .react-tagsinput-tag a,
 .react-tagsinput-tag a:link {
   text-decoration: none;
   color: #ffffff;
 }
+
 .react-tagsinput-tag a:hover {
   cursor:pointer;
 }
+
 .react-tagsinput-tag a::before {
   content: " ×";
 }

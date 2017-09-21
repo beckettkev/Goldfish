@@ -26,6 +26,7 @@
   border-right: 1px solid #eaeaea;
   background-color: #ffffff;
   position: absolute;
+  min-width: 400px;
   bottom: 0;
   top: 0;
   right: 0;

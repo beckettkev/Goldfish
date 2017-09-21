@@ -2,6 +2,7 @@
 
 /* eslint no-unused-vars: 0 */
 import * as React from 'react';
+import * as styles from './Tag.css';
 
 import { ITagProps, ITagState } from './ITag';
 
@@ -15,21 +16,20 @@ class Tag extends React.Component<ITagProps, ITagState> {
   }
 
   public render():JSX.Element {
-    const searchTermStyles:any = {
-      display: 'none !important',
-    };
-
-    const {tag, item, key, className, classNameRemove} = this.props;
+    const {tag, item, key} = this.props;
 
     return (
-      <span key={key} className={className}>
-        <span style={searchTermStyles} className="search-term">
+      <span key={key} className={`${styles.reactTagsinputTag} ms-font-s`}>
+        <span className={styles.searchTerm}>
           {tag.search}
         </span>
         {tag.name}
-        <a
-          className={classNameRemove}
-          onClick={(e) => this.handleRemove(item)} />
+        <sup>
+          <a
+            className={`${styles.reactTagsinputRemove}`}
+            style={{fontWeight:'bold'}}
+            onClick={(e) => this.handleRemove(item)} />
+        </sup>
       </span>
     );
   }

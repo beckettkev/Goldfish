@@ -100,7 +100,7 @@ class Settings extends React.Component<ISettingsProps, ISettingsState> {
 
     if (this.state !== null) {
       return (
-        <div id="component-settings" className="gf-component" style={settingComponentStyles}>
+        <div id="component-settings" className="gf-component ms-Grid" style={settingComponentStyles}>
           <div className={`${styles.container}`}>
               <Title
                 text={this.props.title}
@@ -111,7 +111,7 @@ class Settings extends React.Component<ISettingsProps, ISettingsState> {
                 Settings can be controlled from this page - they will be <strong>applied automatically</strong>.
               </p>
 
-              <div className={styles.checkboxHolder + ' content ms-font-s'}>
+              <div className={`${styles.checkboxHolder} content ms-font-s`}>
                 <br /><br />
 
                 <div className="switches-with-broomsticks">

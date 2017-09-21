@@ -43,8 +43,8 @@ class Results extends React.Component<IResultsProps, IResultsState> {
   createItem(item:any, i:number):JSX.Element {
     // This function gets called for every search result and renders a person component
     return (
-      <div className={`${styles.itemContainer} slideDownIn10 person-card ms-Grid-row`} key={'result-item-' + i}>
-        <div className={styles.resultsItems + ' item ms-bgc-w ms-bcl-nl o365cs-notifications-message'}>
+      <div className={`${styles.itemContainer} ms-slideDownIn10 person-card ms-Grid-row`} key={'result-item-' + i}>
+        <div className={`${styles.resultsItems} item ms-bgc-w ms-bcl-nl o365cs-notifications-message`}>
           <Person
             data={item}
             layout={this.props.layout}

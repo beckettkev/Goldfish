@@ -16,7 +16,7 @@ class Title extends React.Component<ITitleProps, ITitleState> {
     title = title + (typeof this.props.suffix !== 'undefined' ? ' ' + this.props.suffix : '');
 
     return (
-      <div className={`${styles.titleContainer} ms-Grid-row`} id={`dragSnapin${title.replace(/ /g, '')}`}>
+      <div className={`${styles.titleContainer}`} id={`dragSnapin${title.replace(/ /g, '')}`}>
         <span className={`ms-font-xxl ${styles.titleFont}`}>
           {title}
         </span>

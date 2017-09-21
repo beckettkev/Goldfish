@@ -68,7 +68,7 @@ class Favourites extends React.Component<IFavouritesProps, IFavouritesState> {
   createEmptyResultsMessage(count:number):JSX.Element {
     if (count === 0) {
       return (
-        <p key="no-favourites">
+        <p key="no-favourites" style={{margin:'0px 20px'}}>
           Well this is embarrassing, you do not seem to have any friends. <br /><br />Favourite some people now before anyone notices.
         </p>
       );
@@ -111,8 +111,8 @@ class Favourites extends React.Component<IFavouritesProps, IFavouritesState> {
     };
 
     return (
-      <div key="favourites-manager" id="component-favourites" className={`gf-component ms-Grid`} style={favouritesComponentStyles}>
-        <div className={`${styles.container} ms-Grid-row`}>
+      <div key="favourites-manager" id="component-favourites" className="gf-component ms-Grid" style={favouritesComponentStyles}>
+        <div className={`${styles.container}`}>
           <Title
             text={this.props.title}
             suffix="Favourites" />

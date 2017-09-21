@@ -1,6 +1,6 @@
 export interface ILayoutProps {
   title: string,
-  paddingTop: string,
+  paddingTop?: string,
   onLayoutChange: Function,
 }
 

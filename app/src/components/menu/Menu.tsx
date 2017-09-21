@@ -2,7 +2,7 @@
 
 import * as React  from 'react';
 import * as styles from './Menu.css';
-import MenuManager from '../../utils/menu';
+//import MenuManager from '../../utils/menu';
 import { DefaultButton, IconButton } from 'office-ui-fabric-react/lib/Button';
 import { ContextualMenu, ContextualMenuItemType, DirectionalHint } from 'office-ui-fabric-react/lib/ContextualMenu';
 import { getRTL } from 'office-ui-fabric-react/lib/Utilities';
@@ -25,7 +25,11 @@ class Menu extends React.Component<IMenuProps, IMenuState> {
   itemAction(value:string, field:any):void {
     this.setState({isContextMenuVisible: false});    
 
-    switch (typeof field === 'string' ? field : value) {
+    const hash:string = typeof field === 'string' ? field : value;
+
+    this.props.onNavigationRoute(hash);
+
+    /*switch (typeof field === 'string' ? field : value) {
     case 'Layout':
       MenuManager.loadLayoutComponent();
       break;
@@ -47,7 +51,7 @@ class Menu extends React.Component<IMenuProps, IMenuState> {
     default:
       // no default action
       break;
-    }
+    }*/
   }
 
   _onClick(event: React.MouseEvent<any>) {
@@ -58,7 +62,7 @@ class Menu extends React.Component<IMenuProps, IMenuState> {
     return (
       <div key="menu-items" className={styles.menu} id="menu-items">
           <IconButton 
-            id='move'
+            id='move-dragging'
             className={styles.mover}
             iconProps={
               { 

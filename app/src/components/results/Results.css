@@ -1,9 +1,10 @@
 .results-container {
-  margin: 0 20px 0 20px;
+  margin: 0 30px;
   position: relative;
   clear:both;
   z-index:2000;
   height: auto;
+  display: block;
 }
 
 .results-container .results {
@@ -16,6 +17,7 @@
 
 .results-items {
   padding: 10px;
+  float: left;
 }
 
 .results-items input[type=button],
@@ -28,6 +30,7 @@
 
 .item-container {
   background-color: #ffffff;
+  float:left;
 }
 
 .progress-spinner {

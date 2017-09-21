@@ -29,9 +29,6 @@
 .sortable-container i {
 	float:left;
 }
-.sortable-container div div {
-	padding: 5px;
-}
 .sortable-container div div:hover {
 	cursor: move;
 	background-color: #f4f4f4;
@@ -53,7 +50,7 @@
 .available-contianer input[type=button] {
 	min-width: auto;
 	padding: 0;
-	margin: -8px 10px 14px 5px;
+	margin: 2px;
 	width: 2rem !important;
 	height: 2rem !important;
 	font-size: 1rem;
@@ -65,12 +62,12 @@
 .available-contianer input[type=button] span {
 	line-height: 2rem !important;
 }
-
+.layout-icon {
+	margin:7px;
+}
 .removal-button {
 	float: right;
-	margin-top: -27px;
 }
-
 .sortable-container div div.removal-button:hover {
   	background: transparent !important;
 }
@@ -94,6 +91,13 @@ p.info {
 	min-height:35px;
 	width:100%;
 	z-index: 2000;
+}
+
+.layout-item {
+	padding: 7px;
+    float: left;
+    display: inline;
+    width: calc(100% - 90px);
 }
 
 [draggable] {

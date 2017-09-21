@@ -102,7 +102,10 @@ class Paging extends React.Component<IPagingProps, IPagingState> {
           onClick={this.onPreviousPageClick.bind(this)}
           iconProps={
             { 
-              iconName: 'TriangleSolidLeft12' 
+              iconName: 'TriangleSolidLeft12',
+              style: {
+                fontSize:'6pt'
+              }
             } 
           }
           title="Previous page" />
@@ -117,7 +120,10 @@ class Paging extends React.Component<IPagingProps, IPagingState> {
           onClick={this.onNextPageClick.bind(this)}
           iconProps={
             { 
-              iconName: 'TriangleSolidRight12' 
+              iconName: 'TriangleSolidRight12',
+              style: {
+                fontSize:'6pt'
+              }
             } 
           }
           title="next page" />

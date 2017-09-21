@@ -280,9 +280,7 @@ class Suggest extends React.Component<ISuggestProps, ISuggestState> {
               key={index}
               item={index}
               tag={element}
-              onRemove={this.removeTag.bind(this)}
-              className="react-tagsinput-tag"
-              removeClassName="react-tagsinput-remove" />
+              onRemove={this.removeTag.bind(this)} />
           )
         ) : '';
 

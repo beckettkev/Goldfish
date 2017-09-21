@@ -1,5 +1,7 @@
 .paging {
+	float: left;	
 	padding: 10px 10px 10px 30px;
+	display: inline;
 }
 .pager {
 	padding: 4px 6px 2px 5px;

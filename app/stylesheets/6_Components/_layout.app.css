@@ -3,7 +3,8 @@
 }
 .sortable-item {
   	background-color: #fff;
-  	cursor: move;
+	cursor: move;
+	margin: 10px 0;
 }
 .pointer-events-none {
   	pointer-events: none;

@@ -3,9 +3,7 @@ export interface ITagProps {
   item?: number,
   tag?: any,
   onRemove?: Function,
-  className?: string,
-  classNameRemove?: string,
-  removeClassName?: string
+  className?: string
 }
 
 export interface ITagState {

@@ -6,9 +6,8 @@ div.search-container {
 div.search-container input[type=text] {
 	padding-left: 5px;
 	width: 347px;
-  font-size: 1.1em;
 	height: 30px;
-  box-sizing: inherit;
+  	box-sizing: inherit;
 	margin-top:15px;
 	border-width: 1px;
 }

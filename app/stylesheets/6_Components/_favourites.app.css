@@ -12,7 +12,9 @@ div.contact {
 .sortable-item:hover {
   background: #ffffff;
 }
-
+#component-favourites .sortable-item {
+  float: left;
+}
 .sortable-favourite-container .sortable-item {
   padding: 10px;
 }

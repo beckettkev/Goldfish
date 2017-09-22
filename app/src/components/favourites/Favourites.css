@@ -49,8 +49,7 @@
 
 .sortable-item-content {
   background: #ffffff;
-  float:left;
-  margin-bottom: 20px;
+  float: left;
 }
 .sortable-item-content:hover {
   cursor: move;

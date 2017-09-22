@@ -38,7 +38,9 @@
   min-width: auto;
   padding: 0;
   font-size: 1rem;
-  float:right;
+  float:right;    
+  color: #fff;
+  padding: 0 !important;
 }
 .sortable-favourite-container button span,
 .sortable-favourite-container input[type=button] span {
@@ -48,6 +50,7 @@
 .sortable-item-content {
   background: #ffffff;
   float:left;
+  margin-bottom: 20px;
 }
 .sortable-item-content:hover {
   cursor: move;

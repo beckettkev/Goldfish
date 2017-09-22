@@ -7,5 +7,6 @@ export interface IMenuProps {
 
 export interface IMenuState {
   target?: any,
-  isContextMenuVisible?: boolean
+  isContextMenuVisible?: boolean,
+  route?: string
 }

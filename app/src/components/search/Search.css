@@ -10,6 +10,7 @@ div.search-container input[type=text] {
 	height: 30px;
   box-sizing: inherit;
 	margin-top:15px;
+	border-width: 1px;
 }
 div.search-container input[type=text]:focus,
 div.search-container input[type=text]:hover {

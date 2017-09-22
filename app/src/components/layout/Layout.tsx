@@ -111,18 +111,19 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
     if (typeof current !== 'undefined') {
       if (current.length > 0) {
         return (
-              <div className="content ms-font-s">
-                <p className={styles.info}><strong>Re-order</strong> and <strong>remove</strong> items from the layout.</p>
+          <div className="content ms-font-s">
+            <p className={styles.info}><strong>Re-order</strong> and <strong>remove</strong> items from the layout.</p>
 
-                <div key="current-layout-fields" className={`${styles.sortableContainer} ms-Grid`}>
-                  <SortableItems
-                    name="sort-current"
-                    items={current}
-                    onSort={this.handleLayoutSort.bind(this)}>
-                    {current.map(this.createLayoutItems.bind(this, 'current'))}
-                  </SortableItems>
-                </div>
-              </div>
+            <div key="current-layout-fields" className={`${styles.sortableContainer} ms-Grid`}>
+              <SortableItems
+                name="sort-current"
+                items={current}
+                className={styles.sortableItem}
+                onSort={this.handleLayoutSort.bind(this)}>
+                {current.map(this.createLayoutItems.bind(this, 'current'))}
+              </SortableItems>
+            </div>
+          </div>
         );
       }
     }

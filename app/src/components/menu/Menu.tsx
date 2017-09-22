@@ -17,7 +17,8 @@ class Menu extends React.Component<IMenuProps, IMenuState> {
     this._onClick = this._onClick.bind(this);
 
     this.state = {
-      isContextMenuVisible: false
+      isContextMenuVisible: false,
+      route: 'Search'
     };
   }
 
@@ -25,9 +26,10 @@ class Menu extends React.Component<IMenuProps, IMenuState> {
   itemAction(value:string, field:any):void {
     this.setState({isContextMenuVisible: false});    
 
-    const hash:string = typeof field === 'string' ? field : value;
+    const route:string = typeof field === 'string' ? field : value;
 
-    this.props.onNavigationRoute(hash);
+    this.props.onNavigationRoute(route);
+    this.setState({ route }); 
 
     /*switch (typeof field === 'string' ? field : value) {
     case 'Layout':
@@ -84,8 +86,12 @@ class Menu extends React.Component<IMenuProps, IMenuState> {
                   iconProps: {
                     iconName: 'Search',
                     style: {
-                      color: window.Goldfish.GetPrimaryColour()
+                      color: window.Goldfish.GetPrimaryColour(),
+                      fontWeight: this.state.route === 'Search' ? 'bold' : 'normal'
                     }
+                  },
+                  style: {
+                    fontWeight: this.state.route === 'Search' ? 'bold' : 'normal'
                   },
                   key: 'key1'
                 },
@@ -95,8 +101,12 @@ class Menu extends React.Component<IMenuProps, IMenuState> {
                   iconProps: {
                     iconName: 'FavoriteList',
                     style: {
-                      color: window.Goldfish.GetPrimaryColour()
+                      color: window.Goldfish.GetPrimaryColour(),
+                      fontWeight: this.state.route === 'Favourites' ? 'bold' : 'normal'
                     }
+                  },
+                  style: {
+                    fontWeight: this.state.route === 'Favourites' ? 'bold' : 'normal'
                   },
                   key: 'key2'
                 },
@@ -106,8 +116,12 @@ class Menu extends React.Component<IMenuProps, IMenuState> {
                   iconProps: {
                     iconName: 'GroupedList',
                     style: {
-                      color: window.Goldfish.GetPrimaryColour()
+                      color: window.Goldfish.GetPrimaryColour(),
+                      fontWeight: this.state.route === 'Layout' ? 'bold' : 'normal'
                     }
+                  },
+                  style: {
+                    fontWeight: this.state.route === 'Layout' ? 'bold' : 'normal'
                   },
                   key: 'key3'
                 },
@@ -117,8 +131,12 @@ class Menu extends React.Component<IMenuProps, IMenuState> {
                   iconProps: {
                     iconName: 'Settings',
                     style: {
-                      color: window.Goldfish.GetPrimaryColour()
+                      color: window.Goldfish.GetPrimaryColour(),
+                      fontWeight: this.state.route === 'Settings' ? 'bold' : 'normal'
                     }
+                  },
+                  style: {
+                    fontWeight: this.state.route === 'Settings' ? 'bold' : 'normal'
                   },
                   key: 'key4'
                 },

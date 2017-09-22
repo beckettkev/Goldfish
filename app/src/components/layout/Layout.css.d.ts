@@ -3,6 +3,7 @@ export const container: string;
 export const layoutHeading: string;
 export const sortableContainer: string;
 export const availableContainer: string;
+export const sortableItem: string;
 export const availableContianer: string;
 export const layoutIcon: string;
 export const removalButton: string;

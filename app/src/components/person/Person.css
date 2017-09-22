@@ -43,7 +43,7 @@
 .add input[type=button],
 .remove button,
 .remove input[type=button] {
-	padding: 0 0 10px 0 !important;
+	padding: 0 0 10px 0;
 	margin: 5px 5px 14px 5px !important;
 	width: 2rem !important;
 	height: 2rem !important;

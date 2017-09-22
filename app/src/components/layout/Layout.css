@@ -29,7 +29,8 @@
 .sortable-container i {
 	float:left;
 }
-.sortable-container div div:hover {
+
+.sortableItem:hover {
 	cursor: move;
 	background-color: #f4f4f4;
 }

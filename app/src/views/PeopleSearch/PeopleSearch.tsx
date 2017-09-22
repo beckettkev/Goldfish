@@ -293,7 +293,7 @@ class PeopleSearch extends React.Component<IPeopleSearchProps, IPeopleSearchStat
 
   private searchView = (): JSX.Element => {
     return <div id="component" className="gf-component ms-Grid">
-              <div>
+              <div id="title-container">
 
                 <Title
                   text={this.props.options.title} />
@@ -363,9 +363,9 @@ class PeopleSearch extends React.Component<IPeopleSearchProps, IPeopleSearchStat
     const inlineStyles:any = alternateMenu !== '' ? { paddingTop: '45px' } : { paddingTop: '0' };
 
     return (
-      <div id="outer-space" className="outer-space">
+      <div id="outer-space" className="outer-space goldfishSnapRight animated bounceInRight">
           <Router>
-            <div className="goldfishSnapRight animated bounceInRight">
+            <div>
 
               <Menu
                 onNavigationRoute={this.onNavigationRoute}

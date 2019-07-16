@@ -45,7 +45,7 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "jsdom": "^8.3.0",
     "karma": "^0.13.19",
-    "lodash": "^3.10.1",
+    "lodash": "^4.17.13",
     "minimist": "^1.2.0",
     "mocha": "^2.4.5",
     "node-sass": "3.4.2",
